@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "demo",
+    "version": "1.0.0",
+    "description": "Littlearphone的插件示例",
+    "homepage_url": "https://www.baidu.com",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "tabs",
+        "storage",
+        "webRequest",
+        "contextMenus",
+        "notifications",
+        "webRequestBlocking",
+        "declarativeContent",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "page_action": {
+        "default_title": "Popup示例标题",
+        "default_popup": "index.html#/popup/index"
+    },
+    "options_page": "index.html#/option/index",
+    "options_ui": {
+        "page": "index.html#/option/index",
+        "chrome_style": true
+    }
+}
