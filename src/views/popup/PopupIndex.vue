@@ -3,6 +3,7 @@
 </template>
 <script>
 import Empty from '../../component/EmptyConfig.vue'
+import Bing from '../../component/BingConfig.vue'
 import Baidu from '../../component/BaiduConfig.vue'
 import Bilibili from '../../component/BilibiliConfig.vue'
 
@@ -11,6 +12,7 @@ export default {
   name: 'PopupIndex',
   components: {
     Empty,
+    Bing,
     Baidu,
     Bilibili
   },

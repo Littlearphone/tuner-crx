@@ -29,8 +29,8 @@ export default {
 }
 </script>
 <style scoped>
-.popup-page-wrapper {
-  width: 400px;
-  height: 300px;
-}
+/*.popup-page-wrapper {*/
+/*  width: 400px;*/
+/*  height: 300px;*/
+/*}*/
 </style>

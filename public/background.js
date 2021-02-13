@@ -63,7 +63,7 @@ window.SiteMappings = [
   },
   {
     expect: tab => /http(s)?:\/\/cn.bing.com\/search.*/.test(tab.url),
-    // panelName: 'Bing',
+    panelName: 'Bing',
     injectCss: "hack/bing/search.css",
     injectScript: "hack/bing/search.js",
     injectConfig: { faviconMapping }

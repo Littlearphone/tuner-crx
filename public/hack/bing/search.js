@@ -1,13 +1,24 @@
 chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse) {
   console.log(sender)
   console.log(sendResponse)
-  // TODO 划词翻译参数hta：on开启，off关闭
   const config = { ...transferData }
   if (!config.hasOwnProperty('enable')) {
     config.enable = true
   }
+  if (!config.hasOwnProperty('hta')) {
+    config.hta = true
+  }
   if (!config.enable) {
     return
+  }
+  const htaConfig = 'hta=' + (config.hta ? 'on' : 'off')
+  const htaReverse = 'hta=' + (config.hta ? 'off' : 'on')
+  if (document.cookie.indexOf('_FP=' + htaConfig) < 0) {
+    if (location.href.indexOf(htaReverse) >= 0) {
+      location.href = location.href.toString().replaceAll(htaReverse, htaConfig)
+    } else if (location.href.indexOf(htaConfig) < 0) {
+      location.href += '&' + htaConfig
+    }
   }
   const faviconMapping = config.injectConfig.faviconMapping
   const defaultIcon = 'https://cn.bing.com/favicon.ico'
