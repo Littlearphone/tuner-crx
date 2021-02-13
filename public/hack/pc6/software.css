@@ -1,0 +1,30 @@
+#topNavC, .bdcs-hot, #header dd, #bdfx, #sidebar, #xzbtn .downnow, #mtab,
+.ad-download, .address-wrap h2, .address-wrap h3, .address-wrap #gaosuxiazai,
+#xgd, #xgw, #reci, #xgk, .sendErr-wrap {
+    display: none !important;
+}
+
+#content {
+    width: auto !important;
+}
+
+.address-wrap, #param-box, #param {
+    height: auto !important;
+}
+
+#autotab {
+    top: 100px;
+    right: 40px;
+    left: auto;
+    background: white;
+    border: 1px solid #390;
+    padding: 10px;
+}
+
+#cmtMsg, #main, #param-box {
+    width: 100% !important;
+}
+
+#param-content {
+    float: right !important;
+}

@@ -1,0 +1,51 @@
+.Blog_footer, div[class*='Blog_header'],
+.Blog_left1_1 ~ *, iframe,
+.Blog_left1 ~ * {
+    display: none !important;
+}
+
+#full {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 10px !important;
+    right: 10px !important;
+}
+
+.box > div:nth-child(1) {
+    margin: 10px !important;
+}
+
+.Blog_contain {
+    position: relative !important;
+    margin: 0 !important;
+}
+
+.Blog_left {
+    position: absolute !important;
+    float: none !important;
+    width: auto !important;
+    right: 0 !important;
+    z-index: 1 !important;
+}
+
+.Blog_left1 {
+    padding: 0 !important;
+}
+
+.Blog_left1_1 {
+    width: 65px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.Blog_left1_1 img {
+    max-width: 90% !important;
+}
+
+.Blog_left1_1 p {
+    margin: 0 !important;
+}
+
+.Blog_right1 {
+    margin: 0 !important;
+}

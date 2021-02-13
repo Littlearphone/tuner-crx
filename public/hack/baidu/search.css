@@ -1,0 +1,149 @@
+html {
+    overflow-y: auto !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, .1);
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #999;
+}
+
+[baidu] #s-top-left.s-isindex-wrap,
+[baidu] #s_wrap.s-isindex-wrap,
+[baidu] #bottom_layer.s-isindex-wrap,
+[baidu] .s-isindex-wrap .s-top-nav,
+[baidu] #bottom_space.s-bottom-space,
+[baidu] #s_side_wrapper, [baidu] #foot,
+[baidu] #container #rs, [baidu] .toindex,
+[baidu] #container #content_right,
+[baidu] [href^='/sf/vsearch'],
+[baidu] [href*='zhidao.baidu.com'],
+[baidu] [href*='wenku.baidu.com'],
+[baidu] [href*='b2b.baidu.com'],
+[baidu] .new-pmd .c-recommend,
+[baidu] #container.sam_newgrid #content_left .result-op {
+    display: none !important;
+}
+
+[baidu] #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+[baidu] #head {
+    min-height: unset;
+}
+
+[baidu='wd'] #head {
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+[baidu] #head_wrapper {
+    height: 100%;
+}
+
+[baidu='wd'] #head_wrapper,
+[baidu='wd'] .head_wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+[baidu='wd'] #u {
+    position: relative;
+}
+
+[baidu] #s_tab, [baidu] #bdpcImgTab {
+    padding: 60px 0 0 0 !important;
+}
+
+[baidu] #s_tab .s_tab_inner,
+[baidu] #s_tab .tab-wrapper,
+[baidu] #bdpcImgTab #bdpcImgTopTab {
+    display: flex;
+    justify-content: center;
+}
+
+[baidu] .head_nums_cont_outer,
+[baidu] .head_nums_cont_inner > div {
+    width: 100% !important;
+}
+
+[baidu] .new-pmd .c-span9,
+[baidu] #container.sam_newgrid #content_left .result.c-container {
+    width: unset !important;
+}
+
+[baidu] #content_left,
+[baidu] #content_left .new-pmd.c-container {
+    width: auto !important;
+    padding: 0 !important;
+}
+
+[baidu] #container.sam_newgrid #content_left .result {
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    border-radius: 4px;
+    border: 1px solid #ebeef5;
+    background-color: #fff;
+    overflow: hidden;
+    color: #303133;
+    transition: .3s;
+}
+
+[baidu] #container.sam_newgrid #content_left .result:hover {
+    background-color: #ecf5ff;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1) !important;
+}
+
+[baidu] #container.sam_newgrid #content_left .result h3 {
+    border-bottom: 1px solid #ebeef5;
+    box-sizing: border-box;
+    padding: 5px 0;
+    font-size: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+[baidu] #container.sam_newgrid #content_left .result .c-row {
+    display: flex;
+}
+
+/*[baidu] #container.sam_newgrid #content_left .result h3::before {*/
+/*    content: '';*/
+/*    width: 24px;*/
+/*    height: 24px;*/
+/*    margin: 0 5px;*/
+/*    display: inline-block;*/
+/*    background-size: 100%;*/
+/*    background-image: url("https://baidu.com/favicon.ico");*/
+/*}*/
+
+[baidu] #page {
+    display: flex;
+    justify-content: center;
+}
+
+[baidu] #page .page-inner {
+    padding: 16px !important;
+    display: inline-block;
+}

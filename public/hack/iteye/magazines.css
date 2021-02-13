@@ -1,0 +1,13 @@
+#local, #album_detail_wrap,
+.hide-article-box, #digg_bottom {
+    display: none !important;
+}
+
+#interview_main .hide-main-content {
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+#main, #interview_main {
+    width: 100% !important;
+}

@@ -1,0 +1,3 @@
+#sf-article > div > div:last-child, #comment-area ~ *, #footer {
+    display: none !important;
+}

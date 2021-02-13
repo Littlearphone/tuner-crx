@@ -1,0 +1,7 @@
+.alert.bejson-gap, .save-data-con, .footer-nav, .recent-use-box, h1 {
+    display: none !important;
+}
+
+.editor-box1 .float-left, .editor-box1 .float-left #editor {
+    width: 100% !important;
+}

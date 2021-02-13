@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "demo",
+    "name": "tuner",
     "version": "1.0.0",
     "description": "Littlearphone的插件示例",
     "homepage_url": "https://www.baidu.com",
@@ -8,6 +8,11 @@
         "scripts": [
             "background.js"
         ]
+    },
+    "icons": {
+        "16": "images/icon.png",
+        "48": "images/icon.png",
+        "128": "images/icon.png"
     },
     "permissions": [
         "tabs",
@@ -21,7 +26,7 @@
         "https://*/*"
     ],
     "page_action": {
-        "default_title": "Popup示例标题",
+        "default_title": "页面配置",
         "default_popup": "index.html#/popup/index"
     },
     "options_page": "index.html#/option/index",

@@ -1,0 +1,4 @@
+#mask, #mask ~ *, div[id^=topbanner],
+.Content-box .Content.Index > .Page ~ * {
+    display: none !important;
+}

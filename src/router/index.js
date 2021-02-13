@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const constantRoutes = [
   {
     path: '/',
-    redirect: '/option/index'
+    redirect: '/popup/index'
   },
   {
     path: '/popup/index',

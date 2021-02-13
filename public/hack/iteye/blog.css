@@ -1,0 +1,39 @@
+#blog_actions, #user_visits,
+#user_title_list, #blog_menu,
+#month_blogs, #guest_books,
+.blog-sidebar, #blog_content ~ div,
+.hide-article-box, #blog_content #bottoms {
+    display: none !important;
+}
+
+#main, .blog_nav .pre_next, .blog_comment {
+    width: 100% !important;
+}
+
+.blog_nav .pre_next, .blog_bottom {
+    text-align: center !important;
+}
+
+.blog_bottom ul {
+    display: inline-block !important;
+}
+
+div#blog_owner_logo img {
+    width: 64px !important;
+}
+
+div#local {
+    width: auto !important;
+    position: absolute !important;
+    right: 0 !important;
+    margin: 0 !important;
+}
+
+#blog_content {
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+.blog_title h3 {
+    font-size: 32px !important;
+}
