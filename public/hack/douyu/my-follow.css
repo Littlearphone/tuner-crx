@@ -61,7 +61,7 @@ html.shark-webp {
 .ScrollTabFrame-head::before,
 .ScrollTabFrame-head::after,
 .ScrollTabFrame-head .AdView,
-.FilterTab-cateBtn {
+.FilterTab-cateBtn, .ZoomTip {
     display: none !important;
 }
 

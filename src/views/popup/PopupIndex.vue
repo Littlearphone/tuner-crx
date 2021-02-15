@@ -5,6 +5,7 @@
 import Empty from '../../component/EmptyConfig.vue'
 import Bing from '../../component/BingConfig.vue'
 import Baidu from '../../component/BaiduConfig.vue'
+import Douyu from '../../component/DouyuConfig.vue'
 import Bilibili from '../../component/BilibiliConfig.vue'
 
 const backgroundPage = chrome.extension && chrome.extension.getBackgroundPage()
@@ -14,6 +15,7 @@ export default {
     Empty,
     Bing,
     Baidu,
+    Douyu,
     Bilibili
   },
   beforeMount() {

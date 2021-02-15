@@ -178,7 +178,7 @@ window.SiteMappings = [
   },
   {
     expect: tab => /http(s)?:\/\/www.douyu.com\/([0-9]+|topic\/.*[?]rid=[0-9]+)/.test(tab.url),
-    // panelName: 'Douyu',
+    panelName: 'Douyu',
     injectCss: "hack/douyu/live-room.css",
     injectScript: "hack/douyu/live-room.js"
   },

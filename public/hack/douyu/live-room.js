@@ -5,15 +5,41 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
   if (!config.hasOwnProperty('enable')) {
     config.enable = true
   }
+  if (!config.hasOwnProperty('fullPage')) {
+    config.fullPage = true
+  }
+  if (!config.hasOwnProperty('danmuSize')) {
+    config.danmuSize = 30
+  }
   if (!config.enable) {
     return
+  }
+  const layoutPlayer = document.querySelector('.layout-Player')
+  const appendInlineStyle = function() {
+    const style = document.createElement('STYLE')
+    style.rel = 'stylesheet'
+    style.innerHTML = `
+      .layout-Player #comment-higher-container [class*="danmuItem-"],
+      .layout-Player [class*="comment-"] [class*="danmu-"] [class*="danmuItem-"] {
+        font-size: ${config.danmuSize}px !important
+      }
+    `
+    document.querySelector('head').appendChild(style)
+  }
+  const initialFullPageConfig = function() {
+    if (config.fullPage && layoutPlayer.className.indexOf('toggle-layout-fold') < 0) {
+      layoutPlayer.className += ' toggle-layout-fold'
+      return
+    }
+    if (!config.fullPage && layoutPlayer.className.indexOf('layout-Player') >= 0) {
+      layoutPlayer.className = layoutPlayer.className.replaceAll('toggle-layout-fold', '')
+    }
   }
   const createElement = function(tagName, className) {
     const element = document.createElement(tagName)
     element.className = className || ''
     return element
   }
-  const layoutPlayer = document.querySelector('.layout-Player')
   const createToggleButton = function(options) {
     const container = layoutPlayer.querySelector(options.containerClass)
     if (options.createCondition && options.createCondition.call(container)) {
@@ -31,6 +57,8 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
       layoutPlayer.className += ' toggle-layout-fold'
     }
   }
+  appendInlineStyle()
+  initialFullPageConfig()
   createToggleButton({
     containerClass: '.layout-Player-title',
     toggleClass: 'title-toggle-button',

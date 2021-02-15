@@ -175,11 +175,11 @@ html, body, #js-room-activity,
     border-bottom-color: gray;
 }
 
-.layout-Player .Title-ad,
 .layout-Player .TitleShare,
 .layout-Player .PhoneWatch,
 .layout-Player .RedEnvelopAd,
 .layout-Player .DanmuEffectDom,
+.layout-Player .Title-ad, .ZoomTip,
 .layout-Player .ToolbarActivityArea,
 .layout-Player .LuckyStarTitle-wrap,
 .layout-Player .TitleSuperFansWrap,
