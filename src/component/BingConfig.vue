@@ -16,7 +16,7 @@ const backgroundPage = chrome.extension && chrome.extension.getBackgroundPage()
 export default {
   name: 'BingConfig',
   beforeMount() {
-    backgroundPage.getConfig.call(this, { Bing: BingConfig })
+    backgroundPage.findConfig.call(this, { Bing: BingConfig })
   },
   data() {
     return {

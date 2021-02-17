@@ -5,9 +5,7 @@
     "description": "Littlearphone的插件示例",
     "homepage_url": "https://www.baidu.com",
     "background": {
-        "scripts": [
-            "background.js"
-        ]
+        "page": "background.html"
     },
     "icons": {
         "16": "images/icon.png",

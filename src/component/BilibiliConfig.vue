@@ -25,7 +25,7 @@ const backgroundPage = chrome.extension && chrome.extension.getBackgroundPage()
 export default {
   name: 'BilibiliConfig',
   beforeMount() {
-    backgroundPage.getConfig.call(this, { Bilibili: BilibiliConfig })
+    backgroundPage.findConfig.call(this, { Bilibili: BilibiliConfig })
   },
   data() {
     return {

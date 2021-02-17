@@ -27,7 +27,7 @@ const backgroundPage = chrome.extension && chrome.extension.getBackgroundPage()
 export default {
   name: 'DouyuConfig',
   beforeMount() {
-    backgroundPage.getConfig.call(this, { Douyu: DouyuConfig })
+    backgroundPage.findConfig.call(this, { Douyu: DouyuConfig })
   },
   data() {
     return {

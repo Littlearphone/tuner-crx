@@ -13,7 +13,7 @@ const backgroundPage = chrome.extension && chrome.extension.getBackgroundPage()
 export default {
   name: 'BaiduConfig',
   beforeMount() {
-    backgroundPage.getConfig.call(this, { Baidu: BaiduConfig })
+    backgroundPage.findConfig.call(this, { Baidu: BaiduConfig })
   },
   data() {
     return {

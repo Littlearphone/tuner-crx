@@ -8,19 +8,19 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
   if (!config.enable) {
     return
   }
-  const faviconMapping = config.injectConfig.faviconMapping
+  const FaviconMapping = config.injectConfig.FaviconMapping
   const defaultIcon = 'https://baidu.com/favicon.ico'
-  const resultSelector = '[baidu] #container.sam_newgrid #content_left .result'
+  const resultSelector = '[baidu] #content_left .result,[baidu] #content_left .result-op'
 
   function faviconParse(result) {
-    const footer = result.querySelector('.se_st_footer')
+    const footer = result.querySelector('.c-showurl')
     if (!footer) {
       return defaultIcon
     }
-    const text = footer.childNodes[0].innerText
-    const key = Object.keys(faviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
+    const text = footer.innerText
+    const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
     if (key) {
-      return faviconMapping[key]
+      return FaviconMapping[key]
     }
     const hostIndex = text.indexOf('/')
     if (hostIndex >= 0) {

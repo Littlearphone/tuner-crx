@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
       location.href += '&' + htaConfig
     }
   }
-  const faviconMapping = config.injectConfig.faviconMapping
+  const FaviconMapping = config.injectConfig.FaviconMapping
   const defaultIcon = 'https://cn.bing.com/favicon.ico'
   const resultSelector = '[bing] #b_content #b_results li'
 
@@ -30,9 +30,9 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
       return defaultIcon
     }
     const text = cite.innerText
-    const key = Object.keys(faviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
+    const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
     if (key) {
-      return faviconMapping[key]
+      return FaviconMapping[key]
     }
     const urls = text.split('://')
     if (urls.length > 1) {
