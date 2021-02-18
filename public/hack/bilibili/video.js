@@ -94,15 +94,16 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
     condition: videoStartCondition,
     execute: videoStartExecution
   })
-  messages.push({
-    condition: function() {
-      const fullscreenButton = fullscreenButtonArea()
-      return fullscreenButton && fullscreenButton.className.indexOf('close') < 0
-    },
-    execute: function() {
-      fullscreenButtonArea().querySelector('.bilibili-player-iconfont-web-fullscreen-off').click()
-      return true
-    }
-  })
+  if (!fullscreenButtonArea() || fullscreenButtonArea().className.indexOf('closed') < 0) {
+    messages.push({
+      condition: function() {
+        return fullscreenButtonArea() && fullscreenButtonArea().className.indexOf('closed') < 0
+      },
+      execute: function() {
+        fullscreenButtonArea().querySelector('.bilibili-player-iconfont-web-fullscreen-off').click()
+        return true
+      }
+    })
+  }
   setTimeout(eventHandler, 100)
 })

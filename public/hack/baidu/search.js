@@ -48,4 +48,18 @@ chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse
     icon.onerror = function() {this.src = defaultIcon}
     h3.insertBefore(icon, h3.childNodes[0])
   })
+  const hardCodeAds = document.querySelectorAll('[baidu] #content_left > div:not(.result):not(.result-op)')
+  Array.from(hardCodeAds).forEach(ad => (ad.style = ''))
+  // Firefox和Chrome早期版本中带有前缀
+  const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+  // 选择目标节点
+  // 配置观察选项,传入目标节点和观察选项
+  new MutationObserver(mutations => {
+    mutations.flatMap(mutation => Array.from(mutation.addedNodes))
+      .filter(node => node.querySelector('[class*="ec_tuiguang_pplink"]'))
+      .forEach(node => (node.className += ' tuner-ads-block'))
+  }).observe(document.querySelector('[baidu] #content_left'), { childList: true })
+  // 随后,你还可以停止观察
+  // observer.disconnect()
+  // 创建观察者对象
 })

@@ -37,8 +37,9 @@ html {
 [baidu] [href*='zhidao.baidu.com'],
 [baidu] [href*='wenku.baidu.com'],
 [baidu] [href*='b2b.baidu.com'],
-[baidu] .new-pmd .c-recommend,
-[baidu] [mu*='.recommend_list.baidu.com'] {
+[baidu] [mu*='.recommend_list.baidu.com'],
+[baidu] .new-pmd .c-recommend, [baidu] .tuner-ads-block,
+[baidu] #content_left > div:not(.result):not(.result-op) {
     display: none !important;
 }
 
@@ -46,6 +47,8 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0 !important;
+    width: auto !important;
 }
 
 [baidu] #head {
@@ -70,7 +73,7 @@ html {
 }
 
 [baidu='wd'] .wrapper_s .soutu-env-nomac #kw {
-    width: unset !important;
+    width: calc(100% - 48px) !important
 }
 
 [baidu='wd'] #head_wrapper,
@@ -83,7 +86,20 @@ html {
     position: relative;
 }
 
-[baidu='wd'] .wrapper_new #head {
+[baidu='wd'] #container.sam_newgrid .search_tool_conter,
+[baidu='wd'] #container.sam_newgrid .nums {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    width: 100% !important;
+}
+
+[baidu='wd'] .container_l.sam_newgrid {
+    width: unset !important;
+    margin: 0 !important;
+}
+
+[baidu='wd'], [baidu='wd'] .wrapper_new #head {
     min-width: unset !important;
 }
 
@@ -98,9 +114,10 @@ html {
     justify-content: center;
 }
 
+[baidu] #content_left,
 [baidu] .head_nums_cont_outer,
 [baidu] .head_nums_cont_inner > div {
-    width: 100% !important;
+    width: 80% !important;
 }
 
 [baidu] .new-pmd .c-span9,
@@ -111,8 +128,11 @@ html {
 
 [baidu] #content_left,
 [baidu] #content_left .new-pmd.c-container {
-    width: auto !important;
     padding: 0 !important;
+}
+
+[baidu] #content_left .new-pmd.c-container {
+    width: 100% !important;
 }
 
 [baidu] #content_left .result,
@@ -149,8 +169,10 @@ html {
     display: flex;
 }
 
+[baidu] #content_left .result > div:not(.c-row),
+[baidu] #content_left .result-op > div:not(.c-row),
 [baidu] #content_left .c-row > div {
-    margin: 5px !important;
+    margin: 5px 10px !important;
     top: 0 !important;
 }
 
