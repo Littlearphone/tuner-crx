@@ -41,15 +41,6 @@ html, body, #js-room-activity,
     overflow: hidden !important;
 }
 
-.layout-Player {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    z-index: 999 !important;
-}
-
 #js-room-activity,
 .layout-Player .layout-Player-aside,
 .layout-Player [class*='broadcastDiv-'],
@@ -66,6 +57,7 @@ html, body, #js-room-activity,
 .layout-Player .TitleSuperFansWrap,
 .layout-Player .RoomVipSysTitle,
 .layout-Player .Title-sharkWeight,
+.layout-Player .FirstRechargePayPanel,
 .layout-Player .Title-anchorFriendWrapper {
     display: none !important;
 }

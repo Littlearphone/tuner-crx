@@ -134,5 +134,17 @@ export default [
     panelName: 'Bilibili',
     injectCss: "hack/bilibili/video.css",
     injectScript: "hack/bilibili/video.js"
+  },
+  {
+    expect: tab => {
+      return /http(s)?:\/\/manhua.dmzj.com\/[^\/]+\/[^.]+[.]shtml#@page=[0-9]+/.test(tab.url)
+        || /http(s)?:\/\/manhua.dmzj.com\/[^\/]+\/?/.test(tab.url)
+        || /http(s)?:\/\/manhua.dmzj.com\/?/.test(tab.url)
+        || /http(s)?:\/\/www.dmzj.com\/view\/[^\/]+\/[^.]+[.]html#@page=[0-9]+/.test(tab.url)
+        || /http(s)?:\/\/www.dmzj.com\/info\/[^.]+[.]html/.test(tab.url)
+        || /http(s)?:\/\/www.dmzj.com\/?/.test(tab.url)
+    },
+    injectCss: "hack/snippet/snippet.css",
+    injectScript: "hack/snippet/snippet.js"
   }
 ]

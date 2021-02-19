@@ -1,0 +1,21 @@
+body[manhua-dmzj-com] > div#note,
+body[manhua-dmzj-com] > div.footer,
+body[manhua-dmzj-com] > div.hotrmbox,
+body[manhua-dmzj-com] div.icorss_acg,
+body[manhua-dmzj-com] > div.recom_one,
+body[www-dmzj-com] > div#note,
+body[www-dmzj-com] > div.foot,
+body[www-dmzj-com] > div#floatCode,
+body[www-dmzj-com] div.intro_l_ad,
+body[www-dmzj-com] div.ad_th.app_down,
+body[www-dmzj-com] > div.ad_bottom_code,
+body[www-dmzj-com] > div:not([id]):not([class]),
+body[manhua-dmzj-com] > div:not([id]):not([class]) {
+    display: none !important;
+}
+
+body[www-dmzj-com] .rank_tabs_first .rank_first_con p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
