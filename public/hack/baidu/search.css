@@ -86,6 +86,20 @@ html {
     position: relative;
 }
 
+[baidu='wd'] .c-result-content article section .c-row {
+    flex-wrap: wrap;
+}
+
+[baidu='wd'] .c-result-content article section .c-row > div:first-of-type {
+    width: 100%;
+    flex-grow: 3;
+}
+
+[baidu='wd'] .c-result-content article section .c-row > div:last-of-type {
+    flex-grow: 1;
+    width: 0 !important;
+}
+
 [baidu='wd'] #container.sam_newgrid .search_tool_conter,
 [baidu='wd'] #container.sam_newgrid .nums {
     display: flex;
@@ -176,6 +190,7 @@ html {
     top: 0 !important;
 }
 
+[baidu] #content_left .new-pmd > p,
 [baidu] #content_left .new-pmd .c-gap-top-large {
     margin: 5px 10px !important;
 }
