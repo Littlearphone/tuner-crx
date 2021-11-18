@@ -24,12 +24,14 @@
     this.iframe.attr('src', next.attr('href'))
     const detectFrame = () => {
       const contents = this.iframe.contents()
-      const result = contents.find('#search #rso')
-      if (!result.length) {
+      const results = contents.find('#search #rso')
+      if (!results.length) {
         setTimeout(detectFrame, 100)
         return
       }
-      $('#search #rso').append(this.select('#search #rso').html())
+      const pages = this.select('#search #rso')
+      pages.find('svg').parents('g-popup').remove()
+      $('#search #rso').append(pages.html())
       $('#xjs').html(this.select('#xjs').html())
       loading.end().remove()
       console.log('下一页加载完成')
