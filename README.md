@@ -1,10 +1,8 @@
-# element-plus-vite-starter
+# 没什么用的Chrome扩展
 
-> A starter kit for Element Plus with Vite
+使用Element Plus的Vite模板写的扩展，按个人的喜好重排了下百度和必应的页面，B站的视频默认自动播放、网页全屏、1.25倍速。
 
-<img width="800" alt="Element Plus" src="https://user-images.githubusercontent.com/10731096/97282764-0726eb80-187a-11eb-9658-6dc98ccb8f8d.png">
-
-
+安装的时候用开发者模式，加载输出的dist目录，如果不嫌麻烦可以自行换个位置。
 ## Project setup
 ```
 npm install

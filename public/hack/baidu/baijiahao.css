@@ -1,0 +1,7 @@
+div[class^='app-module_rightSection_'] {
+    display: none !important;
+}
+
+div[class^='app-module_leftSection_'] {
+    width: 100% !important;
+}

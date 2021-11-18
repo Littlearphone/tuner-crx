@@ -4,8 +4,19 @@
 .recommend-box, #addAdBox, div.recommend-right,
 .blog-content-box + script + div, .bdsharebuttonbox,
 .write-bolg-btn, .widescreen-hide, .widescreen-more,
-#sharePost, .login-mark, #passportbox, iframe[src*=baidu] {
+.passport-login-container, .passport-login-mark,
+#sharePost, .login-mark, #passportbox, iframe[src*=baidu],
+li.tool-item:not(.tool-item-comment), div.recommend-tit-mod,
+div.template-box, div.blog-footer-bottom, div.leftPop,
+div.toolbar-container-left ~ div, .csdn-shop-window-common,
+.toolbar-container-left .toolbar-menus li:not(.active),
+#blogColumnPayAdvert, div.toolbar-advert {
     display: none !important;
+}
+
+#content_views pre,
+#content_views pre code {
+    user-select: unset !important;
 }
 
 .main_father .container#mainBox main {
@@ -23,3 +34,4 @@
 .leftPop {
     z-index: 2000 !important;
 }
+

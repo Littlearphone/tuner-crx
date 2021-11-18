@@ -50,12 +50,15 @@ html, body, #js-room-activity,
 .layout-Player .Title-ad,
 .layout-Player .TitleShare,
 .layout-Player .PhoneWatch,
+.layout-Player .PcDiversion,
 .layout-Player .RedEnvelopAd,
+.layout-Player .FirstPurchase,
 .layout-Player .DanmuEffectDom,
 .layout-Player .ToolbarActivityArea,
 .layout-Player .LuckyStarTitle-wrap,
 .layout-Player .TitleSuperFansWrap,
 .layout-Player .RoomVipSysTitle,
+.layout-Player .AnchorPocketTips,
 .layout-Player .Title-sharkWeight,
 .layout-Player .FirstRechargePayPanel,
 .layout-Player .Title-anchorFriendWrapper {
@@ -68,9 +71,10 @@ html, body, #js-room-activity,
 }
 
 .layout-Player .layout-Player-video {
-    width: 100%;
-    height: calc(100% - 200px);
     padding: 0;
+    width: 100%;
+    overflow: visible;
+    height: calc(100% - 200px);
 }
 
 .layout-Player .Title-category > * {
@@ -93,8 +97,8 @@ html, body, #js-room-activity,
     min-height: 0 !important;
 }
 
-.layout-Player-title .title-toggle-button,
-.layout-Player-toolbar .toolbar-toggle-button {
+.layout-Player-video .title-toggle-button,
+.layout-Player-video .toolbar-toggle-button {
     position: absolute;
     right: 0;
     left: 0;
@@ -112,8 +116,8 @@ html, body, #js-room-activity,
     cursor: pointer;
 }
 
-.layout-Player-title .title-toggle-button::before,
-.layout-Player-toolbar .toolbar-toggle-button::before {
+.layout-Player-video .title-toggle-button::before,
+.layout-Player-video .toolbar-toggle-button::before {
     border-width: 8px;
     border-style: solid;
     border-color: transparent;
@@ -123,44 +127,44 @@ html, body, #js-room-activity,
     content: ' ';
 }
 
-.layout-Player-title .title-toggle-button {
+.layout-Player-video .title-toggle-button {
     bottom: -8px;
 }
 
-.layout-Player-title .title-toggle-button::before {
+.layout-Player-video .title-toggle-button::before {
     border-bottom-color: gray;
     border-top-width: 0;
 }
 
-.layout-Player.toggle-layout-fold .layout-Player-title .title-toggle-button {
-    bottom: -16px;
+.layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button {
+    bottom: 0;
     backdrop-filter: blur(10px);
     background-color: transparent;
 }
 
-.layout-Player.toggle-layout-fold .layout-Player-title .title-toggle-button::before {
+.layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button::before {
     border-bottom-width: 0;
     border-bottom-color: transparent;
     border-top-width: 8px;
     border-top-color: gray;
 }
 
-.layout-Player-toolbar .toolbar-toggle-button {
+.layout-Player-video .toolbar-toggle-button {
     top: -8px;
 }
 
-.layout-Player-toolbar .toolbar-toggle-button::before {
+.layout-Player-video .toolbar-toggle-button::before {
     border-top-color: gray;
     border-bottom-width: 0;
 }
 
-.layout-Player.toggle-layout-fold .layout-Player-toolbar .toolbar-toggle-button {
-    top: -16px;
+.layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button {
+    top: 0;
     backdrop-filter: blur(10px);
     background-color: transparent;
 }
 
-.layout-Player.toggle-layout-fold .layout-Player-toolbar .toolbar-toggle-button::before {
+.layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button::before {
     border-top-width: 0;
     border-top-color: transparent;
     border-bottom-width: 8px;

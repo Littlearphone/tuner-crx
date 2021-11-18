@@ -1,0 +1,31 @@
+.footer,
+.main-aside,
+.read-whole-mask,
+.main-content-bottom,
+nav,
+header,
+#wgt-like,
+#wgt-exp-share,
+#task-panel-wrap,
+[id^='ui-tooltip-'] {
+    display: none !important;
+}
+
+.exp-content-container.fold {
+    max-height: fit-content !important;
+}
+
+.content-container .main-content {
+    width: auto !important;
+    padding: 0 !important;
+}
+
+.wgt-feeds-video .feeds-video-box {
+    margin: 0 auto !important;
+}
+
+a.exp-image-wraper,
+.exp-image-default {
+    width: 100% !important;
+    max-width: unset !important;
+}

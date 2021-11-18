@@ -2,13 +2,13 @@ html {
     overflow: auto !important;
 }
 
-.Modal-wrapper, .Modal-enter-done,
 .Question-sideColumn, .SearchSideBar,
 .AppHeader-inner ul, .AppHeader-inner a,
 [aria-controls="Search-live"],
 [aria-controls="Search-album"],
 [aria-controls="Search-publication"],
 [aria-controls="Search-clubentity"],
+#QuestionAnswers-answers div.List-item ~ :not(.List-item),
 .AppHeader-userInfo {
     display: none !important;
 }
@@ -19,4 +19,18 @@ html {
 .AppHeader-inner .SearchBar-tool,
 .AppHeader-inner .SearchBar-input {
     width: 100% !important;
+}
+
+[data-zop-question] {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.QuestionHeader {
+    min-width: 1000px !important;
+}
+
+.QuestionHeader-content,
+.QuestionHeader-footer-inner {
+    padding: 0 !important;
 }

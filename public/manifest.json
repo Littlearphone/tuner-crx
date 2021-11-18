@@ -1,17 +1,25 @@
 {
     "manifest_version": 2,
-    "name": "tuner",
-    "version": "1.0.0",
+    "name": "tuner-x",
+    "version": "1.0.2",
     "description": "Littlearphone的插件示例",
-    "homepage_url": "https://www.baidu.com",
+    "homepage_url": "https://www.ohohoho.com",
     "background": {
-        "page": "background.html"
+        "scripts": [
+            "background.js"
+        ]
     },
     "icons": {
         "16": "images/icon.png",
         "48": "images/icon.png",
         "128": "images/icon.png"
     },
+    "web_accessible_resources": [
+        "hack/**/*.js",
+        "hack/**/*.css",
+        "hack/*.js",
+        "hack/*.css"
+    ],
     "permissions": [
         "tabs",
         "storage",
@@ -25,11 +33,11 @@
     ],
     "page_action": {
         "default_title": "页面配置",
-        "default_popup": "index.html#/popup/index"
+        "default_popup": "popup.html"
     },
-    "options_page": "index.html#/option/index",
+    "options_page": "option.html",
     "options_ui": {
-        "page": "index.html#/option/index",
+        "page": "option.html",
         "chrome_style": true
     }
 }

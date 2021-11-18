@@ -1,7 +1,45 @@
-.alert.bejson-gap, .save-data-con, .footer-nav, .recent-use-box, h1 {
+[bejson] .save-data-con,
+[bejson] .recent-use-box,
+[bejson] .container form ~ *,
+[bejson] .resizable-textarea,
+[bejson] #resize, [bejson] footer,
+[bejson] footer ~ *, [bejson] h1,
+[bejson] .footer-nav, [bejson] .top1-link {
     display: none !important;
 }
 
-.editor-box1 .float-left, .editor-box1 .float-left #editor {
-    width: 100% !important;
+[bejson] #editor {
+    display: block !important;
+    position: fixed !important;
+    width: unset !important;
+    top: 100px;
+    bottom: 30px;
+    left: 10px;
+    right: 10px;
+}
+
+[bejson] #editor ~ div,
+[bejson] .t-huge-margin,
+[bejson] .t-huge2-margin {
+    display: block !important;
+    position: fixed !important;
+    margin: 0 !important;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+}
+
+[bejson] .CodeMirror {
+    height: 100%;
+}
+
+[bejson] .CodeMirror-scroll {
+    display: block !important;
+    position: fixed !important;
+    height: unset !important;
+    padding: 0 !important;
+    bottom: 75px;
+    top: 100px;
+    left: 10px;
+    right: 10px;
 }

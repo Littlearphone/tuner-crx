@@ -1,65 +1,142 @@
-chrome.runtime.onMessage.addListener(function(transferData, sender, sendResponse) {
-  console.log(sender)
-  console.log(sendResponse)
-  const config = { ...transferData }
-  if (!config.hasOwnProperty('enable')) {
-    config.enable = true
+(function($) {
+  if (!window.pagination) {
+    window.pagination = new window.Pagination()
   }
-  if (!config.enable) {
+  if ($('body[baidu]').length) {
+    console.log('页面已经被标记')
     return
   }
-  const FaviconMapping = config.injectConfig.FaviconMapping
-  const defaultIcon = 'https://baidu.com/favicon.ico'
-  const resultSelector = '[baidu] #content_left .result,[baidu] #content_left .result-op'
-
-  function faviconParse(result) {
-    const footer = result.querySelector('.c-showurl')
-    if (!footer) {
-      return defaultIcon
+  const callback = function() {
+    const url = $(this).attr('href')
+    const action = {
+      type: 'ajax',
+      data: {
+        type: 'GET',
+        url: url.startsWith('http://') ? url.replace('http://', 'https://') : url
+      }
     }
-    const text = footer.innerText
-    const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
-    if (key) {
-      return FaviconMapping[key]
-    }
-    const hostIndex = text.indexOf('/')
-    if (hostIndex >= 0) {
-      return 'http://' + text.substring(0, hostIndex) + '/favicon.ico'
-    }
-    return defaultIcon
+    chrome.runtime.sendMessage(action, response => {
+      const data = JSON.parse(response)
+      $(this).attr('href', data.responseURL)
+    })
   }
-
-  document.body.setAttribute('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
-  const results = document.querySelectorAll(resultSelector)
-  Array.from(results).forEach(result => {
-    const h3 = result.querySelector('h3')
-    if (!h3) {
+  const detectLink = function() {
+    const $headers = $('[baidu] h3 a[data-click]')
+    if (!$headers.length) {
+      setTimeout(detectLink, 10)
       return
     }
-    let icon = h3.querySelector("img")
-    if (!icon) {
-      icon = document.createElement('IMG')
+    $headers.each(callback)
+    const $links = $('[baidu] a[href*="://www.baidu.com/link?"]')
+    $links.length && $links.each(callback)
+  }
+  const cleanAdsStyle = function() {
+    const $elements = $('[baidu] #content_left > div:not(.result):not(.result-op):not(.c-group-wrapper)')
+    $elements.each(function() {this.style = 'display: none !important;' })
+    window.adBlocker = setTimeout(cleanAdsStyle, 100)
+  }
+  window.adBlocker = setTimeout(cleanAdsStyle, 100)
+  window.Pagination.prototype.nextPage = function() {
+    const next = $('#page a:contains("下一页")')
+    if (!next.length || this.iframe.attr('src') === next.attr('href')) {
+      return
     }
-    icon.style.width = '24px'
-    icon.style.height = '24px'
-    icon.style.margin = '0 5px'
-    icon.style.display = 'inline-block'
-    icon.src = faviconParse(result)
-    icon.onerror = function() {this.src = defaultIcon}
-    h3.insertBefore(icon, h3.childNodes[0])
-  })
-  const hardCodeAds = document.querySelectorAll('[baidu] #content_left > div:not(.result):not(.result-op)')
-  Array.from(hardCodeAds).forEach(ad => (ad.style = ''))
-  // Firefox和Chrome早期版本中带有前缀
-  const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
-  // 选择目标节点
-  // 配置观察选项,传入目标节点和观察选项
-  new MutationObserver(mutations => {
-    mutations.flatMap(mutation => Array.from(mutation.addedNodes))
-      .filter(node => node.querySelector('[class*="ec_tuiguang_pplink"]'))
-      .forEach(node => (node.className += ' tuner-ads-block'))
-  }).observe(document.querySelector('[baidu] #content_left'), { childList: true })
-  // 随后,你还可以停止观察
-  // observer.disconnect()
-  // 创建观察者对象
-})
+    if ($('#page .tuner-loading-block').length) {
+      return
+    }
+    console.log('自动加载下一页')
+    clearTimeout(window.adBlocker)
+    if (!$('iframe#tuner-crx').length) {
+      this.reloadFrame()
+    }
+    $('#page').css({ 'position': 'relative' })
+    const loading = $.loading.mask('#page').start()
+    this.iframe.on('load', () => {
+      $('#content_left').append(this.select('#content_left').html())
+      $('#page [class^="page-inner"]').html(this.select('#page [class^="page-inner"]').html())
+      window.adBlocker = setTimeout(cleanAdsStyle, 100)
+      loading.end().remove()
+      console.log('下一页加载完成')
+      setTimeout(detectLink, 10)
+    })
+    this.iframe.attr('src', next.attr('href'))
+  }
+  return function(data) {
+    const config = { ...data }
+    if (!config.hasOwnProperty('enable')) {
+      config.enable = true
+    }
+    if (!config.hasOwnProperty('autoPaging')) {
+      config.autoPaging = true
+    }
+    if (!config.enable) {
+      // sendResponse('未开启百度页面配置')
+      return
+    }
+    if (!config.autoPaging) {
+      window.Pagination.prototype.nextPage = function() {
+      }
+    }
+
+    function initial() {
+      const $body = $('body')
+      if (!$body.length) {
+        setTimeout(initial)
+        return
+      }
+      $body.attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
+      // const FaviconMapping = config.injectConfig && config.injectConfig.FaviconMapping || {}
+      // const defaultIcon = 'https://baidu.com/favicon.ico'
+      // function faviconParse(result) {
+      //   const footer = result.querySelector('.c-showurl')
+      //   if (!footer) {
+      //     return defaultIcon
+      //   }
+      //   const text = footer.innerText
+      //   const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
+      //   if (key) {
+      //     return FaviconMapping[key]
+      //   }
+      //   const hostIndex = text.indexOf('/')
+      //   if (hostIndex >= 0) {
+      //     return 'http://' + text.substring(0, hostIndex) + '/favicon.ico'
+      //   }
+      //   return defaultIcon
+      // }
+      // $('[baidu] #content_left .result,[baidu] #content_left .result-op').each(function() {
+      //   const h3 = $(this).find('h3')
+      //   if (h3.find("img").length) {
+      //     return
+      //   }
+      //   $(`<img src="${faviconParse(this)}" alt=""/>`).css({
+      //     width: '24px',
+      //     height: '24px',
+      //     margin: '0 5px',
+      //     display: 'inline-block'
+      //   }).on('error', function() {
+      //     this.src = defaultIcon
+      //   }).prependTo(h3)
+      // })
+      // Firefox和Chrome早期版本中带有前缀
+      const $baidu = $('[baidu] #content_left')
+      if (!$baidu.length) {
+        setTimeout(initial)
+        return
+      }
+      const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+      // 选择目标节点
+      // 配置观察选项,传入目标节点和观察选项
+      new MutationObserver(mutations => {
+        mutations.flatMap(mutation => Array.from(mutation.addedNodes))
+          .filter(node => node.querySelector && node.querySelector('[class*="ec_tuiguang_pplink"]'))
+          .forEach(node => (node.className += ' tuner-ads-block'))
+      }).observe($baidu[0], { childList: true })
+      setTimeout(detectLink, 10)
+      // 随后,你还可以停止观察
+      // observer.disconnect()
+      // sendResponse('已完成百度页面配置初始化')
+    }
+
+    setTimeout(initial)
+  }
+})(jQuery)

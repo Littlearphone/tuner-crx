@@ -1,0 +1,14 @@
+[doc360] header,
+[doc360] #copytoolbar,
+[doc360] .fixedtoolbar,
+[doc360] section ~ *,
+[doc360] #upartcolor ~ *,
+[doc360] .floatqrcode,
+[doc360] .article_showall,
+[doc360] #currbackgroudcolor ~ * {
+    display: none !important;
+}
+
+[doc360] .article_maxh {
+    height: fit-content;
+}
