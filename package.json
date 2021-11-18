@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "npm run vite-build && npm run rollup-build",
-        "rollup-build": "rollup src/background/index.js -o dist/background.js -f iife",
+        "rollup-build": "rollup src/background/index.js -o build/background.js -f iife",
         "vite-build": "vite build --assetsDir assets"
     },
     "dependencies": {

@@ -29,7 +29,7 @@ export const siteMappings = [
   },
   {
     expect: tab => /http(s)?:\/\/www.google.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
-    // panelName: 'GoogleConfig',
+    panelName: 'GoogleConfig',
     inject: {
       state: 'loading',
       style: ["hack/google/search.css"],
