@@ -1,0 +1,43 @@
+{
+    "manifest_version": 2,
+    "name": "tuner-x",
+    "version": "1.0.2",
+    "description": "Littlearphone的插件示例",
+    "homepage_url": "https://www.ohohoho.com",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "icons": {
+        "16": "images/icon.png",
+        "48": "images/icon.png",
+        "128": "images/icon.png"
+    },
+    "web_accessible_resources": [
+        "hack/**/*.js",
+        "hack/**/*.css",
+        "hack/*.js",
+        "hack/*.css"
+    ],
+    "permissions": [
+        "tabs",
+        "storage",
+        "webRequest",
+        "contextMenus",
+        "notifications",
+        "webRequestBlocking",
+        "declarativeContent",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "page_action": {
+        "default_title": "页面配置",
+        "default_popup": "popup.html"
+    },
+    "options_page": "option.html",
+    "options_ui": {
+        "page": "option.html",
+        "chrome_style": true
+    }
+}

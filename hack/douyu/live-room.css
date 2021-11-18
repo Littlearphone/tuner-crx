@@ -1,0 +1,202 @@
+html, body {
+    overflow: hidden !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, .1);
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #999;
+}
+
+.layout-Player {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    z-index: 999 !important;
+}
+
+html, body, #js-room-activity,
+.layout-Player .layout-Player-aside,
+.layout-Player [class*='recommendApp-'],
+.layout-Player [class*='recommendAD-'] {
+    overflow: hidden !important;
+}
+
+#js-room-activity,
+.layout-Player .layout-Player-aside,
+.layout-Player [class*='broadcastDiv-'],
+.layout-Player [class*='recommendApp-'],
+.layout-Player [class*='recommendAD-'],
+.layout-Player [class*='adsRoot_'],
+.layout-Player .Title-ad,
+.layout-Player .TitleShare,
+.layout-Player .PhoneWatch,
+.layout-Player .PcDiversion,
+.layout-Player .RedEnvelopAd,
+.layout-Player .FirstPurchase,
+.layout-Player .DanmuEffectDom,
+.layout-Player .ToolbarActivityArea,
+.layout-Player .LuckyStarTitle-wrap,
+.layout-Player .TitleSuperFansWrap,
+.layout-Player .RoomVipSysTitle,
+.layout-Player .AnchorPocketTips,
+.layout-Player .Title-sharkWeight,
+.layout-Player .FirstRechargePayPanel,
+.layout-Player .Title-anchorFriendWrapper {
+    display: none !important;
+}
+
+.layout-Player .layout-Player-main {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.layout-Player .layout-Player-video {
+    padding: 0;
+    width: 100%;
+    overflow: visible;
+    height: calc(100% - 200px);
+}
+
+.layout-Player .Title-category > * {
+    max-width: unset;
+}
+
+.layout-Player .layout-Player-title,
+.layout-Player .layout-Player-toolbar,
+.layout-Player .layout-Player-title *,
+.layout-Player .layout-Player-toolbar * {
+    transition: all 0.3s;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-title,
+.layout-Player.toggle-layout-fold .layout-Player-toolbar,
+.layout-Player.toggle-layout-fold .layout-Player-title *:not(.title-toggle-button),
+.layout-Player.toggle-layout-fold .layout-Player-toolbar *:not(.toolbar-toggle-button) {
+    height: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+}
+
+.layout-Player-video .title-toggle-button,
+.layout-Player-video .toolbar-toggle-button {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 32px;
+    height: 16px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border: none;
+    box-shadow: 0 0 10px grey;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.layout-Player-video .title-toggle-button::before,
+.layout-Player-video .toolbar-toggle-button::before {
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent;
+    background: transparent;
+    display: inline-flex;
+    align-self: center;
+    content: ' ';
+}
+
+.layout-Player-video .title-toggle-button {
+    bottom: -8px;
+}
+
+.layout-Player-video .title-toggle-button::before {
+    border-bottom-color: gray;
+    border-top-width: 0;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button {
+    bottom: 0;
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button::before {
+    border-bottom-width: 0;
+    border-bottom-color: transparent;
+    border-top-width: 8px;
+    border-top-color: gray;
+}
+
+.layout-Player-video .toolbar-toggle-button {
+    top: -8px;
+}
+
+.layout-Player-video .toolbar-toggle-button::before {
+    border-top-color: gray;
+    border-bottom-width: 0;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button {
+    top: 0;
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button::before {
+    border-top-width: 0;
+    border-top-color: transparent;
+    border-bottom-width: 8px;
+    border-bottom-color: gray;
+}
+
+.layout-Player .TitleShare,
+.layout-Player .PhoneWatch,
+.layout-Player .RedEnvelopAd,
+.layout-Player .DanmuEffectDom,
+.layout-Player .Title-ad, .ZoomTip,
+.layout-Player .ToolbarActivityArea,
+.layout-Player .LuckyStarTitle-wrap,
+.layout-Player .TitleSuperFansWrap,
+.layout-Player .RoomVipSysTitle,
+.layout-Player .Title-sharkWeight,
+.layout-Player .Title-anchorFriendWrapper {
+    display: none !important;
+}
+
+.layout-Player .layout-Player-main,
+.layout-Player .layout-Player-video video {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.layout-Player .layout-Player-video {
+    width: 100%;
+    height: calc(100% - 200px);
+    padding: 0;
+}
+
+.layout-Player.toggle-layout-fold .layout-Player-video {
+    height: 100% !important;
+}

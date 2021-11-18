@@ -1,0 +1,37 @@
+.app-control.app-app, .to-commentBox.to-reward,
+.blog_container_aside, .btn-readmore, .vip-caise,
+.hide-article-box, .t0, .csdn-side-toolbar,
+.recommend-box, #addAdBox, div.recommend-right,
+.blog-content-box + script + div, .bdsharebuttonbox,
+.write-bolg-btn, .widescreen-hide, .widescreen-more,
+.passport-login-container, .passport-login-mark,
+#sharePost, .login-mark, #passportbox, iframe[src*=baidu],
+li.tool-item:not(.tool-item-comment), div.recommend-tit-mod,
+div.template-box, div.blog-footer-bottom, div.leftPop,
+div.toolbar-container-left ~ div, .csdn-shop-window-common,
+.toolbar-container-left .toolbar-menus li:not(.active),
+#blogColumnPayAdvert, div.toolbar-advert {
+    display: none !important;
+}
+
+#content_views pre,
+#content_views pre code {
+    user-select: unset !important;
+}
+
+.main_father .container#mainBox main {
+    width: 100% !important;
+}
+
+.tool-box {
+    right: 0 !important;
+}
+
+#article_content {
+    height: auto !important;
+}
+
+.leftPop {
+    z-index: 2000 !important;
+}
+

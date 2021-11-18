@@ -1,0 +1,100 @@
+.skin-minyx2_lite #sidebar,
+body:not([data-bs-spy]) #sideBar,
+body:not([data-bs-spy]) #footer,
+body:not([data-bs-spy]) #div_digg,
+body:not([data-bs-spy]) #green_channel,
+body:not([data-bs-spy]) #comment_form_container ~ *,
+.skin-simplememory .fixed-bar .toc,
+.skin-simplememory .fixed-bar .comment,
+.skin-simplememory .fixed-bar .comments,
+.skin-nature #right,
+.skin-book #rightmenu,
+.skin-sea #leftcontent,
+.skin-arrow #leftcontent,
+.skin-anothereon001 #leftmenu,
+.skin-cleargertrude #rightmenu {
+    display: none !important;
+}
+
+.skin-codinglife #mainContent {
+    flex: 0 1 100%;
+    max-width: 100%;
+}
+
+.skin-cleargertrude #main {
+    right: 10px;
+    border-left: 1px dotted #000;
+}
+
+.skin-nature #main #left,
+.skin-custom #main #mainContent,
+.skin-bluesky #main #mainContent,
+.skin-lessismore #main #mainContent,
+.skin-thinkinside #main #mainContent,
+.skin-mountainink #main #mainContent,
+.skin-simplememory #main #mainContent,
+.skin-moonlightink #main #mainContent,
+.skin-blacklowkey #main #mainContent,
+.skin-bluefresh #main #mainContent {
+    width: 100%;
+}
+
+.skin-custom #mainContent .forFlow,
+.skin-coffee #mainContent .forFlow,
+.skin-banlieue13 #mainContent .forFlow,
+.skin-summergarden #mainContent .forFlow,
+.skin-en_summergarden #mainContent .forFlow,
+.skin-lessismore #mainContent .forFlow,
+.skin-minyx2_lite #container #content,
+.skin-simpleblue #main #mainContent,
+.skin-simplememory #main #mainContent,
+.skin-simplememory #main #mainContent .forFlow,
+.skin-thinkinside #main #mainContent .forFlow,
+.skin-darkgreentrip #main #mainContent,
+.skin-darkgreentrip #main #mainContent .forFlow,
+.skin-anothereon001 #main_content #content {
+    margin: 0;
+}
+
+.skin-darkgreentrip #main {
+    padding: 10px;
+}
+
+.skin-codinglife #sideCatalogBtn,
+.skin-blacklowkey #sideCatalogBtn {
+    float: right;
+}
+
+.skin-simplememory #main #mainContent {
+    padding: 0;
+}
+
+.skin-arrow #centercontent {
+    padding: 0;
+    width: 100%;
+}
+
+.skin-sea #mytopmenu {
+    margin: 0;
+}
+
+.skin-sea #centercontent {
+    padding: 0;
+}
+
+.skin-lessismore #main {
+    margin: 10px;
+}
+
+.skin-mountainink #main #mainContent .forFlow #topics,
+.skin-mountainink #main #mainContent .forFlow #comment_nav,
+.skin-mountainink #main #mainContent .forFlow #comment_form,
+.skin-mountainink #main #mainContent .forFlow .postBody,
+.skin-mountainink #main #mainContent .forFlow .postDesc {
+    width: 100%;
+}
+
+.skin-nature #main #left {
+    left: 0;
+    right: 0;
+}

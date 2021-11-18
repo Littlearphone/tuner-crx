@@ -1,0 +1,9 @@
+html {
+    overflow: auto !important;
+}
+
+.Modal-wrapper, .Modal-enter-done,
+.AppHeader-inner ul, .AppHeader-inner a,
+.AppHeader-userInfo {
+    display: none !important;
+}

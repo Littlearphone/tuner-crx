@@ -1,0 +1,84 @@
+#qb-side, #wgt-answers ~ *,
+.question-number-text-chain,
+.nav-menu-container, #body ~ *,
+.shop-entrance, .wgt-related,
+#header a.adTopImg.from-fyb,
+[href^='/sf/vsearch'], div.wgt-ads,
+[href*='wenku.baidu.com'],
+[href*='b2b.baidu.com'],
+div.userbar-renew, .wgt-ask .expend,
+.wgt-ask .q-content .conSamp {
+    display: none !important;
+}
+
+html, body {
+    height: 100%;
+}
+
+#body {
+    display: table;
+    height: calc(100% - 97px);
+}
+
+#body {
+    width: 100%;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .15);
+}
+
+#body, div.wgt-ask, div.wgt-answers,
+.wgt-answers div#show-hide-container,
+div.head-wrap, div.head-wrap *,
+.search-box-new div.search-block,
+.has-menu .search-box-new div.search-cont,
+.question-all-answers-number span.question-all-answers-title {
+    background-color: #efeeee;
+}
+
+div.wgt-best .best-text div.wgt-best-mask,
+.wgt-answers .answer-text div.wgt-answers-mask {
+    background: linear-gradient(-180deg, rgba(239, 238, 238, .1) 0, rgb(239, 238, 238) 100%);
+}
+
+.head-wrap {
+    border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 0 5px #888;
+}
+
+.qb-section {
+    padding-bottom: 30px;
+}
+
+div.wgt-bottom-union {
+	background-color: rgb(239, 238, 238);
+}
+
+#search-box.search-box-new {
+    text-align: center;
+}
+
+.has-menu .search-box-new .channel {
+    padding: 0;
+    float: none;
+    height: 18px;
+    position: relative;
+    display: inline-block;
+}
+
+.wgt-ask div.q-content .con-all {
+    display: block;
+}
+
+.has-menu .search-box-new .search-cont > * {
+    float: none;
+    display: inline-block;
+}
+
+.qb-section article.qb-content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background-color: #efeeee;
+    border: 1px solid transparent;
+    box-shadow: 18px 18px 30px rgba(0, 0, 0, .1), -18px -18px 30px rgb(255 255 255);
+}
