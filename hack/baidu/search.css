@@ -13,9 +13,9 @@ html {
 [baidu] #container #rs, [baidu] .toindex,
 [baidu] #container #content_right,
 [baidu] [href^='/sf/vsearch'],
-[baidu] [href*='wenku.baidu.com'],
 [baidu] [href*='b2b.baidu.com'],
 [baidu] [mu*='.recommend_list.baidu.com'],
+[baidu] .s_tab_inner [href*='wenku.baidu.com'],
 [baidu] .s_tab_inner [href*='zhidao.baidu.com'],
 [baidu] .new-pmd .c-recommend, [baidu] .tuner-ads-block,
 [baidu] #content_left > div.c-group-wrapper [class*="button-list_"] {
@@ -488,4 +488,18 @@ div.op-short-video-pc-img-new {
 [baidu] .op_dict3_linetwo_result {
     width: 100%;
     padding-left: 90px;
+}
+
+[baidu] section .main-card-text {
+    padding-top: 16px;
+}
+
+[baidu] #content_left div.result article[class*='-wenshu-card'] div.item-line.c-row,
+[baidu] article[class*='-wenshu-card'] .item-line .item-title {
+    width: fit-content;
+}
+
+[baidu] article[class*='-wenshu-card'] .item-line span.c-color-gray2 {
+    width: fit-content;
+    padding: 0 8px;
 }
