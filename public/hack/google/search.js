@@ -48,11 +48,11 @@
     }
     if (!config.enable) {
       // sendResponse('未开启Google页面配置')
+      window.Pagination.prototype.nextPage = function() { }
       return
     }
     if (!config.autoPaging) {
-      window.Pagination.prototype.nextPage = function() {
-      }
+      window.Pagination.prototype.nextPage = function() { }
     }
 
     function initial() {
