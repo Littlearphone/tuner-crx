@@ -16,6 +16,15 @@
     justify-content: center;
 }
 
+[google] #main #top_nav #hdtb {
+    display: flex;
+    justify-content: center;
+}
+
+[google] #main #top_nav #hdtb > div {
+    max-width: 1024px;
+}
+
 [google] #main #top_nav #hdtb-msb > div > div:first-child {
     margin: 0;
 }
