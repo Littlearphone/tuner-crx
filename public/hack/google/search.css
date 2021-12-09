@@ -3,240 +3,144 @@
     display: none !important;
 }
 
-[google] #searchform > div:nth-child(2) {
-    justify-content: center;
+/**************************主体居中**************************/
+
+div.Q3DXx.yIbDgf #tsf {
+    padding-right: 32px;
 }
 
-[google] #searchform > div:nth-child(2) > div {
-    padding-left: 20px;
-}
-
-[google] #main #top_nav [role="navigation"] > div:first-child {
+div.Q3DXx.yIbDgf,
+div#hdtb-msb,
+#slim_appbar,
+#rcnt > div[class] {
     display: flex;
     justify-content: center;
 }
 
-[google] #main #top_nav #hdtb {
-    display: flex;
-    justify-content: center;
-}
-
-[google] #main #top_nav #hdtb > div {
-    max-width: 1024px;
-}
-
-[google] #main #top_nav #hdtb-msb > div > div:first-child {
-    margin: 0;
-}
-
-[google] #search > div div[data-hveid] {
-    padding: 4px 8px;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: white;
-    border: 1px solid rgb(235, 238, 245);
-}
-
-[google] #search > div div[data-hveid]:hover {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3) !important;
-}
-
-[google] #search #rso div[data-hveid]:hover div[data-hveid] {
-    box-shadow: unset !important;
-}
-
-[google] #search > div div[data-hveid] ul {
-    padding: 0;
-    list-style: none;
-}
-
-[google] #search #rso .g[data-hveid] [data-hveid] {
-    width: 100%;
-    overflow: hidden;
-}
-
-[google] #search #rso .g[data-hveid] [data-hveid] div {
-    border: none;
-    background-color: white;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child[class] {
-    padding: 4px;
-    display: flex;
-    background-color: #f0f0f0;
-    justify-content: space-between;
-    border-left: 5px solid #4486ef;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child > a {
-    width: fit-content;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child[class] > a br,
-[google] #search > div div[data-hveid] > div > div:first-child[class] > div cite {
-    display: none;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child > a h3 {
-    margin: 0;
-    padding: 0;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child > a > div {
-    padding: 0;
-    width: fit-content;
-    position: relative;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child > a cite {
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child[class] > div {
-    display: flex;
-}
-
-[google] #search > div div[data-hveid] > div:not([id^='WEB_ANSWERS_']) > div:first-child[class] > div,
-[google] #search > div div[data-hveid] > div:not([id^='WEB_ANSWERS_']) > div:first-child[class] > div * {
-    width: fit-content;
-    height: fit-content;
-    position: relative !important;
-}
-
-[google] #search > div div[data-hveid] > div > div:first-child[class] > div span[class^='go'] {
-    left: 0;
-}
-
-[google] #search div[data-q] div[data-hveid] {
-    background-color: transparent;
-}
-
-[google] div[data-q] > div:first-child > div:nth-child(2) {
-    margin: 12px;
-    transform: translate3d(0, 0, 0) !important;
-}
-
-[google] #search [data-hveid] a[data-ved] {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-}
-
-[google] #main #rcnt {
+#rcnt {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column-reverse;
 }
 
-[google] #main #rcnt #rhs > div {
+div#rhs {
     margin: 0;
+}
+
+div#hdtb-msb,
+#rcnt > div[class] {
     width: 100%;
 }
 
-[google] #main #rcnt > div:last-child {
-    width: 0;
-}
-
-[google] #main #rcnt > div {
-    margin: 0;
-    width: 1024px;
-    display: flex;
-    justify-content: center;
-}
-
-[google] #main #rcnt > div #center_col {
-    margin: 0;
-    width: 1024px;
-}
-
-[google] #main #rcnt > div #center_col .g,
-[google] .related-question-pair .g > div,
-[google] .related-question-pair .g > div > div {
-    margin: 0;
-    width: 100%;
-}
-
-[google] #main #rcnt #search .related-question-pair .g a ~ div > div:last-child {
-    display: flex;
-    align-items: center;
-}
-
-[google] #main #rcnt #search .related-question-pair .g a ~ div span.ub-button {
-    height: 22px;
-    vertical-align: middle;
-}
-
-[google] #main #rcnt #search .related-question-pair .g a ~ div div.action-menu {
+div#hdtb-msb .MUFPAc,
+div#center_col {
     margin: 0;
 }
 
-[google] #main #rcnt #search .related-question-pair .g a ~ div div.action-menu a {
+div#center_col {
+    width: auto;
+}
+
+div#center_col > [role=navigation] {
+    position: relative;
+}
+
+/**************************主体居中**************************/
+/**************************条目边框**************************/
+
+#rso > div {
     padding: 8px;
-    background: transparent;
+    border: 1px solid rgb(235, 238, 245);
 }
 
-[google] #main #rcnt #search .related-question-pair .g a ~ div div.action-menu a span {
+#rso > div:hover {
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
+}
+
+#rso div.g {
+    width: 100%;
+}
+
+#rso > div.g {
+    width: calc(100% - 16px);
+}
+
+#rso > div > div.g {
+    width: 100%;
+    position: relative;
+}
+
+#rso > div.g .yuRUbf,
+#rso > div > div.g .yuRUbf {
+    padding-left: 8px;
+    background-color: #f0f0f0;
+    border-left: 5px solid #4486ef;
+}
+
+#rso > div.g cite,
+#rso > div > div.g cite {
+    padding-left: 12px;
+}
+
+#rhs.rhstc4 div.ss6qqb {
+    width: 690px;
+}
+
+#rhs div.Jb0Zif.ss6qqb {
     margin: 0;
 }
 
-[google] #main #rcnt #search .related-question-pair .g a ~ div div.action-menu a:hover {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
-}
-
-[google] #main #rcnt #search .related-question-pair .g a ~ div ol.action-menu-panel {
-    position: absolute !important;
-}
-
-[google] #center_col [role="navigation"] {
-    position: relative;
-}
-
-[google] #center_col [role="navigation"] #xjs {
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: relative;
-}
-
-[google] #main #rso > div {
-    margin: 8px 0;
-}
-
-[google] #main #footcnt,
-[google] #main #appbar {
+div.dXiKIc {
     display: flex;
+    line-height: 1.58;
+    max-width: 48em;
+    margin-top: 4px;
+}
+
+div.NqpkQc {
+    background-color: #000;
+    height: 100%;
+    left: 0;
+    opacity: 0.03;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+div.i5w0Le {
+    color: #fff;
+    left: 50%;
+    opacity: 0.87;
+    position: absolute;
+    top: 46%;
+    transform: translate(-50%, -50%);
+}
+
+div.ZWiQ5 {
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+div.U1TUId.LYh3vc {
+    border-radius: 12px;
+    width: 178px;
+    height: 100px;
+}
+
+div.U1TUId {
+    border-radius: 8px;
+    height: 65px;
     justify-content: center;
+    margin-right: 16px;
+    margin-top: 4px;
+    overflow: hidden;
+    position: relative;
+    width: 116px;
 }
 
-[google] #main #footcnt div {
-    max-width: 1024px;
-}
-
-[google] #main #footcnt > div,
-[google] #main #appbar #extabar {
-    width: 1024px;
-}
-
-[google] [id^='MEDIA_RESULT_GROUP_'] [data-hveid],
-[google] [id^='WEB_ANSWERS_RESULT_'] [data-hveid],
-[google] [id^='WEB_ANSWERS_STANDARD_RESULT_'] .g,
-[google] [id^='WEB_ANSWERS_STANDARD_RESULT_'] [data-hveid] {
-    padding: 0 !important;
-    border: none !important;
-}
-
-[google] [id^='MEDIA_RESULT_GROUP_'] [data-hveid]:hover,
-[google] [id^='WEB_ANSWERS_RESULT_'] [data-hveid]:hover,
-[google] [id^='WEB_ANSWERS_STANDARD_RESULT_'] [data-hveid]:hover {
-    box-shadow: none !important;
-}
-
-[google] #search [data-q] [aria-expanded]:not(a) {
-    background-color: #f2f2f2;
-}
-
-[google] #rhs #kp-wp-tab-cont-overview [data-attrid][data-lpage]:hover {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
-}
+/**************************条目边框**************************/

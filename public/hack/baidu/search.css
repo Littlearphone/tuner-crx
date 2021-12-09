@@ -163,6 +163,7 @@ html {
 }
 
 [baidu] #content_left {
+    margin: 0 !important;
     padding: 0 !important;
 }
 
