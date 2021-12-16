@@ -266,6 +266,14 @@
         style: ["hack/360/article.css"],
         script: ["hack/360/article.js"]
       }
+    },
+    {
+      expect: tab => /http[s]?:\/\/stackoverflow.com\/questions\/[0-9]+\/.*/.test(tab.url),
+      inject: {
+        state: 'loading',
+        style: ["hack/stackoverflow/question.css"],
+        script: ["hack/stackoverflow/question.js"]
+      }
     }
   ];
 
