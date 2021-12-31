@@ -24,8 +24,7 @@
     this.iframe.attr('src', next.attr('href'))
     const detectFrame = () => {
       const contents = this.iframe.contents()
-      const results = contents.find('#search #rso')
-      if (!results.length) {
+      if (!contents.find('#search #rso').length || !contents.find('#xjs').length) {
         setTimeout(detectFrame, 100)
         return
       }
