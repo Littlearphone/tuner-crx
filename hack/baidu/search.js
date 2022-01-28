@@ -6,19 +6,30 @@
     console.log('页面已经被标记')
     return
   }
+  window.indirectUrls = []
   const callback = function() {
     const url = $(this).attr('href')
-    const action = {
+    window.indirectUrls.push({
       type: 'ajax',
       data: {
         type: 'GET',
+        originalUrl: url,
         url: url.startsWith('http://') ? url.replace('http://', 'https://') : url
       }
-    }
-    chrome.runtime.sendMessage(action, response => {
-      const data = JSON.parse(response)
-      $(this).attr('href', data.responseURL)
     })
+  }
+  const parseUrl = function() {
+    if (window.indirectUrls.length) {
+      const action = window.indirectUrls.shift()
+      chrome && chrome.runtime && chrome.runtime.sendMessage(action, response => {
+        parseUrl()
+        if (!response) {
+          return
+        }
+        const data = JSON.parse(response)
+        $(`[href='${action.data.originalUrl}']`).attr('href', data.responseURL)
+      })
+    }
   }
   const detectLink = function() {
     const $headers = $('[baidu] h3 a[data-click]')
@@ -29,6 +40,7 @@
     $headers.each(callback)
     const $links = $('[baidu] a[href*="://www.baidu.com/link?"]')
     $links.length && $links.each(callback)
+    parseUrl()
   }
   const cleanAdsStyle = function() {
     const $elements = $('[baidu] #content_left > div:not(.result):not(.result-op):not(.c-group-wrapper)')
@@ -61,7 +73,11 @@
     })
     this.iframe.attr('src', next.attr('href'))
   }
-  return function(data) {
+  chrome.runtime.onMessage.addListener(function(data, sender, callback) {
+    console.log(data)
+    console.log(sender)
+    console.log(callback)
+    callback('成功收到百度配置信息')
     const config = { ...data }
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
@@ -138,5 +154,5 @@
     }
 
     setTimeout(initial)
-  }
+  })
 })(jQuery)

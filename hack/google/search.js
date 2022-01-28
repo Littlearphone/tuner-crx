@@ -28,16 +28,18 @@
         setTimeout(detectFrame, 100)
         return
       }
-      const pages = this.select('#search #rso')
-      pages.find('svg').parents('g-popup').remove()
-      $('#search #rso').append(pages.html())
+      $('#search #rso').append(this.select('#search #rso').html())
       $('#xjs').html(this.select('#xjs').html())
       loading.end().remove()
       console.log('下一页加载完成')
     }
     setTimeout(detectFrame, 100)
   }
-  return function(data) {
+  chrome.runtime.onMessage.addListener(function(data, sender, callback) {
+    console.log(data)
+    console.log(sender)
+    console.log(callback)
+    callback('成功收到Google配置信息')
     const config = { ...data }
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
@@ -47,11 +49,11 @@
     }
     if (!config.enable) {
       // sendResponse('未开启Google页面配置')
-      window.Pagination.prototype.nextPage = function() { }
       return
     }
     if (!config.autoPaging) {
-      window.Pagination.prototype.nextPage = function() { }
+      window.Pagination.prototype.nextPage = function() {
+      }
     }
 
     function initial() {
@@ -65,5 +67,5 @@
 
     setTimeout(initial, 10)
     setTimeout(detectLink, 10)
-  }
+  })
 })(jQuery)

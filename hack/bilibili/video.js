@@ -1,5 +1,14 @@
-(function() {
-  return function(data) {
+(function($) {
+  if ($.bilibiliLoaded) {
+    console.log('页面已经被标记')
+    return
+  }
+  $.bilibiliLoaded = {}
+  chrome.runtime.onMessage.addListener(function(data, sender, callback) {
+    console.log(data)
+    console.log(sender)
+    console.log(callback)
+    callback('成功收到Bilibili配置信息')
     const config = { ...data }
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
@@ -151,8 +160,7 @@
         return false
       }
       console.log('启动网页全屏')
-      const fullscreenButton = buttonArea.querySelector('.bilibili-player-iconfont-web-fullscreen-off')
-        || buttonArea.querySelector('.squirtle-pagefullscreen-inactive')
+      const fullscreenButton = buttonArea.querySelector('.bilibili-player-iconfont-web-fullscreen-off') || buttonArea.querySelector('.squirtle-pagefullscreen-inactive')
       fullscreenButton.offsetWidth && fullscreenButton.click()
       return buttonArea.classList.contains('closed') || buttonArea.classList.contains('active')
     }
@@ -162,5 +170,5 @@
     }
     window.bus.emit('startPlay', config)
     window.bus.emit('fullWebScreen', config)
-  }
-})()
+  })
+})(jQuery)

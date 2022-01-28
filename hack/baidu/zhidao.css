@@ -49,19 +49,20 @@ div.wgt-best .best-text div.wgt-best-mask,
 }
 
 div.wgt-bottom-union {
-	background-color: rgb(239, 238, 238);
+    background-color: rgb(239, 238, 238);
 }
 
 #search-box.search-box-new {
     text-align: center;
 }
 
-.has-menu .search-box-new .channel {
+body.has-menu div.search-box-new ul.channel {
     padding: 0;
     float: none;
     height: 18px;
     position: relative;
     display: inline-block;
+    background: transparent;
 }
 
 .wgt-ask div.q-content .con-all {
