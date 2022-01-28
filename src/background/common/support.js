@@ -1,99 +1,107 @@
-import { siteMappings } from './options.js'
+import { ActiveTab, HackMappings } from './constant'
 
-function flatDirectory(e) {
-  if (e.isDirectory) {
-    return filesInDirectory(e)
-  }
-  return new Promise(resolve => e.file(resolve))
-}
-
-export const filesInDirectory = dir => {
-  return new Promise(resolve => {
-    return dir.createReader().readEntries(entries => {
-      return Promise.all(entries.filter(e => e.name[0] !== '.').map(e => flatDirectory(e)))
-        .then(files => [].concat(...files))
-        .then(resolve)
+export const watchChanges = () => {
+  self.fetch(chrome.runtime.getURL('manifest.json'))
+    .then(response => response.json())
+    .then(data => {
+      if (data.version === chrome.runtime.getManifest().version) {
+        setTimeout(watchChanges, 5000)
+        return
+      }
+      setTimeout(() => {
+        chrome.runtime.reload()
+        chrome.tabs.query(ActiveTab)
+          .then(([tab]) => chrome.tabs.reload(tab.id))
+      }, 1000)
     })
+}
+const ofFiles = injectData => {
+  if (typeof injectData === 'string') {
+    return [{ files: [injectData] }]
+  }
+  if (!Array.isArray(injectData)) {
+    return [{ files: injectData.file }]
+  }
+  return injectData.flatMap(ofFiles)
+}
+
+function injectFiles(tabId, site) {
+  chrome.action.enable(tabId).then(console.log)
+  chrome.action.setBadgeText({ text: 'ON' }).then(console.log)
+  chrome.action.setBadgeBackgroundColor({ color: '#4688F1' }).then(console.log)
+  const description = site.configDescription
+  const configId = description && description.configId
+  if (configId) {
+    chromeStorage(configId, configs => {
+      const data = configs && configs[configId] || {}
+      if (data.hasOwnProperty('enable') && !data.enable) {
+        return
+      }
+      // 设了个寂寞的files，目前chrome官方显示只支持一个文件
+      const baseInjection = { target: { tabId } }
+      if (data.injectCss || !data.hasOwnProperty('injectCss')) {
+        injectCssRecursive(ofFiles(site.cssFiles), baseInjection, () => console.log('完成css的注入'))
+      }
+      if (data.injectScript || !data.hasOwnProperty('injectScript')) {
+        injectScriptRecursive(ofFiles(site.scriptFiles), baseInjection, () => {
+          console.log('完成script的注入')
+          chrome.tabs.sendMessage(tabId, { data }, response => {
+            console.log(`成功注入data到${tabId}: ${JSON.stringify(response)}`)
+          })
+        })
+      }
+    })
+  }
+}
+
+function injectCssRecursive(files, baseInjection, callback) {
+  if (!files || !files.length) {
+    return
+  }
+  const injection = Object.assign(files.shift(), baseInjection)
+  chrome.scripting.insertCSS(injection).then(() => {
+    console.log(`成功注入css: ${injection.files}`)
+    !files.length && typeof callback === 'function' && callback()
+    injectCssRecursive(files, baseInjection, callback)
   })
 }
-export const watchChanges = (dir, lastTimestamp) => filesInDirectory(dir)
-  .then(files => files.map(f => f.name + f.lastModifiedDate).join())
-  .then(timestamp => {
-    if (!lastTimestamp || (lastTimestamp === timestamp)) {
-      setTimeout(() => watchChanges(dir, timestamp), 1000) // retry after 1s
-    } else {
-      setTimeout(chrome.runtime.reload, 1000)
-    }
+
+function injectScriptRecursive(files, baseInjection, callback) {
+  if (!files || !files.length) {
+    return
+  }
+  const injection = Object.assign(files.shift(), baseInjection)
+  chrome.scripting.executeScript(injection).then(() => {
+    console.log(`成功注入script: ${injection.files}`)
+    !files.length && typeof callback === 'function' && callback()
+    injectScriptRecursive(files, baseInjection, callback)
   })
+}
+
 // iframe => https://codingdict.com/questions/13895
 export const pageHacker = (tabId, changeInfo, tab) => {
   if (!tab || !tab.url) {
     return
   }
-  const site = siteMappings.find(mapping => mapping.expect(tab))
+  const site = HackMappings.find(mapping => mapping.expectUrl(tab))
   if (!site) {
     return
   }
-  site.panelName && chrome.pageAction.show(tabId)
-  const status = changeInfo && changeInfo.status
-  if (site.inject && status === site.inject.state) {
-    const styles = site.inject.style
-    chrome.tabs.insertCSS(tabId, {
-      file: '/hack/common.css',
-      runAt: site.inject.runAt || 'document_start'
-    })
-    styles.length && styles.forEach(style => chrome.tabs.insertCSS(tabId, {
-      file: style,
-      runAt: site.inject.runAt || 'document_start'
-    }), () => console.log(`完成${tabId}(${tab.title})样式注入: ${tab.url}`))
-    chrome.tabs.executeScript(tabId, {
-      file: '/hack/injected.js',
-      runAt: site.inject.runAt || 'document_start'
-    }, () => {
-      console.log(`完成${tabId}(${tab.title})脚本注入: ${tab.url}`)
-      const data = { [site.panelName]: [] }
-      findConfig.call({}, data, (configs) => {
-        const config = configs[site.panelName] || {}
-        if (site.injectConfig) {
-          config.injectConfig = site.injectConfig
-        }
-        // 提供回调的话，接收方需要三个参数：transferData, sender, sendResponse，
-        // 为了让扩展不提示The message port closed before a response was received，
-        // 还需要在接收方调用sendResponse方法传递响应数据
-        chrome.tabs.sendMessage(tabId, Object.assign({}, site, { config }))
-        // chrome.tabs.sendMessage(tabId, message, console.log)
-      })
-      // chrome.tabs.sendMessage(tabId, message, console.log)
-    })
+  if (!site.expectStatus) {
+    site.expectStatus = info => info && info.status === 'loading'
   }
-}
-export const findConfig = function(data, callback) {
-  if (!chrome.storage || !chrome.storage.local) {
+  if (!site.expectStatus(changeInfo)) {
     return
   }
-  chrome.storage.local.get(data, config => {
-    callback && callback(config)
-    Object.keys(config).forEach(name => {
-      config[name] && Object.keys(config[name]).forEach(key => {
-        this[key] = config[name][key]
-      })
-    })
-  })
+  injectFiles(tabId, site)
 }
-export const saveConfig = function(data) {
-  if (!chrome.storage || !chrome.storage.local) {
+export const chromeStorage = function(keys, callback) {
+  if (!keys || !chrome.storage || !chrome.storage.local) {
     return
   }
-  chrome.storage.local.set(data, () => console.log('保存成功！'))
-}
-export const isVideo = function(headers) {
-  const contentType = headers.find(header => header.name.toLowerCase() === 'content-type')
-  if (!contentType) {
-    return false
+  if (typeof keys === 'string' || Array.isArray(keys)) {
+    chrome.storage.local.get(keys, callback || (config => console.log(`取值成功: ${JSON.stringify(config)}`)))
+    return
   }
-  if (contentType.value.startsWith('video/')) {
-    return true
-  }
-  const contentRange = headers.find(header => header.name.toLowerCase() === 'content-range')
-  return contentType.value.startsWith('application/octet-stream') && contentRange
+  chrome.storage.local.set(keys, callback || (() => console.log(`保存成功: ${JSON.stringify(keys)}`)))
 }

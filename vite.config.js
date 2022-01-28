@@ -10,11 +10,10 @@ export default {
         open: '/popup.html'
     },
     build: {
-		outDir: 'build',
         emptyOutDir: false,
         rollupOptions: {
             input: {
-                option: resolve(__dirname, 'option.html'),
+                option: resolve(__dirname, 'options.html'),
                 popup: resolve(__dirname, 'popup.html')
             }
         }

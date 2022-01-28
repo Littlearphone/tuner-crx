@@ -1,8 +1,5 @@
-node_modules
-.DS_Store
-dist
-*.local
-package.json
-package-lock.json
+/package-lock.json
+/node_modules/
+/dist/
+*.iml
 *.idea
-_script/dist.crx

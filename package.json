@@ -1,22 +1,28 @@
 {
-    "name": "tuner-crx-by-vite",
-    "version": "0.0.1",
-    "scripts": {
-        "dev": "vite",
-        "build": "npm run vite-build && npm run rollup-build",
-        "rollup-build": "rollup src/background/index.js -o build/background.js -f iife",
-        "vite-build": "vite build --assetsDir assets"
-    },
-    "dependencies": {
-        "element-plus": "latest",
-        "vue": "^3.0.5"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^1.0.4",
-        "@vue/compiler-sfc": "^3.0.5",
-        "sass": "^1.34.0",
-        "sass-loader": "^11.1.1",
-        "vite": "^2.0.0-beta.34",
-        "vue-router": "^4.0.2"
-    }
+  "name": "tunner-v3",
+  "version": "1.0.0",
+  "description": "Migrate tuner-x to v3",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run vite-build && npm run rollup-build && npm run post-rollup-build",
+    "vite-build": "vite build --assetsDir assets",
+    "rollup-build": "rollup src/background/index.js -o dist/background.js -f iife",
+    "post-rollup-build": "node build/index.js"
+  },
+  "dependencies": {
+    "element-plus": "latest",
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.0.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "esbuild": "0.8.33",
+    "esbuild-windows-64": "0.8.33",
+    "sass": "^1.34.0",
+    "sass-loader": "^11.1.1",
+    "vite": "^2.0.0-beta.34",
+    "vue-router": "^4.0.2"
+  },
+  "keywords": [],
+  "author": "littlearphone"
 }
