@@ -175,8 +175,8 @@
     }
   }, {
     expectUrl: tab => /http(s)?:\/\/www.douyu.com\/([0-9]+|topic\/.*[?]rid=[0-9]+)/.test(tab.url),
-    cssFiles: 'hack/douyu/live-room.css',
-    scriptFiles: ['hack/jquery.min.js', 'hack/douyu/live-room.js'],
+    cssFiles: ['hack/common.css', 'hack/douyu/live-room.css'],
+    scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/douyu/live-room.js'],
     configDescription: {
       enable: true,
       injectCss: true,

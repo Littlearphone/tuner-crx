@@ -26,7 +26,7 @@
       `
       $('<style></style>').attr('rel', 'stylesheet').html(innerHTML).appendTo('head')
     })()
-    $.detect('.layout-Player', player => {
+    $.detect && $.detect('.layout-Player', player => {
       $.detect('.layout-Player-video', video => {
         $.detect('#js-player-video', () => {
           if (!video.find('title-toggle-button').length) {
