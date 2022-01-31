@@ -6,9 +6,6 @@ export default {
 }
 </script>
 <style>
-.narrow-divider {
-    margin: 0;
-}
 </style>
 <style scoped>
 </style>
