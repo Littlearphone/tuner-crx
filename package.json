@@ -12,6 +12,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^0.2.6",
     "element-plus": "latest",
+    "moment": "^2.29.1",
     "vue": "^3.0.5"
   },
   "devDependencies": {
