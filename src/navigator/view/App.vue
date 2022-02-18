@@ -1,21 +1,29 @@
 <template>
-  <div @contextmenu="showContextMenu">
+  <div @contextmenu="showGlobalMenus">
     <div class="background-layer" :style="backgroundLayerStyle"></div>
     <div class="effect-layer" :style="effectLayerStyle"></div>
     <div class="app-layer">
-      <div class="app-container">
-        <div class="app-block" v-for="app in apps" :style="app.style || {}" @contextmenu="disableContextMenu">
-          <div class="app-head" v-if="app.head.text || app.head" :style="app.head.style">
-            {{ app.head.text || app.head }}
-          </div>
-          <div class="app-body" v-if="app.body.text || app.body" :style="app.body.style">
-            {{ app.body.text || app.body }}
-          </div>
-          <div class="app-tail" v-if="app.tail.text || app.tail" :style="app.tail.style">
-            {{ app.tail.text || app.tail }}
+      <el-scrollbar>
+        <div ref="appContainer" class="app-container" :style="containerStyle">
+          <div
+              class="app-block"
+              v-for="app in apps"
+              :style="appBlockStyle(app)"
+              @click="e => clickAppBlock(app, e)"
+              @contextmenu="disableContextMenu"
+          >
+            <div class="app-head" v-if="appHeadText(app)" :style="appHeadStyle(app)">
+              {{ appHeadText(app) }}
+            </div>
+            <div class="app-body" v-if="appBodyText(app)" :style="appBodyStyle(app)">
+              {{ appBodyText(app) }}
+            </div>
+            <div class="app-tail" v-if="appTailText(app)" :style="appTailStyle(app)">
+              {{ appTailText(app) }}
+            </div>
           </div>
         </div>
-      </div>
+      </el-scrollbar>
       <div class="contextmenu-block" :style="contextMenuStyle" v-show="contextMenuVisible">
         <div v-for="item in contextMenus" @click="clickContextMenuItem(item.action)" class="contextmenu-item">
           <el-icon v-if="item.icon">
@@ -27,52 +35,66 @@
       <!--<div class="contextmenu-layer" @click="hideContextMenu">-->
       <!--</div>-->
     </div>
-    <div class="config-panel" @contextmenu="disableContextMenu">
-      <el-dialog v-model="dialogVisible">
+    <div class="app-dialog" @contextmenu="disableContextMenu">
+      <el-dialog v-model="appDialogVisible" destroy-on-close :fullscreen="appDialogFullscreen">
         <el-collapse v-model="activeName" accordion>
           <el-collapse-item title="Consistency" name="1">
-            <div>
-              Consistent with real life: in line with the process and logic of real
-              life, and comply with languages and habits that the users are used to;
-            </div>
-            <div>
-              Consistent within interface: all elements should be consistent, such
-              as: design style, icons and texts, position of elements, etc.
-            </div>
           </el-collapse-item>
           <el-collapse-item title="Feedback" name="2">
-            <div>
-              Operation feedback: enable the users to clearly perceive their
-              operations by style updates and interactive effects;
-            </div>
-            <div>
-              Visual feedback: reflect current state by updating or rearranging
-              elements of the page.
-            </div>
           </el-collapse-item>
           <el-collapse-item title="Efficiency" name="3">
-            <div>
-              Simplify the process: keep operating process simple and intuitive;
-            </div>
-            <div>
-              Definite and clear: enunciate your intentions clearly so that the
-              users can quickly understand and make decisions;
-            </div>
-            <div>
-              Easy to identify: the interface should be straightforward, which helps
-              the users to identify and frees them from memorizing and recalling.
-            </div>
           </el-collapse-item>
           <el-collapse-item title="Controllability" name="4">
-            <div>
-              Decision making: giving advices about operations is acceptable, but do
-              not make decisions for the users;
-            </div>
-            <div>
-              Controlled consequences: users should be granted the freedom to
-              operate, including canceling, aborting or terminating current
-              operation.
-            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-dialog>
+    </div>
+    <div class="config-panel" @contextmenu="disableContextMenu">
+      <el-dialog v-model="configPanelVisible" destroy-on-close>
+        <el-collapse v-model="activeName" accordion>
+          <el-collapse-item title="组件图标设置" name="1">
+            <el-card>
+              <div class="config-item">
+                <span class="config-item-text">组件图标间距</span>
+                <el-slider class="config-item-element" v-model="containerProperties.gapLength" show-input></el-slider>
+              </div>
+              <div class="config-item">
+                <span class="config-item-text">组件图标大小</span>
+                <el-slider
+                    :min="64"
+                    :max="128"
+                    show-input
+                    class="config-item-element"
+                    v-model="containerProperties.unitLength"
+                ></el-slider>
+              </div>
+              <div class="config-item">
+                <span class="config-item-text">组件图标圆角</span>
+                <el-slider
+                    :min="0"
+                    :max="64"
+                    show-input
+                    class="config-item-element"
+                    v-model="containerProperties.unitRadius"
+                ></el-slider>
+              </div>
+            </el-card>
+          </el-collapse-item>
+          <el-collapse-item title="组件交互设置" name="2">
+            <el-card>
+              <div class="config-item">
+                <el-switch v-model="appLinkOpenWindow" size="large" inactive-text="链接在新窗口打开" />
+              </div>
+              <div class="config-item">
+                <el-switch v-model="appDialogFullscreen" size="large" inactive-text="小组件全屏" />
+              </div>
+            </el-card>
+          </el-collapse-item>
+          <el-collapse-item title="主题设置" name="3">
+            <el-card></el-card>
+          </el-collapse-item>
+          <el-collapse-item title="其它设置" name="4">
+            <el-card></el-card>
           </el-collapse-item>
         </el-collapse>
       </el-dialog>
@@ -84,6 +106,7 @@ import setting from '@element-plus/icons-vue/dist/es/setting.mjs'
 import dataLine from '@element-plus/icons-vue/dist/es/data-line.mjs'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
+import { APP_BLOCKS, BACKGROUND } from './config/data'
 
 export default {
   name: 'App',
@@ -93,236 +116,51 @@ export default {
   },
   mounted() {
     this.refreshClock()
+    Array.from(document.styleSheets).forEach((sheet, index) => {
+      const fadeInIndex = Array.from(sheet.cssRules).findIndex(rule => rule.name === 'dialog-fade-in')
+      const fadeOutIndex = Array.from(sheet.cssRules).findIndex(rule => rule.name === 'dialog-fade-out')
+      if (fadeInIndex < 0 || fadeOutIndex < 0) {
+        return
+      }
+      this.fadeSheetIndex = index
+      this.fadeInIndex = fadeInIndex
+      this.fadeOutIndex = fadeOutIndex
+    })
+  },
+  computed: {
+    containerStyle() {
+      const gapLength = this.containerProperties.gapLength
+      const unitLength = this.containerProperties.unitLength
+      return {
+        rowGap: `${gapLength}px`,
+        columnGap: `${gapLength}px`,
+        'grid-template-rows': `repeat(auto-fill, ${unitLength}px)`,
+        'grid-template-columns': `repeat(auto-fill, ${unitLength}px)`
+      }
+    }
   },
   data() {
     return {
-      apps: [{
-        head: moment().format('HH:mm:ss'),
-        body: {
-          text: moment().format('YYYY-MM-DD'),
-          style: {
-            fontSize: '12px'
-          }
-        },
-        tail: {
-          text: moment().format('dddd'),
-          style: {
-            fontSize: '12px'
-          }
-        },
-        type: 'clock',
-        style: {
-          backgroundColor: `white`
-        }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: {
-          text: moment().format('HH:mm:ss'),
-          style: {
-            fontSize: '32px'
-          }
-        },
-        body: moment().format('YYYY-MM-DD'),
-        tail: moment().format('dddd'),
-        type: 'clock',
-        style: {
-          width: '144px',
-          height: '144px',
-          gridRow: `span 2`,
-          gridColumn: `span 2`,
-          backgroundColor: `white`
-        }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: {
-          text: moment().format('HH:mm:ss'),
-          style: {
-            fontSize: '64px'
-          }
-        },
-        body: moment().format('YYYY-MM-DD'),
-        tail: moment().format('dddd'),
-        type: 'clock',
-        style: {
-          width: '304px',
-          height: '144px',
-          gridRow: `span 2`,
-          gridColumn: `span 4`,
-          backgroundColor: `white`
-        }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: {
-          width: '144px',
-          height: '144px',
-          gridRow: `span 2`,
-          gridColumn: `span 2`,
-          backgroundColor: `white`
-        }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }, {
-        head: 'head',
-        body: 'body',
-        tail: 'tail',
-        style: { backgroundColor: `white` }
-      }],
+      fadeInIndex: -1,
+      fadeOutIndex: -1,
+      fadeSheetIndex: -1,
+      apps: APP_BLOCKS,
       activeName: '1',
-      dialogVisible: false,
+      containerProperties: {
+        gapLength: 16,
+        unitRadius: 0,
+        unitLength: 64
+      },
+      appDialogVisible: false,
+      appLinkOpenWindow: true,
+      appDialogFullscreen: true,
+      configPanelVisible: false,
       contextMenuVisible: false,
       contextMenuStyle: {
         top: 0,
         left: 0
       },
-      contextMenus: [
+      globalMenus: [
         {
           icon: 'setting',
           name: '设置',
@@ -334,8 +172,14 @@ export default {
           action: this.testActionMethod.bind(this)
         }
       ],
+      blockMenus: [{
+        icon: 'setting',
+        name: '设置',
+        action: this.showConfigPanel.bind(this)
+      }],
+      contextMenus: [],
       backgroundLayerStyle: {
-        backgroundImage: `url('https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1639402477084-7e98f693c98a?ixid=MnwxMjA3fDB8MXx0b3BpY3x8Ym84alFLVGFFMFl8fHx8fDJ8fDE2NDA4NjQwMTM&ixlib=rb-1.2.1&w=2560&fm=jpg')`
+        backgroundImage: `url(${BACKGROUND})`
       },
       effectLayerStyle: {
         backdropFilter: `blur(1rem)`
@@ -344,24 +188,121 @@ export default {
   },
   methods: {
     refreshClock() {
-      this.apps.filter(app => app.type === 'clock').forEach(app => {
-        if (app.head.text) {
+      const clocks = this.apps.filter(app => app.type === 'clock')
+      clocks.forEach(app => {
+        if (app.head && app.head.text) {
           app.head.text = moment().format('HH:mm:ss')
         } else {
           app.head = moment().format('HH:mm:ss')
         }
-        if (app.body.text) {
+        if (app.body && app.body.text) {
           app.body.text = moment().format('YYYY-MM-DD')
         } else {
           app.body = moment().format('YYYY-MM-DD')
         }
-        if (app.tail.text) {
+        if (app.tail && app.tail.text) {
           app.tail.text = moment().format('dddd')
         } else {
           app.tail = moment().format('dddd')
         }
       })
-      setTimeout(() => this.refreshClock(), 1000)
+      if (clocks.length) {
+        setTimeout(() => this.refreshClock(), 1000)
+      }
+    },
+    appHeadText(app) {
+      return (app.head && app.head.text) || app.head
+    },
+    appHeadStyle(app) {
+      return app.head && app.head.style
+    },
+    appBodyText(app) {
+      return (app.body && app.body.text) || app.body
+    },
+    appBodyStyle(app) {
+      return app.body && app.body.style
+    },
+    appTailText(app) {
+      return (app.tail && app.tail.text) || app.tail
+    },
+    appTailStyle(app) {
+      return app.tail && app.tail.style
+    },
+    appBlockStyle(app) {
+      const rowGap = this.containerProperties.gapLength
+      const columnGap = this.containerProperties.gapLength
+      const unitWidth = this.containerProperties.unitLength
+      const unitHeight = this.containerProperties.unitLength
+      const unitRadius = this.containerProperties.unitRadius
+      const row = Math.min(Math.abs(app.row || 1), 4)
+      const column = Math.min(Math.abs(app.column || 1), 4)
+      return Object.assign(app.style || {}, {
+        gridRow: `span ${row}`,
+        'border-radius': `${unitRadius}px`,
+        gridColumn: app.column < 0 ? `1/-1` : `span ${column}`,
+        height: `${(row - 1) * rowGap + row * unitHeight}px`,
+        width: `${(column - 1) * columnGap + column * unitWidth}px`
+      })
+    },
+    clickAppBlock(app, e) {
+      e && e.preventDefault()
+      e && e.stopPropagation()
+      switch (app.type || 'dialog') {
+        case'link':
+          if (app.link) {
+            this.appLinkOpenWindow ? window.open(app.link) : (window.location = app.link)
+          }
+          break
+        case 'dialog' :
+          const target = e && e.currentTarget
+          if (!target) {
+            return
+          }
+          this.updateDialogAnimation(target)
+          this.appDialogVisible = true
+          break
+        default:
+          break
+      }
+    },
+    updateDialogAnimation(target) {
+      if (this.fadeSheetIndex < 0) {
+        return
+      }
+      const style = window.getComputedStyle(target)
+      const width = parseFloat(style.width)
+      const height = parseFloat(style.height)
+      const offsetTop = parseFloat(target.offsetTop) + height / 2
+      const offsetLeft = parseFloat(target.offsetLeft) + width / 2
+      const styleSheet = document.styleSheets[this.fadeSheetIndex]
+      styleSheet.deleteRule(this.fadeInIndex)
+      styleSheet.insertRule(`
+      @keyframes dialog-fade-in {
+        0% {
+          opacity: .3;
+          transform: scale(.5);
+          transform-origin: ${offsetLeft}px ${offsetTop}px;
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      `, this.fadeInIndex)
+      styleSheet.deleteRule(this.fadeOutIndex)
+      styleSheet.insertRule(`
+      @keyframes dialog-fade-out {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: .3;
+          transform: scale(.5);
+          transform-origin: ${offsetLeft}px ${offsetTop}px;
+        }
+      }
+      `, this.fadeOutIndex)
     },
     disableContextMenu(e) {
       e && e.preventDefault()
@@ -369,7 +310,7 @@ export default {
     },
     testActionMethod() {},
     showConfigPanel() {
-      this.dialogVisible = true
+      this.configPanelVisible = true
     },
     clickContextMenuItem(callback) {
       callback.call(this)
@@ -381,12 +322,19 @@ export default {
       this.contextMenuVisible = false
       document.removeEventListener('click', this.hideContextMenu)
     },
-    showContextMenu(e) {
+    showBlockMenus(e) {
+      this.showContextMenus(e, this.blockMenus)
+    },
+    showGlobalMenus(e) {
+      this.showContextMenus(e, this.globalMenus)
+    },
+    showContextMenus(e, menus) {
       e && e.preventDefault()
       e && e.stopPropagation()
+      this.contextMenus = menus
+      this.contextMenuVisible = true
       this.contextMenuStyle.top = `${e.clientY}px`
       this.contextMenuStyle.left = `${e.clientX}px`
-      this.contextMenuVisible = true
       document.addEventListener('click', this.hideContextMenu)
     }
   },
@@ -411,6 +359,32 @@ html, body, #app {
   .el-dialog__body {
     padding-top: 0;
     padding-bottom: 0;
+
+    .el-collapse-item__content {
+      padding-bottom: 12px;
+    }
+
+    .config-item {
+      display: flex;
+      min-height: 38px;
+
+      .config-item-text {
+        width: 100px;
+        font-size: 14px;
+        text-align: left;
+        line-height: 38px;
+      }
+
+      .config-item-element {
+        width: calc(100% - 100px);
+      }
+
+      .el-switch {
+        width: 100%;
+        align-self: center;
+        justify-content: space-between;
+      }
+    }
   }
 }
 </style>
@@ -474,19 +448,29 @@ html, body, #app {
 
   .app-container {
     display: grid;
-    row-gap: 16px;
-    column-gap: 16px;
+    justify-items: center;
     justify-content: center;
-    grid-template-rows: repeat(auto-fill, 64px);
-    grid-template-columns: repeat(auto-fill, 64px);
 
     .app-block {
       width: 64px;
       height: 64px;
+      overflow: hidden;
+      user-select: none;
+      transform: scale(1);
       display: inline-flex;
       flex-direction: column;
+      transition: transform 200ms;
       justify-content: space-evenly;
       background-color: rgba(255, 255, 255, .3);
+
+      &:active {
+        transform: scale(.95);
+      }
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .5);
+      }
 
       & > div {
         overflow: hidden;
