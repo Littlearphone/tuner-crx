@@ -7,6 +7,10 @@
     if ($search.length) {
       $search.each(function() {$(this).attr('target', '_blank')})
     }
+    const $rso = $('#rso > div.g, #rso > div > div.g')
+    if ($rso.css('width')) {
+      $rso.css('width', 'auto')
+    }
     setTimeout(detectLink, 10)
   }
   window.Pagination.prototype.nextPage = function() {
