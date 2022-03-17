@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "host": "cdn.bootcdn.net"
+        }
+      }
+    },
+    "condition": {
+      "urlFilter": "*://ajax.googleapis.com/*.js",
+      "resourceTypes": [
+        "script",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  }
+]
