@@ -862,9 +862,9 @@
   setTimeout(watchChanges, 5000);
   chrome.tabs.onCreated.addListener(pageHacker);
   chrome.tabs.onUpdated.addListener(pageHacker);
-  // BeforeRequest.forEach(request => {
-  //   chrome.declarativeNetRequest.onBeforeRequest.addListener(request.handler, request.filter, request.options)
-  // })
+  chrome.declarativeNetRequest.onRuleMatchedDebug.addListener(function(o) {
+    console.log('rule matched:', o);
+  });
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (!request) {
       sendResponse(JSON.stringify({}));
