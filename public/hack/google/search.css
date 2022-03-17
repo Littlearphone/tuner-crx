@@ -17,8 +17,13 @@ div#hdtb-msb,
     justify-content: center;
 }
 
+#rcnt #center_col {
+    flex-direction: column;
+}
+
 #rcnt {
     display: flex;
+    margin: 0 auto;
     align-items: center;
     justify-content: center;
     flex-direction: column-reverse;
