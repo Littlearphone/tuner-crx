@@ -8,4 +8,4 @@
   }
 
   scavenger()
-})(jQuery)
+})(window.jQuery)

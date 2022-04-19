@@ -171,4 +171,4 @@
     window.bus.emit('startPlay', config)
     window.bus.emit('fullWebScreen', config)
   })
-})(jQuery)
+})(window.jQuery)

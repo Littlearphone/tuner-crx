@@ -155,4 +155,4 @@
 
     setTimeout(initial)
   })
-})(jQuery)
+})(window.jQuery)

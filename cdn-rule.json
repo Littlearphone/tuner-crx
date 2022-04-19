@@ -5,15 +5,191 @@
     "action": {
       "type": "redirect",
       "redirect": {
-        "transform": {
-          "host": "cdn.bootcdn.net"
-        }
+        "regexSubstitution": "\\1://ajax.loli.net/\\2"
       }
     },
     "condition": {
-      "urlFilter": "*://ajax.googleapis.com/*.js",
+      "regexFilter": "^(http[s]?)://ajax\\.googleapis\\.com/(.*)",
       "resourceTypes": [
+        "font",
         "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://fonts.loli.net/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://fonts\\.googleapis\\.com/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://themes.loli.net/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://themes\\.googleusercontent\\.com/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://gstatic.loli.net/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://fonts\\.gstatic\\.com/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://www.recaptcha.net/recaptcha/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://www\\.google\\.com/recaptcha/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://gravatar.loli.net/\\3"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://(secure|www)\\.gravatar\\.com/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://cdn.staticfile.org/twitter-bootstrap/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://maxcdn\\.bootstrapcdn\\.com/bootstrap/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://cdn.staticfile.org/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://maxcdn\\.bootstrapcdn\\.com/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
+        "sub_frame",
+        "main_frame",
+        "xmlhttprequest"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/\\2"
+      }
+    },
+    "condition": {
+      "regexFilter": "^(http[s]?)://cdn\\.rawgit\\.com/google/code-prettify/master/loader/(.*)",
+      "resourceTypes": [
+        "font",
+        "image",
+        "script",
+        "stylesheet",
         "sub_frame",
         "main_frame",
         "xmlhttprequest"
