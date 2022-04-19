@@ -69,8 +69,11 @@
       callback(element)
     }
   }
-})(jQuery);
+})(window.jQuery);
 (function($) {
+  if (!$) {
+    return
+  }
   const Pagination = function() {
     this.initial()
   }
@@ -108,4 +111,4 @@
   document.removeEventListener('scroll', scrollListener)
   document.addEventListener('scroll', scrollListener)
   window.Pagination = Pagination
-})(jQuery);
+})(window.jQuery)

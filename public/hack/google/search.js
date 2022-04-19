@@ -72,4 +72,4 @@
     setTimeout(initial, 10)
     setTimeout(detectLink, 10)
   })
-})(jQuery)
+})(window.jQuery)

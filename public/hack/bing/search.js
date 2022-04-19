@@ -106,4 +106,4 @@
 
     setTimeout(initialPage, 100)
   })
-})(jQuery)
+})(window.jQuery)

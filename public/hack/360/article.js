@@ -16,4 +16,4 @@
 
     initial()
   })
-})(jQuery)
+})(window.jQuery)

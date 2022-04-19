@@ -47,4 +47,4 @@
       player.removeClass('toggle-layout-fold')
     })
   })
-})(jQuery)
+})(window.jQuery)
