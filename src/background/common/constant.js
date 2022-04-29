@@ -15,7 +15,12 @@ export const BeforeRequest = [{
   }
 }]
 export const HackMappings = [{
+  id: 'baidu-portal',
   expectUrl: tab => /http(s)?:\/\/(www.)?baidu.com.*/.test(tab.url),
+  matchPatterns: [
+    '*://baidu.com*',
+    '*://www.baidu.com*'
+  ],
   cssFiles: ['hack/common.css', 'hack/baidu/search.css'],
   scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/baidu/search.js'],
   configDescription: {
