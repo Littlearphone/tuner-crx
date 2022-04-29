@@ -6,7 +6,12 @@
     currentWindow: true
   };
   const HackMappings = [{
+    id: 'baidu-portal',
     expectUrl: tab => /http(s)?:\/\/(www.)?baidu.com.*/.test(tab.url),
+    matchPatterns: [
+      '*://baidu.com*',
+      '*://www.baidu.com*'
+    ],
     cssFiles: ['hack/common.css', 'hack/baidu/search.css'],
     scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/baidu/search.js'],
     configDescription: {
@@ -768,14 +773,20 @@
         }, 1000);
       });
   };
-  const ofFiles = injectData => {
-    if (typeof injectData === 'string') {
-      return [{ files: [injectData] }]
+  const ofFiles = (site, data) => {
+    const option = {
+      matches: site.matchPatterns,
+      id: site.id || 'undefined',
+      runAt: 'document_start',
+      allFrames: true
+    };
+    if (data.injectCss || !data.hasOwnProperty('injectCss')) {
+      option.css = site.cssFiles;
     }
-    if (!Array.isArray(injectData)) {
-      return [{ files: injectData.file }]
+    if (data.injectScript || !data.hasOwnProperty('injectScript')) {
+      option.js = site.scriptFiles;
     }
-    return injectData.flatMap(ofFiles)
+    return [option]
   };
 
   function injectFiles(tabId, site) {
@@ -784,50 +795,32 @@
     chrome.action.setBadgeBackgroundColor({ color: '#4688F1' }).then(console.log);
     const description = site.configDescription;
     const configId = description && description.configId;
-    if (configId) {
-      chromeStorage(configId, configs => {
-        const data = configs && configs[configId] || {};
-        if (data.hasOwnProperty('enable') && !data.enable) {
-          return
-        }
-        // 设了个寂寞的files，目前chrome官方显示只支持一个文件
-        const baseInjection = { target: { tabId } };
-        if (data.injectCss || !data.hasOwnProperty('injectCss')) {
-          injectCssRecursive(ofFiles(site.cssFiles), baseInjection, () => console.log('完成css的注入'));
-        }
-        if (data.injectScript || !data.hasOwnProperty('injectScript')) {
-          injectScriptRecursive(ofFiles(site.scriptFiles), baseInjection, () => {
-            console.log('完成script的注入');
-            chrome.tabs.sendMessage(tabId, { data }, response => {
-              console.log(`成功注入data到${tabId}: ${JSON.stringify(response)}`);
-            });
-          });
-        }
-      });
-    }
-  }
-
-  function injectCssRecursive(files, baseInjection, callback) {
-    if (!files || !files.length) {
+    if (!configId) {
       return
     }
-    const injection = Object.assign(files.shift(), baseInjection);
-    chrome.scripting.insertCSS(injection).then(() => {
-      console.log(`成功注入css: ${injection.files}`);
-      !files.length && typeof callback === 'function' && callback();
-      injectCssRecursive(files, baseInjection, callback);
+    chromeStorage(configId, configs => {
+      const data = configs && configs[configId] || {};
+      if (data.hasOwnProperty('enable') && !data.enable) {
+        return
+      }
+      injectScriptRecursive(ofFiles(site, data), () => {
+        console.log('完成动态脚本与样式注入');
+        chrome.tabs.sendMessage(tabId, { data }, response => {
+          console.log(`成功注入data到${tabId}: ${JSON.stringify(response)}`);
+        });
+      });
     });
   }
 
-  function injectScriptRecursive(files, baseInjection, callback) {
+  function injectScriptRecursive(files, callback) {
     if (!files || !files.length) {
       return
     }
-    const injection = Object.assign(files.shift(), baseInjection);
-    chrome.scripting.executeScript(injection).then(() => {
-      console.log(`成功注入script: ${injection.files}`);
-      !files.length && typeof callback === 'function' && callback();
-      injectScriptRecursive(files, baseInjection, callback);
+    const ids = files.map(file => file.id || 'undefined');
+    chrome.scripting.unregisterContentScripts({ ids }, () => {
+      chrome.scripting.registerContentScripts(files).then(() => {
+        files.length && typeof callback === 'function' && callback();
+      });
     });
   }
 
