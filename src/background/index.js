@@ -1,10 +1,12 @@
-import { pageHacker, watchChanges } from './common/support'
-
-setTimeout(watchChanges, 5000)
-chrome.tabs.onCreated.addListener(pageHacker)
-chrome.tabs.onUpdated.addListener(pageHacker)
-chrome.declarativeNetRequest.onRuleMatchedDebug.addListener(function(o) {
-  console.log('rule matched:', o)
+import { ajaxProxy, contentScripts } from './common/support'
+// chrome.runtime.onInstalled.addListener(() => {
+//   console.log('installed')
+// })
+const scripts = contentScripts()
+chrome.scripting.unregisterContentScripts({ ids: scripts.map(script => script.id) }, () => {
+  chrome.scripting.registerContentScripts(scripts, () => {
+    scripts.forEach(script => console.log(`Inject content script: ${script.id}`))
+  })
 })
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (!request) {
@@ -12,21 +14,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true
   }
   if (request.type === 'ajax') {
-    const data = request.data
-    fetch(data.url, {
-      method: data.type,
-      body: data.body
-    }).then(response => {
-      response.text().then(text => {
-        console.log(response.status, response.url)
-        sendResponse(JSON.stringify({
-          url: data.url,
-          status: response.status,
-          responseURL: response.url,
-          responseText: text
-        }))
-      })
-    }).catch(error => console.log(data, error))
+    ajaxProxy(request, sender, sendResponse)
     return true
   }
   sendResponse(JSON.stringify({}))

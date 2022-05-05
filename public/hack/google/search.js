@@ -39,12 +39,10 @@
     }
     setTimeout(detectFrame, 100)
   }
-  chrome.runtime.onMessage.addListener(function(data, sender, callback) {
-    console.log(data)
-    console.log(sender)
-    console.log(callback)
-    callback('成功收到Google配置信息')
-    const config = { ...data }
+  const key = 'google-search'
+  chrome.storage.local.get([key], function(data) {
+    console.log('成功收到Google配置信息')
+    const config = { ...data[key] }
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
     }

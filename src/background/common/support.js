@@ -1,87 +1,44 @@
-import { ActiveTab, HackMappings } from './constant'
-
-export const watchChanges = () => {
-  self.fetch(chrome.runtime.getURL('manifest.json'))
-    .then(response => response.json())
-    .then(data => {
-      if (data.version === chrome.runtime.getManifest().version) {
-        setTimeout(watchChanges, 5000)
-        return
-      }
-      setTimeout(() => {
-        chrome.runtime.reload()
-        chrome.tabs.query(ActiveTab)
-          .then(([tab]) => chrome.tabs.reload(tab.id))
-      }, 1000)
-    })
-}
-const ofFiles = (site, data) => {
-  const option = {
-    matches: site.matchPatterns,
-    id: site.id || 'undefined',
-    runAt: 'document_start',
-    allFrames: true
-  }
-  if (data.injectCss || !data.hasOwnProperty('injectCss')) {
-    option.css = site.cssFiles
-  }
-  if (data.injectScript || !data.hasOwnProperty('injectScript')) {
-    option.js = site.scriptFiles
-  }
-  return [option]
-}
+import { HackMappings } from './constant'
 
 function injectFiles(tabId, site) {
   chrome.action.enable(tabId).then(console.log)
   chrome.action.setBadgeText({ text: 'ON' }).then(console.log)
   chrome.action.setBadgeBackgroundColor({ color: '#4688F1' }).then(console.log)
-  const description = site.configDescription
-  const configId = description && description.configId
-  if (!configId) {
-    return
-  }
-  chromeStorage(configId, configs => {
-    const data = configs && configs[configId] || {}
-    if (data.hasOwnProperty('enable') && !data.enable) {
-      return
+}
+
+export const ajaxProxy = (request, sender, sendResponse) => {
+  const data = request.data
+  fetch(data.url, {
+    method: data.type,
+    body: data.body
+  }).then(response => {
+    response.text().then(text => {
+      console.log(response.status, response.url)
+      sendResponse(JSON.stringify({
+        url: data.url,
+        status: response.status,
+        responseURL: response.url,
+        responseText: text
+      }))
+    })
+  }).catch(error => console.log(data, error))
+}
+export const contentScripts = () => {
+  return HackMappings.filter(site => site.id).map(site => {
+    const option = {
+      matches: site.matchPatterns,
+      id: site.id || 'undefined',
+      runAt: 'document_start',
+      allFrames: true
     }
-    injectScriptRecursive(ofFiles(site, data), () => {
-      console.log('完成动态脚本与样式注入')
-      chrome.tabs.sendMessage(tabId, { data }, response => {
-        console.log(`成功注入data到${tabId}: ${JSON.stringify(response)}`)
-      })
-    })
+    if (site.cssFiles) {
+      option.css = Array.isArray(site.cssFiles) ? site.cssFiles : [site.cssFiles]
+    }
+    if (site.scriptFiles) {
+      option.js = Array.isArray(site.scriptFiles) ? site.scriptFiles : [site.scriptFiles]
+    }
+    return option
   })
-}
-
-function injectScriptRecursive(files, callback) {
-  if (!files || !files.length) {
-    return
-  }
-  const ids = files.map(file => file.id || 'undefined')
-  chrome.scripting.unregisterContentScripts({ ids }, () => {
-    chrome.scripting.registerContentScripts(files).then(() => {
-      files.length && typeof callback === 'function' && callback()
-    })
-  })
-}
-
-// iframe => https://codingdict.com/questions/13895
-export const pageHacker = (tabId, changeInfo, tab) => {
-  if (!tab || !tab.url) {
-    return
-  }
-  const site = HackMappings.find(mapping => mapping.expectUrl(tab))
-  if (!site) {
-    return
-  }
-  if (!site.expectStatus) {
-    site.expectStatus = info => info && info.status === 'loading'
-  }
-  if (!site.expectStatus(changeInfo)) {
-    return
-  }
-  injectFiles(tabId, site)
 }
 export const chromeStorage = function(keys, callback) {
   if (!keys || !chrome.storage || !chrome.storage.local) {

@@ -4,12 +4,10 @@
     return
   }
   $.bilibiliLoaded = {}
-  chrome.runtime.onMessage.addListener(function(data, sender, callback) {
-    console.log(data)
-    console.log(sender)
-    console.log(callback)
-    callback('成功收到Bilibili配置信息')
-    const config = { ...data }
+  const key = 'bilibili-video'
+  chrome.storage.local.get([key], function(data) {
+    console.log('成功收到Bilibili配置信息')
+    const config = { ...data[key] }
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
     }

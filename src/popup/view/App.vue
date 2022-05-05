@@ -28,7 +28,7 @@ export default {
       const site = HackMappings.find(mapping => mapping.expectUrl(tab))
       if (site) {
         this.empty = false
-        this.configDescription = Object.assign({}, DefaultConfig, site.configDescription)
+        this.configDescription = Object.assign({ configId: site.id }, DefaultConfig, site.configDescription)
       }
     })
     return {
