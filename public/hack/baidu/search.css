@@ -15,7 +15,7 @@ html {
 [baidu] #container #content_right,
 [baidu] .s_tab_inner [href^='/sf/vsearch'],
 [baidu] .s_tab_inner [href*='wenku.baidu.com'],
-[baidu] [href*='b2b.baidu.com'],
+[baidu] [href*='b2b.baidu.com'], [baidu] div.c-tools,
 [baidu] [mu*='.recommend_list.baidu.com'],
 [baidu] .s_tab_inner [href*='zhidao.baidu.com'],
 [baidu] .new-pmd .c-recommend, [baidu] .tuner-ads-block,
@@ -411,7 +411,9 @@ div.op-short-video-pc-img-new {
     justify-content: space-between;
 }
 
-[baidu] .newTimeFactor_before_abs {
+[baidu] .newTimeFactor_before_abs,
+[baidu] .c-gap-top-small span.c-color-gray2,
+[baidu] .c-gap-top-middle span.c-color-gray2 {
     top: 10px;
     right: 100px;
     padding: 0 8px;
@@ -420,10 +422,13 @@ div.op-short-video-pc-img-new {
     width: fit-content !important;
 }
 
-[baidu] .newTimeFactor_before_abs > * {
+[baidu] .newTimeFactor_before_abs > *,
+[baidu] .c-gap-top-small span.c-color-gray2,
+[baidu] .c-gap-top-middle span.c-color-gray2 {
     color: #409eff !important;
 }
 
+[baidu] a.kuaizhao,
 [baidu] [data-click*='snapshot'] {
     top: 10px;
     right: 10px;
@@ -437,6 +442,7 @@ div.op-short-video-pc-img-new {
     background-image: linear-gradient(to bottom, #fcfcfc, #f0f0f0);
 }
 
+[baidu] a.kuaizhao:hover,
 [baidu] .new-pmd .kuaizhao:hover,
 [baidu] .new-pmd .snapshoot:hover,
 [baidu] [data-click*='snapshot']:hover {

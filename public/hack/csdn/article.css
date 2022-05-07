@@ -10,7 +10,8 @@ li.tool-item:not(.tool-item-comment), div.recommend-tit-mod,
 div.template-box, div.blog-footer-bottom, div.leftPop,
 div.toolbar-container-left ~ div, .csdn-shop-window-common,
 .toolbar-container-left .toolbar-menus li:not(.active),
-#blogColumnPayAdvert, div.toolbar-advert, #toolBarBox {
+#blogColumnPayAdvert, div.toolbar-advert, #toolBarBox,
+#recommendNps {
     display: none !important;
 }
 
