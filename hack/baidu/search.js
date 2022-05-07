@@ -1,4 +1,7 @@
 (function($) {
+  if (window !== top) {
+    return
+  }
   if (!window.pagination) {
     window.pagination = new window.Pagination()
   }
@@ -40,6 +43,8 @@
     $headers.each(callback)
     const $links = $('[baidu] a[href*="://www.baidu.com/link?"]')
     $links.length && $links.each(callback)
+    $(`[baidu] a.kuaizhao:not([target='_blank'])`).attr('target', '_blank')
+    $(`[baidu] [data-click*='snapshot']:not([target='_blank'])`).attr('target', '_blank')
     parseUrl()
   }
   const cleanAdsStyle = function() {
@@ -49,29 +54,28 @@
   }
   window.adBlocker = setTimeout(cleanAdsStyle, 100)
   window.Pagination.prototype.nextPage = function() {
-    const next = $('#page a:contains("下一页")')
-    if (!next.length || this.iframe.attr('src') === next.attr('href')) {
+    if (window !== top) {
       return
     }
+    const next = $('#page a:contains("下一页")')
+    if (!next.length || this.iframe === next.attr('href')) {
+      return
+    }
+    this.iframe = next.attr('href')
     if ($('#page .tuner-loading-block').length) {
       return
     }
-    console.log('自动加载下一页')
-    clearTimeout(window.adBlocker)
-    if (!$('iframe#tuner-crx').length) {
-      this.reloadFrame()
-    }
-    $('#page').css({ 'position': 'relative' })
+    console.log('开始加载下一页')
     const loading = $.loading.mask('#page').start()
-    this.iframe.on('load', () => {
-      $('#content_left').append(this.select('#content_left').html())
-      $('#page [class^="page-inner"]').html(this.select('#page [class^="page-inner"]').html())
-      window.adBlocker = setTimeout(cleanAdsStyle, 100)
+    $.get(next.attr('href'), function(data) {
+      const page = $(data)
       loading.end().remove()
       console.log('下一页加载完成')
       setTimeout(detectLink, 10)
+      $('#content_left').append(page.find('#content_left').html())
+      $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
     })
-    this.iframe.attr('src', next.attr('href'))
+    $('#page').css({ 'position': 'relative' })
   }
   const key = 'baidu-search'
   chrome.storage.local.get([key], function(data) {
@@ -99,38 +103,6 @@
         return
       }
       $body.attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
-      // const FaviconMapping = config.injectConfig && config.injectConfig.FaviconMapping || {}
-      // const defaultIcon = 'https://baidu.com/favicon.ico'
-      // function faviconParse(result) {
-      //   const footer = result.querySelector('.c-showurl')
-      //   if (!footer) {
-      //     return defaultIcon
-      //   }
-      //   const text = footer.innerText
-      //   const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
-      //   if (key) {
-      //     return FaviconMapping[key]
-      //   }
-      //   const hostIndex = text.indexOf('/')
-      //   if (hostIndex >= 0) {
-      //     return 'http://' + text.substring(0, hostIndex) + '/favicon.ico'
-      //   }
-      //   return defaultIcon
-      // }
-      // $('[baidu] #content_left .result,[baidu] #content_left .result-op').each(function() {
-      //   const h3 = $(this).find('h3')
-      //   if (h3.find("img").length) {
-      //     return
-      //   }
-      //   $(`<img src="${faviconParse(this)}" alt=""/>`).css({
-      //     width: '24px',
-      //     height: '24px',
-      //     margin: '0 5px',
-      //     display: 'inline-block'
-      //   }).on('error', function() {
-      //     this.src = defaultIcon
-      //   }).prependTo(h3)
-      // })
       // Firefox和Chrome早期版本中带有前缀
       const $baidu = $('[baidu] #content_left')
       if (!$baidu.length) {

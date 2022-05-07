@@ -520,13 +520,12 @@
     })
   };
 
-  // chrome.runtime.onInstalled.addListener(() => {
-  //   console.log('installed')
-  // })
-  const scripts = contentScripts();
-  chrome.scripting.unregisterContentScripts({ ids: scripts.map(script => script.id) }, () => {
-    chrome.scripting.registerContentScripts(scripts, () => {
-      scripts.forEach(script => console.log(`Inject content script: ${script.id}`));
+  chrome.runtime.onInstalled.addListener(() => {
+    const scripts = contentScripts();
+    chrome.scripting.unregisterContentScripts({ ids: scripts.map(script => script.id) }, () => {
+      chrome.scripting.registerContentScripts(scripts, () => {
+        scripts.forEach(script => console.log(`Inject content script: ${script.id}`));
+      });
     });
   });
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
