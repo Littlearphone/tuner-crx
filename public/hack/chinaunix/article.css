@@ -1,6 +1,6 @@
 .Blog_footer, div[class*='Blog_header'],
-.Blog_left1_1 ~ *, iframe,
-.Blog_left1 ~ * {
+.Blog_left1 ~ *, .Blog_left ~ *,
+.Blog_left1_1 ~ *, iframe {
     display: none !important;
 }
 
@@ -33,13 +33,14 @@
 }
 
 .Blog_left1_1 {
-    width: 65px !important;
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: 96px !important;
 }
 
 .Blog_left1_1 img {
-    max-width: 90% !important;
+    max-width: 66% !important;
 }
 
 .Blog_left1_1 p {

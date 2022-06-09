@@ -72,6 +72,10 @@ div#center_col > [role=navigation] {
     position: relative;
 }
 
+#rso > div > div.g div[style*='width'] {
+    width: auto !important;
+}
+
 #rso > div.g .yuRUbf,
 #rso > div > div.g .yuRUbf {
     padding-left: 8px;
