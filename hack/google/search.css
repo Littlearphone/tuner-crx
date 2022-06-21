@@ -38,6 +38,10 @@ div#hdtb-msb,
     width: 100%;
 }
 
+div#rhs.rhstc4 .ss6qqb.u7yw9 {
+    width: 100%;
+}
+
 div#hdtb-msb .MUFPAc,
 div#center_col {
     margin: 0;
@@ -70,6 +74,10 @@ div#center_col > [role=navigation] {
 #rso > div > div.g {
     width: 100%;
     position: relative;
+}
+
+#rso > div > div.g div[style*='width'] {
+    width: auto !important;
 }
 
 #rso > div.g .yuRUbf,
