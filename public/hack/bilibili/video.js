@@ -28,18 +28,50 @@
     }
     const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
     const videoPlayerObject = () => {
-      return document.querySelector('.bilibili-player-video video,.bilibili-player-video bwp-video,.bpx-player-primary-area video')
+      const selector = [
+        '.bilibili-player-video video',
+        '.bpx-player-primary-area video',
+        '.bilibili-player-video bwp-video'
+      ].join(',')
+      return document.querySelector(selector)
     }
     const startPlayButton = () => {
-      return document.querySelector('.bilibili-player-video-btn-start,.squirtle-video-start')
+      const selector = [
+        '.squirtle-video-start',
+        '.bpx-player-ctrl-play',
+        '.bilibili-player-video-btn-start'
+      ].join(',')
+      return document.querySelector(selector)
     }
-    const playNextVideoButton = () => document.querySelector('.bilibili-player-video-btn-next')
-    const electricJumpButton = () => document.querySelector('.bilibili-player-electric-panel-jump-content')
+    const playNextVideoButton = () => {
+      const selector = [
+        '.bpx-player-ctrl-next',
+        '.bilibili-player-video-btn-next'
+      ].join(',')
+      return document.querySelector(selector)
+    }
+    const electricJumpButton = () => {
+      const selector = [
+        '.bpx-player-ending-related-item-cancel',
+        '.bilibili-player-electric-panel-jump-content'
+      ].join(',')
+      return document.querySelectorAll(selector)
+    }
     const fullscreenButtonArea = () => {
-      return document.querySelector('.bilibili-player-video-web-fullscreen,.squirtle-video-pagefullscreen')
+      const selector = [
+        '.squirtle-video-pagefullscreen',
+        '.bilibili-player-video-web-fullscreen',
+        '.bpx-player-ctrl-web:not(.bpx-state-entered)'
+      ].join(',')
+      return document.querySelector(selector)
     }
     const videoSpeedRateOptions = () => {
-      return document.querySelectorAll('.bilibili-player-video-btn-speed-menu-list,.squirtle-video-speed ul li')
+      const selector = [
+        '.squirtle-video-speed ul li',
+        '.bpx-player-ctrl-playbackrate ul li',
+        '.bilibili-player-video-btn-speed-menu-list'
+      ].join(",")
+      return document.querySelectorAll(selector)
     }
     if (!window.EventBus) {
       window.EventBus = function() {
@@ -53,6 +85,9 @@
           data
         })
         console.log(`收到事件: ${type}`)
+      }
+      window.EventBus.prototype.clear = function() {
+        this.events.length = 0
       }
       window.EventBus.prototype.start = function() {
         setTimeout(this.start.bind(this), 100)
@@ -115,19 +150,19 @@
       }
       if (!player.paused) {
         onVideoStart.call(player)
-        return playButton.className.indexOf('video-state-pause') < 0
+        return playButton.className.indexOf('video-state-pause') < 0 || !document.querySelector('.bpx-state-paused')
       }
       data.autoPlaySwitch && playButton.click()
       console.log(`开始播放视频`)
       return false
     }
     window.skipSponsor = function() {
-      const jumpButton = electricJumpButton()
-      if (!jumpButton || !jumpButton.offsetParent) {
+      const buttons = Array.from(electricJumpButton())
+      if (!buttons.length || buttons.filter(button => !button.offsetParent).length === buttons.length) {
         return false
       }
-      jumpButton.click()
-      console.log(`跳过赞助页面`)
+      buttons.forEach(element => element.click())
+      console.log(`跳过等待或连播`)
       return true
     }
     const filterSpeedOption = function(speed, option) {
@@ -144,7 +179,8 @@
       const option = Array.from(options).find(option => filterSpeedOption(data.speedRate, option))
       if (option) {
         const classList = option.classList
-        return option.click() || classList.contains('bilibili-player-active') || classList.contains('active')
+        return option.click() || classList.contains('bilibili-player-active')
+          || classList.contains('active') || classList.contains('bpx-state-active')
       }
       const player = videoPlayerObject()
       return player && (player.playbackRate = data.speedRate)
@@ -155,16 +191,25 @@
       }
       const buttonArea = fullscreenButtonArea()
       if (!buttonArea) {
-        return false
+        return document.querySelector('.bpx-player-ctrl-web.bpx-state-entered')
       }
       console.log('启动网页全屏')
-      const fullscreenButton = buttonArea.querySelector('.bilibili-player-iconfont-web-fullscreen-off') || buttonArea.querySelector('.squirtle-pagefullscreen-inactive')
+      const selector = [
+        '.bpx-player-ctrl-web-enter',
+        '.squirtle-pagefullscreen-inactive',
+        '.bilibili-player-iconfont-web-fullscreen-off'
+      ].join(',')
+      const fullscreenButton = buttonArea.querySelector(selector)
       fullscreenButton.offsetWidth && fullscreenButton.click()
-      return buttonArea.classList.contains('closed') || buttonArea.classList.contains('active')
+      const classList = buttonArea.classList
+      return classList.contains('closed') || classList.contains('active') || classList.contains('bpx-state-entered')
     }
     if (!window.bus) {
       window.bus = new window.EventBus()
       window.bus.start()
+      window.navigation.addEventListener('navigate', () => {
+        window.bus.clear()
+      })
     }
     window.bus.emit('startPlay', config)
     window.bus.emit('fullWebScreen', config)
