@@ -84,15 +84,24 @@
           type,
           data
         })
+        this.start()
         console.log(`收到事件: ${type}`)
       }
       window.EventBus.prototype.clear = function() {
         this.events.length = 0
       }
       window.EventBus.prototype.start = function() {
-        setTimeout(this.start.bind(this), 100)
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        if (!this.events.length) {
+          console.log('事件队列为空')
+          return
+        }
+        this.timer = setTimeout(this.start.bind(this), 100)
         const event = this.events.shift()
         if (!event) {
+          console.log('无效的事件对象')
           return
         }
         const handler = window[event.type]
@@ -101,6 +110,7 @@
           return
         }
         if (handler.call(window, event.data, this)) {
+          console.log(`${event.type}事件执行完成`)
           return
         }
         this.events.push(event)
@@ -207,11 +217,16 @@
     if (!window.bus) {
       window.bus = new window.EventBus()
       window.bus.start()
-      window.navigation.addEventListener('navigate', () => {
+      window.navigation.addEventListener('navigate', event => {
         window.bus.clear()
+        console.log('清除所有事件', event)
+        setTimeout(initialize, 1000)
       })
     }
-    window.bus.emit('startPlay', config)
-    window.bus.emit('fullWebScreen', config)
+    const initialize = () => {
+      window.bus.emit('startPlay', config)
+      window.bus.emit('fullWebScreen', config)
+    }
+    initialize()
   })
 })(window.jQuery)
