@@ -26,7 +26,7 @@
     if (!config.enable) {
       return
     }
-    const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
+    // const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
     const videoPlayerObject = () => {
       const selector = [
         '.bilibili-player-video video',
@@ -117,8 +117,9 @@
       }
     }
     const onVideoFinish = function() {
+      window.bus.clear()
       const nextButton = playNextVideoButton()
-      if (nextButton) {
+      if (!document.querySelector('.bpx-player-ctrl-setting-loop input').checked && nextButton) {
         nextButton.click()
         window.bus.emit('startPlay', config)
         return
@@ -131,22 +132,22 @@
     // const onVideoCanplay = function(event) {
     //   console.log(`Video canplay: ${this.currentTime}`)
     // }
-    window.videoJump = function(data) {
-      if (!data.videoJumpSwitch) {
-        return true
-      }
-      const button = historyJumpButton()
-      if (button) {
-        button.click()
-        return true
-      }
-    }
+    // window.videoJump = function(data) {
+    //   if (!data.videoJumpSwitch) {
+    //     return true
+    //   }
+    //   const button = historyJumpButton()
+    //   if (button) {
+    //     button.click()
+    //     return true
+    //   }
+    // }
     const onVideoStart = function() {
       console.log(`补充播放结束事件`)
       this.removeEventListener('ended', onVideoFinish)
       // this.removeEventListener('seeking', onVideoSeeking)
       // this.removeEventListener('canplaythrough', onVideoCanplay)
-      window.bus.emit('videoJump', config)
+      // window.bus.emit('videoJump', config)
       window.bus.emit('adjustSpeed', config)
       this.addEventListener('ended', onVideoFinish)
       // this.addEventListener('seeking', onVideoSeeking)
