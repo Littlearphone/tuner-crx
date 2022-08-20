@@ -2,7 +2,7 @@
   "name": "tuner-v3",
   "description": "Chrome extension for hack different page",
   "homepage_url": "https://www.ohohoho.com",
-  "version": "1.0.133",
+  "version": "1.0.134",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"

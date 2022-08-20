@@ -2,10 +2,10 @@
   <div class="el-slider__wrapper">
     <span class="el-slider__label">{{ config.label }}</span>
     <el-slider
-        :step="0.1"
         :min="config.min"
         :max="config.max"
         @change="onChange"
+        :step="config.step"
         :marks="config.marks"
         v-model="config.value"
         :show-input="config.showInput"
