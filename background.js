@@ -176,6 +176,7 @@
           type: 'SliderField',
           showInput: false,
           default: 1.25,
+          step: 0.05,
           min: 0.1,
           max: 5.0,
           marks: {
