@@ -14,6 +14,11 @@ import PopupConfig from './PopupConfig.vue'
 //   previous[name] = files[current].default || files[current]
 //   return previous
 // }, {})
+const empty = import.meta.env.VITE_EMPTY_POPUP === 'true'
+const config = {
+  ...DefaultConfig,
+  configId: import.meta.env.VITE_POPUP_ID
+}
 export default {
   name: 'PopupIndex',
   components: { PopupConfig },
@@ -28,12 +33,12 @@ export default {
       const site = HackMappings.find(mapping => mapping.expectUrl(tab))
       if (site) {
         this.empty = false
-        this.configDescription = Object.assign({ configId: site.id }, DefaultConfig, site.configDescription)
+        this.configDescription = Object.assign(config, { configId: site.id }, site.configDescription)
       }
     })
     return {
-      empty: true,
-      configDescription: DefaultConfig
+      empty,
+      configDescription: config
     }
   }
 }
@@ -75,7 +80,7 @@ body {
   .el-card {
     border: transparent;
     //backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 0, .1);
+    background-color: rgba(0, 0, 0, .4);
     //background-color: rgba(255, 255, 255, .7);
 
     .el-card__body {

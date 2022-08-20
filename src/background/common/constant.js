@@ -144,8 +144,11 @@ export const HackMappings = [{
   }
 }, {
   id: 'bilibili-video',
-  expectUrl: tab => /http(s)?:\/\/www.bilibili.com\/((bangumi\/play\/(ep|ss)[0-9]+)|(video\/(av|BV)([a-zA-Z0-9]+)))/.test(tab.url),
+  expectUrl: tab => {
+    return /http(s)?:\/\/www.bilibili.com\/((medialist\/play\/([0-9]+|ml[0-9]+\/BV[a-zA-Z0-9]+))|(bangumi\/play\/(ep|ss)[0-9]+)|(video\/(av|BV)[a-zA-Z0-9]+))(\?.*)?/.test(tab.url)
+  },
   matchPatterns: [
+    '*://www.bilibili.com/medialist/play/*',
     '*://www.bilibili.com/bangumi/play/ep*',
     '*://www.bilibili.com/bangumi/play/ss*',
     '*://www.bilibili.com/video/av*',
@@ -158,7 +161,35 @@ export const HackMappings = [{
     injectCss: true,
     injectScript: true,
     configLabel: '"视频"配置开关',
-    fields: []
+    fields: [
+      {
+        key: 'autoStartPlay',
+        label: '自动播放',
+        type: 'SwitchField',
+        default: true
+      },
+      {
+        key: 'fullWebScreen',
+        label: '网页全屏',
+        type: 'SwitchField',
+        default: true
+      },
+      {
+        key: 'playbackRate',
+        label: '播放速率',
+        type: 'SliderField',
+        showInput: false,
+        default: 1.25,
+        min: 0.1,
+        max: 5.0,
+        marks: {
+          1.0: '1.0',
+          2.0: '2.0',
+          3.0: '3.0',
+          4.0: '4.0'
+        }
+      }
+    ]
   }
 }, {
   id: 'pc6-software',

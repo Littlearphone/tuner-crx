@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import { DefaultConfig } from '../../background/common/constant'
+import { DefaultConfig, HackMappings } from '../../background/common/constant'
 import { chromeStorage } from '../../background/common/support'
 
 const files = import.meta.globEager("../component/*.vue")
@@ -49,13 +49,17 @@ export default {
           this.enable = config.hasOwnProperty('enable') ? config.enable : true
           this.injectCss = config.hasOwnProperty('injectCss') ? config.injectCss : true
           this.injectScript = config.hasOwnProperty('injectScript') ? config.injectScript : true
-          const fields = value.fields || []
-          fields.forEach(field => {
-            this.fields.push(field)
+          const fields = [];
+          (value.fields || []).map(field => ({ ...field })).forEach(field => {
             if (!field.hasOwnProperty('value')) {
               field.value = field.default
             }
+            if (config.hasOwnProperty(field.key)) {
+              field.value = config[field.key]
+            }
+            fields.push(field)
           })
+          this.fields = fields
           console.log(JSON.stringify(config))
         })
       }
@@ -78,12 +82,15 @@ export default {
     //   console.log(this.description.configLabel)
     //   console.log(JSON.stringify(config))
     // })
+    const mapping = HackMappings.find(mapping => mapping.id === this.description.configId)
+    const fields = (mapping && mapping.configDescription.fields) || []
+    fields.forEach(field => (field.value = field.default))
     return {
       enable: true,
       injectCss: true,
       injectScript: true,
       configLabel: '',
-      fields: []
+      fields: fields || []
     }
   },
   methods: {
@@ -109,10 +116,9 @@ export default {
         merged.enable = data.enable || this.enable
         merged.injectCss = data.injectCss || this.injectCss
         merged.injectScript = data.injectScript || this.injectScript
-        merged.fields = this.fields.map(field => ({
-          key: field.key,
-          value: fieldsMap.value || field.value
-        }))
+        Object.keys(fieldsMap).forEach(key => {
+          merged[key] = fieldsMap[key]
+        })
         chromeStorage({ [configId]: merged })
       })
     }

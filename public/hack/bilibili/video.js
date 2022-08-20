@@ -11,17 +11,14 @@
     if (!config.hasOwnProperty('enable')) {
       config.enable = true
     }
-    if (!config.hasOwnProperty('speedRate')) {
-      config.speedRate = 1.25
+    if (!config.hasOwnProperty('playbackRate')) {
+      config.playbackRate = 1.25
     }
-    if (!config.hasOwnProperty('autoPlaySwitch')) {
-      config.autoPlaySwitch = true
+    if (!config.hasOwnProperty('autoStartPlay')) {
+      config.autoStartPlay = true
     }
-    if (!config.hasOwnProperty('videoJumpSwitch')) {
-      config.videoJumpSwitch = true
-    }
-    if (!config.hasOwnProperty('fullWebScreenSwitch')) {
-      config.fullWebScreenSwitch = true
+    if (!config.hasOwnProperty('fullWebScreen')) {
+      config.fullWebScreen = true
     }
     if (!config.enable) {
       return
@@ -132,16 +129,6 @@
     // const onVideoCanplay = function(event) {
     //   console.log(`Video canplay: ${this.currentTime}`)
     // }
-    // window.videoJump = function(data) {
-    //   if (!data.videoJumpSwitch) {
-    //     return true
-    //   }
-    //   const button = historyJumpButton()
-    //   if (button) {
-    //     button.click()
-    //     return true
-    //   }
-    // }
     const onVideoStart = function() {
       console.log(`补充播放结束事件`)
       this.removeEventListener('ended', onVideoFinish)
@@ -163,7 +150,7 @@
         onVideoStart.call(player)
         return playButton.className.indexOf('video-state-pause') < 0 || !document.querySelector('.bpx-state-paused')
       }
-      data.autoPlaySwitch && playButton.click()
+      data.autoStartPlay && playButton.click()
       console.log(`开始播放视频`)
       return false
     }
@@ -186,18 +173,18 @@
       if (!options || !options.length) {
         return false
       }
-      console.log(`将播放速度调整为: ${data.speedRate}`)
-      const option = Array.from(options).find(option => filterSpeedOption(data.speedRate, option))
+      console.log(`将播放速度调整为: ${data.playbackRate}`)
+      const option = Array.from(options).find(option => filterSpeedOption(data.playbackRate, option))
       if (option) {
         const classList = option.classList
         return option.click() || classList.contains('bilibili-player-active')
           || classList.contains('active') || classList.contains('bpx-state-active')
       }
       const player = videoPlayerObject()
-      return player && (player.playbackRate = data.speedRate)
+      return player && (player.playbackRate = data.playbackRate)
     }
     window.fullWebScreen = function(data) {
-      if (!data.fullWebScreenSwitch) {
+      if (!data.fullWebScreen) {
         return true
       }
       const buttonArea = fullscreenButtonArea()
