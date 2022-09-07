@@ -138,3 +138,8 @@ html[lang='zh'] [bing] #b_results > li:not(#mfa_root):not(.b_pag) h2 {
 html[lang='zh'] [bing] #b_results > li:not(#mfa_root):not(.b_pag) h2::before {
     left: -26px;
 }
+
+[bing] #b_header .b_searchboxForm {
+    position: relative;
+    left: 0;
+}
