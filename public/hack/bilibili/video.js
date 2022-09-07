@@ -3,6 +3,7 @@
     console.log('页面已经被标记')
     return
   }
+  console.log('bilibili脚本初始化')
   $.bilibiliLoaded = {}
   const key = 'bilibili-video'
   chrome.storage.local.get([key], function(data) {
@@ -28,7 +29,8 @@
       const selector = [
         '.bilibili-player-video video',
         '.bpx-player-primary-area video',
-        '.bilibili-player-video bwp-video'
+        '.bilibili-player-video bwp-video',
+        '.bpx-player-primary-area bwp-video'
       ].join(',')
       return document.querySelector(selector)
     }
