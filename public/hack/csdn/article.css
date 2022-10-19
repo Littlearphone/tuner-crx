@@ -11,7 +11,7 @@ div.template-box, div.blog-footer-bottom, div.leftPop,
 div.toolbar-container-left ~ div, .csdn-shop-window-common,
 .toolbar-container-left .toolbar-menus li:not(.active),
 #blogColumnPayAdvert, div.toolbar-advert, #toolBarBox,
-#recommendNps {
+#recommendNps, .csdn-toolbar {
     display: none !important;
 }
 
