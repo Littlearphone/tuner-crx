@@ -44,10 +44,18 @@
     }
     const playNextVideoButton = () => {
       const selector = [
+        '.squirtle-video-next',
         '.bpx-player-ctrl-next',
         '.bilibili-player-video-btn-next'
       ].join(',')
       return document.querySelector(selector)
+    }
+    const playLoopOption = () => {
+      const selector = [
+        '.squirtle-setting-loop',
+        '.bpx-player-ctrl-setting-loop input'
+      ].join(',')
+      return document.querySelector(selector) || { checked: false }
     }
     const electricJumpButton = () => {
       const selector = [
@@ -118,7 +126,7 @@
     const onVideoFinish = function() {
       window.bus.clear()
       const nextButton = playNextVideoButton()
-      if (!document.querySelector('.bpx-player-ctrl-setting-loop input').checked && nextButton) {
+      if (!playLoopOption().checked && nextButton) {
         nextButton.click()
         window.bus.emit('startPlay', config)
         return
