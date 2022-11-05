@@ -21,7 +21,7 @@
     background: #999;
 }
 
-[bing] #b_content aside, body[bing] footer {
+[bing] #b_content aside, body[bing] footer, body[bing] ol#b_results li.b_ans:has(#rs_lgw_list) {
     display: none !important;
 }
 
