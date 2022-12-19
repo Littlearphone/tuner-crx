@@ -21,7 +21,7 @@
 import { DefaultConfig, HackMappings } from '../../background/common/constant'
 import { chromeStorage } from '../../background/common/support'
 
-const files = import.meta.globEager("../component/*.vue")
+const files = import.meta.glob("../component/*.vue", { eager: true })
 const components = Object.keys(files).reduce((previous, current) => {
   const start = current.lastIndexOf('/') + 1
   const end = current.lastIndexOf('.')

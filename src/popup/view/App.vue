@@ -6,7 +6,7 @@
 import { getRequest } from '../util/http'
 import { ActiveTab, DefaultConfig, HackMappings } from '../../background/common/constant.js'
 import PopupConfig from './PopupConfig.vue'
-// const files = import.meta.globEager("../component/*.vue")
+// const files = import.meta.glob("../component/*.vue", { eager: true })
 // const components = Object.keys(files).reduce((previous, current) => {
 //   const start = current.lastIndexOf('/') + 1
 //   const end = current.lastIndexOf('.')
