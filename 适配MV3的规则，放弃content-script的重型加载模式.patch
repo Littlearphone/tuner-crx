@@ -1,0 +1,3918 @@
+Subject: [PATCH] 适配MV3的规则，放弃content-script的重型加载模式
+---
+Index: src/background/index.js
+===================================================================
+diff --git a/src/background/index.js b/src/background/index.js
+deleted file mode 100644
+--- a/src/background/index.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ /dev/null	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
+@@ -1,22 +0,0 @@
+-import { ajaxProxy, contentScripts } from './common/support'
+-
+-chrome.runtime.onInstalled.addListener(() => {
+-  const scripts = contentScripts()
+-  chrome.scripting.unregisterContentScripts({ ids: scripts.map(script => script.id) }, () => {
+-    chrome.scripting.registerContentScripts(scripts, () => {
+-      scripts.forEach(script => console.log(`Inject content script: ${script.id}`))
+-    })
+-  })
+-})
+-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+-  if (!request) {
+-    sendResponse(JSON.stringify({}))
+-    return true
+-  }
+-  if (request.type === 'ajax') {
+-    ajaxProxy(request, sender, sendResponse)
+-    return true
+-  }
+-  sendResponse(JSON.stringify({}))
+-  return true
+-})
+Index: src/navigator/index.css
+===================================================================
+diff --git a/src/navigator/index.css b/src/navigator/index.css
+deleted file mode 100644
+--- a/src/navigator/index.css	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ /dev/null	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
+@@ -1,8 +0,0 @@
+-#app {
+-    font-family: Avenir, Helvetica, Arial, sans-serif;
+-    -webkit-font-smoothing: antialiased;
+-    -moz-osx-font-smoothing: grayscale;
+-    text-align: center;
+-    color: #2c3e50;
+-    width: fit-content;
+-}
+Index: src/options/index.css
+===================================================================
+diff --git a/src/options/index.css b/src/options/index.css
+deleted file mode 100644
+--- a/src/options/index.css	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ /dev/null	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
+@@ -1,8 +0,0 @@
+-#app {
+-    font-family: Avenir, Helvetica, Arial, sans-serif;
+-    -webkit-font-smoothing: antialiased;
+-    -moz-osx-font-smoothing: grayscale;
+-    text-align: center;
+-    color: #2c3e50;
+-    width: fit-content;
+-}
+Index: src/popup/index.css
+===================================================================
+diff --git a/src/popup/index.css b/src/popup/index.css
+deleted file mode 100644
+--- a/src/popup/index.css	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ /dev/null	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
+@@ -1,7 +0,0 @@
+-#app {
+-    font-family: Avenir, Helvetica, Arial, sans-serif;
+-    -webkit-font-smoothing: antialiased;
+-    -moz-osx-font-smoothing: grayscale;
+-    color: #2c3e50;
+-    width: fit-content;
+-}
+Index: src/navigator/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/navigator/index.js b/src/navigator/index.ts
+rename from src/navigator/index.js
+rename to src/navigator/index.ts
+--- a/src/navigator/index.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/navigator/index.ts	(date 1678273293557)
+@@ -1,7 +1,7 @@
+-import ElementPlus from 'element-plus'
+-import 'element-plus/theme-chalk/index.css'
+-import { createApp } from 'vue'
+-import App from './view/App.vue'
+-import './index.css'
++import {createApp} from 'vue'
++import "~/styles/index.scss"
++// @ts-ignore
++import App from './App.vue'
++import 'uno.css'
+ 
+-createApp(App).use(ElementPlus).mount('#app')
++createApp(App).mount('#app')
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/.gitignore	(date 1678256987957)
+@@ -1,4 +1,5 @@
+ /package-lock.json
++/pnpm-lock.yaml
+ /node_modules/
+ /dist/
+ *.iml
+Index: popup.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/popup.html b/popup.html
+--- a/popup.html	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/popup.html	(date 1678255180350)
+@@ -8,6 +8,6 @@
+   </head>
+   <body>
+     <div id="app"></div>
+-    <script type="module" src="/src/popup/index.js"></script>
++    <script type="module" lang="ts" src="/src/popup/index.ts"></script>
+   </body>
+ </html>
+Index: src/popup/util/http.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/util/http.js b/src/popup/util/http.ts
+rename from src/popup/util/http.js
+rename to src/popup/util/http.ts
+--- a/src/popup/util/http.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/util/http.ts	(date 1678342428918)
+@@ -1,9 +1,9 @@
+-export const getRequest = function(url, callback) {
++export function getRequest(url: string, callback: Function) {
+   const xhr = new XMLHttpRequest()
+   xhr.open("GET", url)
+   xhr.send(null)
+   //绑定响应状态事件监听函数
+-  xhr.onreadystatechange = function() {
++  xhr.onreadystatechange = function () {
+     if (xhr.readyState === 4 && xhr.status === 200) {
+       callback(xhr.responseText)
+     }
+Index: src/options/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/options/index.js b/src/options/index.ts
+rename from src/options/index.js
+rename to src/options/index.ts
+--- a/src/options/index.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/options/index.ts	(date 1678273293523)
+@@ -1,7 +1,7 @@
+-import ElementPlus from 'element-plus'
+-import 'element-plus/theme-chalk/index.css'
+-import { createApp } from 'vue'
+-import App from './view/App.vue'
+-import './index.css'
++import {createApp} from 'vue'
++import "~/styles/index.scss"
++// @ts-ignore
++import App from './App.vue'
++import 'uno.css'
+ 
+-createApp(App).use(ElementPlus).mount('#app')
++createApp(App).mount('#app')
+Index: public/hack/douyu/live-room.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/douyu/live-room.js b/public/hack/douyu/live-room.js
+--- a/public/hack/douyu/live-room.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/douyu/live-room.js	(date 1678346204773)
+@@ -1,48 +1,53 @@
+-(function($) {
+-  const key = 'douyu-room'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到Douyu配置信息')
+-    const config = { ...data[key] }
+-    if (!config.hasOwnProperty('enable')) {
+-      config.enable = true
+-    }
+-    if (!config.hasOwnProperty('fullPage')) {
+-      config.fullPage = true
+-    }
+-    if (!config.hasOwnProperty('danmuSize')) {
+-      config.danmuSize = 30
+-    }
+-    if (!config.enable) {
+-      return
+-    }
+-    (function() {
++(function ($) {
++  if ($('body[douyu]').length) {
++    return console.log('脚本重复注入')
++  }
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('Douyu script is on standby')
++    callback({ msg: 'douyu-script-injected' })
++    const config = data.config || {}
++    (function () {
++      if (!config.hasOwnProperty('danMuSize') || config.danMuSize <= 0) {
++        config.danMuSize = 30
++      }
+       const innerHTML = `
+         .layout-Player #comment-higher-container [class*="danmuItem-"],
+         .layout-Player [class*="comment-"] [class*="danmu-"] [class*="danmuItem-"] {
+-          font-size: ${config.danmuSize}px !important
++          font-size: ${config.danMuSize}px !important
+         }
+       `
+       $('<style></style>').attr('rel', 'stylesheet').html(innerHTML).appendTo('head')
+-    })()
+-    $.detect && $.detect('.layout-Player', player => {
+-      $.detect('.layout-Player-video', video => {
+-        $.detect('#js-player-video', () => {
+-          if (!video.find('title-toggle-button').length) {
+-            $('<i></i>').appendTo(video).addClass('title-toggle-button')
+-              .on('click', () => player.toggleClass('toggle-layout-fold'))
+-          }
+-          if (!video.find('toolbar-toggle-button').length) {
+-            $('<i></i>').appendTo(video).addClass('toolbar-toggle-button')
+-              .on('click', () => player.toggleClass('toggle-layout-fold'))
+-          }
+-        })
+-      })
+-      player.siblings().hide().parents().each(element => $(element).siblings().hide())
+-      if (config.fullPage) {
+-        player.addClass('toggle-layout-fold')
+-        return
+-      }
+-      player.removeClass('toggle-layout-fold')
+-    })
++    })();
++    (function () {
++      $.detect && $.detect('.layout-Player', player => {
++        $.detect('.layout-Player-video', video => {
++          $.detect('#js-player-video', () => {
++            if (!video.find('title-toggle-button').length) {
++              $('<i></i>').appendTo(video).addClass('title-toggle-button')
++                .on('click', () => player.toggleClass('toggle-layout-fold'))
++            }
++            if (!video.find('toolbar-toggle-button').length) {
++              $('<i></i>').appendTo(video).addClass('toolbar-toggle-button')
++                .on('click', () => player.toggleClass('toggle-layout-fold'))
++            }
++          })
++        })
++        player.siblings().hide().parents().each(element => $(element).siblings().hide())
++        if (!config.hasOwnProperty('fullPage') || config.fullPage) {
++          return player.addClass('toggle-layout-fold')
++        }
++        player.removeClass('toggle-layout-fold')
++      })
++    })()
+   })
++
++  function initialize () {
++    const $body = $('body')
++    if (!$body.length) {
++      return requestAnimationFrame(initialize)
++    }
++    $body.attr('douyu', '')
++  }
++
++  requestAnimationFrame(initialize)
+ })(window.jQuery)
+Index: src/options/view/App.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/options/view/App.vue b/src/options/App.vue
+rename from src/options/view/App.vue
+rename to src/options/App.vue
+--- a/src/options/view/App.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/options/App.vue	(date 1678259494192)
+@@ -1,9 +1,8 @@
+ <template>
++  <el-config-provider namespace="ep">
++  </el-config-provider>
+ </template>
+-<script>
+-export default {
+-  name: 'App'
+-}
++<script setup lang="ts">
+ </script>
+ <style>
+ </style>
+Index: public/hack/bing/search.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/bing/search.js b/public/hack/bing/search.js
+--- a/public/hack/bing/search.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/bing/search.js	(date 1678346204629)
+@@ -1,107 +1,96 @@
+-(function($) {
++(function ($) {
+   if ($('body[bing]').length) {
+-    return
+-  }
+-  window.Pagination.prototype.nextPage = function() {
+-    const next = $('li a.sb_pagN')
+-    if (!next.length || this.iframe.attr('src') === next.attr('href')) {
+-      return
+-    }
+-    console.log('自动加载下一页')
+-    if (!$('iframe#tuner-crx').length) {
+-      this.reloadFrame()
+-    }
+-    this.lastPosition = window.scrollY
+-    const loading = $.loading.mask('li.b_pag').start()
+-    this.iframe.on('load', () => {
+-      $('li.b_pag').html(this.select('li.b_pag').html())
+-      loading.end().remove()
+-      const results = this.select('#b_results li.b_algo')
+-      if (!results.length) {
+-        return
+-      }
+-      const list = $('#b_results li.b_algo')
+-      if (list.length) {
+-        list.last().after(results)
+-      }
+-      if (window.scrollY >= this.lastPosition) {
+-        window.scrollTo(window.scrollX, this.lastPosition)
+-      }
+-    })
+-    this.iframe.attr('src', next.attr('href'))
+-  }
+-  window.pagination = new window.Pagination()
+-  const key = 'bing-search'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到Bing配置信息')
+-    const config = { ...data[key] }
+-    if (!config.hasOwnProperty('enable')) {
+-      config.enable = true
++    return console.log('脚本重复注入')
++  }
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('Bing script is on standby')
++    callback({ msg: 'bing-script-injected' })
++    const config = data.config || {}
++    config.enableHta = !config.hasOwnProperty('enableHta') || config.enableHta
++    const htaConfig = 'hta=' + (config.enableHta ? 'on' : 'off')
++    const htaReverse = 'hta=' + (config.enableHta ? 'off' : 'on')
++    if (document.cookie.indexOf('_FP=' + htaConfig) < 0) {
++      if (location.href.indexOf(htaReverse) >= 0) {
++        location.href = location.href.toString().replaceAll(htaReverse, htaConfig)
++      } else if (location.href.indexOf(htaConfig) < 0) {
++        location.href += '&' + htaConfig
++      }
++    }
++    if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
++      return
++    }
++    if (!window.pagination) {
++      window.pagination = new window.Pagination()
++    }
++    window.Pagination.prototype.nextPage = function () {
++      const next = $('li a.sb_pagN')
++      if (!next.length || this.iframe.attr('src') === next.attr('href')) {
++        return
++      }
++      console.log('自动加载下一页')
++      if (!$('iframe#tuner-crx').length) {
++        this.reloadFrame()
++      }
++      this.lastPosition = window.scrollY
++      const loading = $.loading.mask('li.b_pag').start()
++      this.iframe.on('load', () => {
++        $('li.b_pag').html(this.select('li.b_pag').html())
++        loading.end().remove()
++        const results = this.select('#b_results li.b_algo')
++        if (!results.length) {
++          return
++        }
++        const list = $('#b_results li.b_algo')
++        if (list.length) {
++          list.last().after(results)
++        }
++        if (window.scrollY >= this.lastPosition) {
++          window.scrollTo(window.scrollX, this.lastPosition)
++        }
++      })
++      this.iframe.attr('src', next.attr('href'))
+     }
+-    if (!config.hasOwnProperty('hta')) {
+-      config.hta = true
+-    }
+-    if (!config.hasOwnProperty('autoPaging')) {
+-      config.autoPaging = true
+-    }
+-    if (!config.enable) {
+-      return
+-    }
+-    if (!config.autoPaging) {
+-      window.Pagination.prototype.nextPage = function() {
+-      }
+-    }
+-    const htaConfig = 'hta=' + (config.hta ? 'on' : 'off')
+-    const htaReverse = 'hta=' + (config.hta ? 'off' : 'on')
+-    if (document.cookie.indexOf('_FP=' + htaConfig) < 0) {
+-      if (location.href.indexOf(htaReverse) >= 0) {
+-        location.href = location.href.toString().replaceAll(htaReverse, htaConfig)
+-      } else if (location.href.indexOf(htaConfig) < 0) {
+-        location.href += '&' + htaConfig
+-      }
+-    }
+-    const FaviconMapping = config.injectConfig && config.injectConfig.FaviconMapping || {}
+-    const defaultIcon = 'https://cn.bing.com/favicon.ico'
++  })
++  const FaviconMapping = {}
++  const defaultIcon = 'https://cn.bing.com/favicon.ico'
+ 
+-    function faviconParse(result) {
+-      const cite = result.querySelector('cite')
+-      if (!cite) {
+-        return `url("${defaultIcon}")`
+-      }
+-      const text = cite.innerText
+-      const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
+-      if (key) {
+-        return `url("${FaviconMapping[key]}"), url("${defaultIcon}")`
+-      }
+-      const urls = text.split('://')
+-      if (urls.length > 1) {
+-        return `url("${urls[0] + '://' + urls[1].split('/')[0] + '/favicon.ico'}"), url("${defaultIcon}")`
+-      }
+-      return `url("${'//' + urls[0].split('/')[0] + '/favicon.ico'}"), url("${defaultIcon}")`
+-    }
++  function faviconParse (result) {
++    const cite = result.querySelector('cite')
++    if (!cite) {
++      return `url("${defaultIcon}")`
++    }
++    const text = cite.innerText
++    const key = Object.keys(FaviconMapping).find(regex => new RegExp(regex, 'gi').test(text))
++    if (key) {
++      return `url("${FaviconMapping[key]}"), url("${defaultIcon}")`
++    }
++    const urls = text.split('://')
++    if (urls.length > 1) {
++      return `url("${urls[0] + '://' + urls[1].split('/')[0] + '/favicon.ico'}"), url("${defaultIcon}")`
++    }
++    return `url("${'//' + urls[0].split('/')[0] + '/favicon.ico'}"), url("${defaultIcon}")`
++  }
+ 
+-    function initialPage() {
+-      if (!document.body) {
+-        setTimeout(initialPage, 100)
+-        return
+-      }
+-      document.body.setAttribute('bing', '')
+-      $('[bing] #b_content #b_results li').each(function() {
+-        const h2 = $(this).find('h2')
+-        if (h2.find('i')) {
+-          return
+-        }
+-        $('<i></i>').css({
+-          'width': '24px',
+-          'height': '24px',
+-          'margin': '0 5px',
+-          'display': 'inline-block',
+-          'background-size': '100%',
+-          'background-image': faviconParse(this)
+-        }).prependTo(h2)
+-      })
+-    }
++  function initialPage () {
++    if (!document.body) {
++      return requestAnimationFrame(initialPage)
++    }
++    document.body.setAttribute('bing', '')
++    $('[bing] #b_content #b_results li').each(function () {
++      const h2 = $(this).find('h2')
++      if (h2.find('i')) {
++        return
++      }
++      $('<i></i>').css({
++        'width': '24px',
++        'height': '24px',
++        'margin': '0 5px',
++        'display': 'inline-block',
++        'background-size': '100%',
++        'background-image': faviconParse(this)
++      }).prependTo(h2)
++    })
++  }
+ 
+-    setTimeout(initialPage, 100)
+-  })
++  requestAnimationFrame(initialPage)
+ })(window.jQuery)
+Index: navigator.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/navigator.html b/navigator.html
+--- a/navigator.html	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/navigator.html	(date 1678255180328)
+@@ -8,6 +8,6 @@
+   </head>
+   <body>
+     <div id="app"></div>
+-    <script type="module" src="/src/navigator/index.js"></script>
++    <script type="module" lang="ts" src="/src/navigator/index.ts"></script>
+   </body>
+ </html>
+Index: public/hack/zhihu/question.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/zhihu/question.js b/public/hack/zhihu/question.js
+--- a/public/hack/zhihu/question.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/zhihu/question.js	(date 1678344733904)
+@@ -1,11 +1,11 @@
+-(function($) {
+-  function scavenger() {
++(function ($) {
++  function scavenger () {
+     const loginModal = $('div').find('.signFlowModal')
+     if (loginModal.length) {
+       loginModal.parents('div').remove()
+     }
+-    setTimeout(scavenger, 1000)
++    requestAnimationFrame(scavenger)
+   }
+ 
+-  scavenger()
++  requestAnimationFrame(scavenger)
+ })(window.jQuery)
+Index: vite.config.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vite.config.js b/vite.config.ts
+rename from vite.config.js
+rename to vite.config.ts
+--- a/vite.config.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/vite.config.ts	(date 1678351236931)
+@@ -1,22 +1,78 @@
++import path from 'path'
++import Unocss from 'unocss/vite'
+ import vue from '@vitejs/plugin-vue'
++import {defineConfig, loadEnv} from 'vite'
++import Components from 'unplugin-vue-components/vite'
++
++import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
++import {presetAttributify, presetIcons, presetUno, transformerDirectives, transformerVariantGroup,} from 'unocss'
+ 
+-const { resolve } = require('path')
+-/**
+- * @type {import('vite').UserConfig}
+- */
+-export default {
+-  plugins: [vue()],
++const pathSrc = path.resolve(__dirname, 'src')
++
++// https://vitejs.dev/config/
++export default ({mode}) => defineConfig({
++  resolve: {
++    alias: {
++      '~/': `${pathSrc}/`,
++    },
++  },
++  css: {
++    preprocessorOptions: {
++      scss: {
++        additionalData: `@use "~/styles/element/index.scss" as *;`,
++      },
++    },
++  },
++  plugins: [
++    vue(),
++    Components({
++      // allow auto load markdown components under `./src/components/`
++      extensions: ['vue', 'md'],
++      // allow auto import and register components used in markdown
++      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
++      resolvers: [
++        ElementPlusResolver({
++          importStyle: 'sass',
++        }),
++      ],
++      dts: 'src/components.d.ts',
++    }),
++
++    // https://github.com/antfu/unocss
++    // see unocss.config.ts for config
++    Unocss({
++      presets: [
++        presetUno(),
++        presetAttributify(),
++        presetIcons({
++          scale: 1.2,
++          warn: true,
++        }),
++      ],
++      transformers: [
++        transformerDirectives(),
++        transformerVariantGroup(),
++      ]
++    }),
++  ],
++  define: {'process.env': loadEnv(mode, process.cwd())},
+   server: {
+-    open: '/navigator.html'
++    open: '/popup.html'
+   },
+   build: {
+     emptyOutDir: false,
+     rollupOptions: {
+       input: {
+-        navigator: resolve(__dirname, 'navigator.html'),
+-        option: resolve(__dirname, 'options.html'),
+-        popup: resolve(__dirname, 'popup.html')
++        background: path.resolve(__dirname, 'src/background/index.ts'),
++        navigator: path.resolve(__dirname, 'navigator.html'),
++        option: path.resolve(__dirname, 'options.html'),
++        popup: path.resolve(__dirname, 'popup.html'),
++      },
++      output: {
++        entryFileNames: 'assets/[name].js',
++        chunkFileNames: 'assets/[name].js',
++        assetFileNames: 'assets/[name].[ext]',
+       }
+     }
+   }
+-}
++})
+Index: src/navigator/view/App.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/navigator/view/App.vue b/src/navigator/App.vue
+rename from src/navigator/view/App.vue
+rename to src/navigator/App.vue
+--- a/src/navigator/view/App.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/navigator/App.vue	(date 1678266997278)
+@@ -1,120 +1,121 @@
+ <template>
+-  <div @contextmenu="showGlobalMenus">
+-    <div class="background-layer" :style="backgroundLayerStyle"></div>
+-    <div class="effect-layer" :style="effectLayerStyle"></div>
+-    <div class="app-layer">
+-      <el-scrollbar>
+-        <div ref="appContainer" class="app-container" :style="containerStyle">
+-          <div
++  <el-config-provider namespace="ep">
++    <div @contextmenu="showGlobalMenus">
++      <div class="background-layer" :style="backgroundLayerStyle"></div>
++      <div class="effect-layer" :style="effectLayerStyle"></div>
++      <div class="app-layer">
++        <el-scrollbar>
++          <div ref="appContainer" class="app-container" :style="containerStyle">
++            <div
+               class="app-block"
+               v-for="app in apps"
+               :style="appBlockStyle(app)"
+               @click="e => clickAppBlock(app, e)"
+               @contextmenu="disableContextMenu"
+-          >
+-            <div class="app-head" v-if="appHeadText(app)" :style="appHeadStyle(app)">
+-              {{ appHeadText(app) }}
+-            </div>
+-            <div class="app-body" v-if="appBodyText(app)" :style="appBodyStyle(app)">
+-              {{ appBodyText(app) }}
+-            </div>
+-            <div class="app-tail" v-if="appTailText(app)" :style="appTailStyle(app)">
+-              {{ appTailText(app) }}
+-            </div>
+-          </div>
+-        </div>
+-      </el-scrollbar>
+-      <div class="contextmenu-block" :style="contextMenuStyle" v-show="contextMenuVisible">
+-        <div v-for="item in contextMenus" @click="clickContextMenuItem(item.action)" class="contextmenu-item">
+-          <el-icon v-if="item.icon">
+-            <component :is="item.icon" />
+-          </el-icon>
+-          <span class="contextmenu-text">{{ item.name }}</span>
+-        </div>
+-      </div>
+-      <!--<div class="contextmenu-layer" @click="hideContextMenu">-->
+-      <!--</div>-->
+-    </div>
+-    <div class="app-dialog" @contextmenu="disableContextMenu">
+-      <el-dialog v-model="appDialogVisible" destroy-on-close :fullscreen="appDialogFullscreen">
+-        <el-collapse v-model="activeName" accordion>
+-          <el-collapse-item title="Consistency" name="1">
+-          </el-collapse-item>
+-          <el-collapse-item title="Feedback" name="2">
+-          </el-collapse-item>
+-          <el-collapse-item title="Efficiency" name="3">
+-          </el-collapse-item>
+-          <el-collapse-item title="Controllability" name="4">
+-          </el-collapse-item>
+-        </el-collapse>
+-      </el-dialog>
+-    </div>
+-    <div class="config-panel" @contextmenu="disableContextMenu">
+-      <el-dialog v-model="configPanelVisible" destroy-on-close>
+-        <el-collapse v-model="activeName" accordion>
+-          <el-collapse-item title="组件图标设置" name="1">
+-            <el-card>
+-              <div class="config-item">
+-                <span class="config-item-text">组件图标间距</span>
+-                <el-slider class="config-item-element" v-model="containerProperties.gapLength" show-input></el-slider>
+-              </div>
+-              <div class="config-item">
+-                <span class="config-item-text">组件图标大小</span>
+-                <el-slider
++            >
++              <div class="app-head" v-if="appHeadText(app)" :style="appHeadStyle(app)">
++                {{ appHeadText(app) }}
++              </div>
++              <div class="app-body" v-if="appBodyText(app)" :style="appBodyStyle(app)">
++                {{ appBodyText(app) }}
++              </div>
++              <div class="app-tail" v-if="appTailText(app)" :style="appTailStyle(app)">
++                {{ appTailText(app) }}
++              </div>
++            </div>
++          </div>
++        </el-scrollbar>
++        <div class="contextmenu-block" :style="contextMenuStyle" v-show="contextMenuVisible">
++          <div v-for="item in contextMenus" @click="clickContextMenuItem(item.action)" class="contextmenu-item">
++            <el-icon v-if="item.icon">
++              <component :is="item.icon" />
++            </el-icon>
++            <span class="contextmenu-text">{{ item.name }}</span>
++          </div>
++        </div>
++        <!--<div class="contextmenu-layer" @click="hideContextMenu">-->
++        <!--</div>-->
++      </div>
++      <div class="app-dialog" @contextmenu="disableContextMenu">
++        <el-dialog v-model="appDialogVisible" destroy-on-close :fullscreen="appDialogFullscreen">
++          <el-collapse v-model="activeName" accordion>
++            <el-collapse-item title="Consistency" name="1">
++            </el-collapse-item>
++            <el-collapse-item title="Feedback" name="2">
++            </el-collapse-item>
++            <el-collapse-item title="Efficiency" name="3">
++            </el-collapse-item>
++            <el-collapse-item title="Controllability" name="4">
++            </el-collapse-item>
++          </el-collapse>
++        </el-dialog>
++      </div>
++      <div class="config-panel" @contextmenu="disableContextMenu">
++        <el-dialog v-model="configPanelVisible" destroy-on-close>
++          <el-collapse v-model="activeName" accordion>
++            <el-collapse-item title="组件图标设置" name="1">
++              <el-card>
++                <div class="config-item">
++                  <span class="config-item-text">组件图标间距</span>
++                  <el-slider class="config-item-element" v-model="containerProperties.gapLength" show-input></el-slider>
++                </div>
++                <div class="config-item">
++                  <span class="config-item-text">组件图标大小</span>
++                  <el-slider
+                     :min="64"
+                     :max="128"
+                     show-input
+                     class="config-item-element"
+                     v-model="containerProperties.unitLength"
+-                ></el-slider>
+-              </div>
+-              <div class="config-item">
+-                <span class="config-item-text">组件图标圆角</span>
+-                <el-slider
++                  ></el-slider>
++                </div>
++                <div class="config-item">
++                  <span class="config-item-text">组件图标圆角</span>
++                  <el-slider
+                     :min="0"
+                     :max="64"
+                     show-input
+                     class="config-item-element"
+                     v-model="containerProperties.unitRadius"
+-                ></el-slider>
+-              </div>
+-            </el-card>
+-          </el-collapse-item>
+-          <el-collapse-item title="组件交互设置" name="2">
+-            <el-card>
+-              <div class="config-item">
+-                <el-switch v-model="appLinkOpenWindow" size="large" inactive-text="链接在新窗口打开" />
+-              </div>
+-              <div class="config-item">
+-                <el-switch v-model="appDialogFullscreen" size="large" inactive-text="小组件全屏" />
+-              </div>
+-            </el-card>
+-          </el-collapse-item>
+-          <el-collapse-item title="主题设置" name="3">
+-            <el-card></el-card>
+-          </el-collapse-item>
+-          <el-collapse-item title="其它设置" name="4">
+-            <el-card></el-card>
+-          </el-collapse-item>
+-        </el-collapse>
+-      </el-dialog>
+-    </div>
+-  </div>
++                  ></el-slider>
++                </div>
++              </el-card>
++            </el-collapse-item>
++            <el-collapse-item title="组件交互设置" name="2">
++              <el-card>
++                <div class="config-item">
++                  <el-switch v-model="appLinkOpenWindow" size="large" inactive-text="链接在新窗口打开" />
++                </div>
++                <div class="config-item">
++                  <el-switch v-model="appDialogFullscreen" size="large" inactive-text="小组件全屏" />
++                </div>
++              </el-card>
++            </el-collapse-item>
++            <el-collapse-item title="主题设置" name="3">
++              <el-card></el-card>
++            </el-collapse-item>
++            <el-collapse-item title="其它设置" name="4">
++              <el-card></el-card>
++            </el-collapse-item>
++          </el-collapse>
++        </el-dialog>
++      </div>
++    </div>
++  </el-config-provider>
+ </template>
+ <script>
+-import setting from '@element-plus/icons-vue/dist/es/setting.mjs'
+-import dataLine from '@element-plus/icons-vue/dist/es/data-line.mjs'
+ import moment from 'moment'
+ import 'moment/dist/locale/zh-cn'
+-import { APP_BLOCKS, BACKGROUND } from './config/data'
++import { APP_BLOCKS, BACKGROUND } from './config/data.js'
++import { DataLine, Setting } from '@element-plus/icons-vue'
+ 
+ export default {
+   name: 'App',
+   components: {
+-    setting,
+-    dataLine
++    Setting,
++    DataLine
+   },
+-  mounted() {
++  mounted () {
+     this.refreshClock()
+     Array.from(document.styleSheets).forEach((sheet, index) => {
+       const fadeInIndex = Array.from(sheet.cssRules).findIndex(rule => rule.name === 'dialog-fade-in')
+@@ -128,7 +129,7 @@
+     })
+   },
+   computed: {
+-    containerStyle() {
++    containerStyle () {
+       const gapLength = this.containerProperties.gapLength
+       const unitLength = this.containerProperties.unitLength
+       return {
+@@ -139,7 +140,7 @@
+       }
+     }
+   },
+-  data() {
++  data () {
+     return {
+       fadeInIndex: -1,
+       fadeOutIndex: -1,
+@@ -187,7 +188,7 @@
+     }
+   },
+   methods: {
+-    refreshClock() {
++    refreshClock () {
+       const clocks = this.apps.filter(app => app.type === 'clock')
+       clocks.forEach(app => {
+         if (app.head && app.head.text) {
+@@ -210,25 +211,25 @@
+         setTimeout(() => this.refreshClock(), 1000)
+       }
+     },
+-    appHeadText(app) {
++    appHeadText (app) {
+       return (app.head && app.head.text) || app.head
+     },
+-    appHeadStyle(app) {
++    appHeadStyle (app) {
+       return app.head && app.head.style
+     },
+-    appBodyText(app) {
++    appBodyText (app) {
+       return (app.body && app.body.text) || app.body
+     },
+-    appBodyStyle(app) {
++    appBodyStyle (app) {
+       return app.body && app.body.style
+     },
+-    appTailText(app) {
++    appTailText (app) {
+       return (app.tail && app.tail.text) || app.tail
+     },
+-    appTailStyle(app) {
++    appTailStyle (app) {
+       return app.tail && app.tail.style
+     },
+-    appBlockStyle(app) {
++    appBlockStyle (app) {
+       const rowGap = this.containerProperties.gapLength
+       const columnGap = this.containerProperties.gapLength
+       const unitWidth = this.containerProperties.unitLength
+@@ -244,7 +245,7 @@
+         width: `${(column - 1) * columnGap + column * unitWidth}px`
+       })
+     },
+-    clickAppBlock(app, e) {
++    clickAppBlock (app, e) {
+       e && e.preventDefault()
+       e && e.stopPropagation()
+       switch (app.type || 'dialog') {
+@@ -265,7 +266,7 @@
+           break
+       }
+     },
+-    updateDialogAnimation(target) {
++    updateDialogAnimation (target) {
+       if (this.fadeSheetIndex < 0) {
+         return
+       }
+@@ -304,31 +305,31 @@
+       }
+       `, this.fadeOutIndex)
+     },
+-    disableContextMenu(e) {
++    disableContextMenu (e) {
+       e && e.preventDefault()
+       e && e.stopPropagation()
+     },
+-    testActionMethod() {},
+-    showConfigPanel() {
++    testActionMethod () {},
++    showConfigPanel () {
+       this.configPanelVisible = true
+     },
+-    clickContextMenuItem(callback) {
++    clickContextMenuItem (callback) {
+       callback.call(this)
+       this.hideContextMenu()
+     },
+-    hideContextMenu(e) {
++    hideContextMenu (e) {
+       e && e.preventDefault()
+       e && e.stopPropagation()
+       this.contextMenuVisible = false
+       document.removeEventListener('click', this.hideContextMenu)
+     },
+-    showBlockMenus(e) {
++    showBlockMenus (e) {
+       this.showContextMenus(e, this.blockMenus)
+     },
+-    showGlobalMenus(e) {
++    showGlobalMenus (e) {
+       this.showContextMenus(e, this.globalMenus)
+     },
+-    showContextMenus(e, menus) {
++    showContextMenus (e, menus) {
+       e && e.preventDefault()
+       e && e.stopPropagation()
+       this.contextMenus = menus
+@@ -338,7 +339,7 @@
+       document.addEventListener('click', this.hideContextMenu)
+     }
+   },
+-  destroyed() {
++  destroyed () {
+     document.removeEventListener('click', this.hideContextMenu)
+   }
+ }
+@@ -352,15 +353,15 @@
+ }
+ 
+ .config-panel {
+-  .el-dialog__header {
++  .ep-dialog__header {
+     display: none;
+   }
+ 
+-  .el-dialog__body {
++  .ep-dialog__body {
+     padding-top: 0;
+     padding-bottom: 0;
+ 
+-    .el-collapse-item__content {
++    .ep-collapse-item__content {
+       padding-bottom: 12px;
+     }
+ 
+@@ -379,7 +380,7 @@
+         width: calc(100% - 100px);
+       }
+ 
+-      .el-switch {
++      .ep-switch {
+         width: 100%;
+         align-self: center;
+         justify-content: space-between;
+Index: public/hack/bilibili/video.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/bilibili/video.js b/public/hack/bilibili/video.js
+--- a/public/hack/bilibili/video.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/bilibili/video.js	(date 1678344733830)
+@@ -1,29 +1,18 @@
+-(function($) {
++(function ($) {
+   if ($.bilibiliLoaded) {
+-    console.log('页面已经被标记')
+-    return
++    return console.log('脚本重复注入')
+   }
+   console.log('bilibili脚本初始化')
+   $.bilibiliLoaded = {}
+-  const key = 'bilibili-video'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到Bilibili配置信息')
+-    const config = { ...data[key] }
+-    if (!config.hasOwnProperty('enable')) {
+-      config.enable = true
+-    }
+-    if (!config.hasOwnProperty('playbackRate')) {
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('[]~(￣▽￣)~* script is on standby')
++    callback({ msg: '[]~(￣▽￣)~*-script-injected' })
++    const config = data.config || {}
++    if (!config.hasOwnProperty('playbackRate') || config.playbackRate <= 0) {
+       config.playbackRate = 1.25
+     }
+-    if (!config.hasOwnProperty('autoStartPlay')) {
+-      config.autoStartPlay = true
+-    }
+-    if (!config.hasOwnProperty('fullWebScreen')) {
+-      config.fullWebScreen = true
+-    }
+-    if (!config.enable) {
+-      return
+-    }
++    config.autoStartPlay = !config.hasOwnProperty('autoStartPlay') || config.autoStartPlay
++    config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
+     // const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
+     const videoPlayerObject = () => {
+       const selector = [
+@@ -77,16 +66,16 @@
+         '.squirtle-video-speed ul li',
+         '.bpx-player-ctrl-playbackrate ul li',
+         '.bilibili-player-video-btn-speed-menu-list'
+-      ].join(",")
++      ].join(',')
+       return document.querySelectorAll(selector)
+     }
+     if (!window.EventBus) {
+-      window.EventBus = function() {
++      window.EventBus = function () {
+         this.uuid = new Date().getTime()
+         this.events = []
+         console.log(`创建事件总线: ${this.uuid}`)
+       }
+-      window.EventBus.prototype.emit = function(type, data) {
++      window.EventBus.prototype.emit = function (type, data) {
+         this.events.push({
+           type,
+           data
+@@ -94,10 +83,10 @@
+         this.start()
+         console.log(`收到事件: ${type}`)
+       }
+-      window.EventBus.prototype.clear = function() {
++      window.EventBus.prototype.clear = function () {
+         this.events.length = 0
+       }
+-      window.EventBus.prototype.start = function() {
++      window.EventBus.prototype.start = function () {
+         if (this.timer) {
+           clearTimeout(this.timer)
+         }
+@@ -123,7 +112,7 @@
+         this.events.push(event)
+       }
+     }
+-    const onVideoFinish = function() {
++    const onVideoFinish = function () {
+       window.bus.clear()
+       const nextButton = playNextVideoButton()
+       if (!playLoopOption().checked && nextButton) {
+@@ -139,7 +128,7 @@
+     // const onVideoCanplay = function(event) {
+     //   console.log(`Video canplay: ${this.currentTime}`)
+     // }
+-    const onVideoStart = function() {
++    const onVideoStart = function () {
+       console.log(`补充播放结束事件`)
+       this.removeEventListener('ended', onVideoFinish)
+       // this.removeEventListener('seeking', onVideoSeeking)
+@@ -150,7 +139,7 @@
+       // this.addEventListener('seeking', onVideoSeeking)
+       // this.addEventListener('canplaythrough', onVideoCanplay)
+     }
+-    window.startPlay = function(data) {
++    window.startPlay = function (data) {
+       const playButton = startPlayButton()
+       const player = videoPlayerObject()
+       if (!player || !playButton) {
+@@ -164,7 +153,7 @@
+       console.log(`开始播放视频`)
+       return false
+     }
+-    window.skipSponsor = function() {
++    window.skipSponsor = function () {
+       const buttons = Array.from(electricJumpButton())
+       if (!buttons.length || buttons.filter(button => !button.offsetParent).length === buttons.length) {
+         return false
+@@ -173,12 +162,12 @@
+       console.log(`跳过等待或连播`)
+       return true
+     }
+-    const filterSpeedOption = function(speed, option) {
++    const filterSpeedOption = function (speed, option) {
+       const attribute = option.attributes['data-value']
+       const value = (attribute && attribute.value) || option.innerText
+       return String(parseFloat(value)) === String(speed)
+     }
+-    window.adjustSpeed = function(data) {
++    window.adjustSpeed = function (data) {
+       const options = videoSpeedRateOptions()
+       if (!options || !options.length) {
+         return false
+@@ -193,7 +182,7 @@
+       const player = videoPlayerObject()
+       return player && (player.playbackRate = data.playbackRate)
+     }
+-    window.fullWebScreen = function(data) {
++    window.fullWebScreen = function (data) {
+       if (!data.fullWebScreen) {
+         return true
+       }
+Index: options.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/options.html b/options.html
+--- a/options.html	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/options.html	(date 1678255180300)
+@@ -8,6 +8,6 @@
+   </head>
+   <body>
+     <div id="app"></div>
+-    <script type="module" src="/src/options/index.js"></script>
++    <script type="module" lang="ts" src="/src/options/index.ts"></script>
+   </body>
+ </html>
+Index: public/hack/baidu/search.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/baidu/search.js b/public/hack/baidu/search.js
+--- a/public/hack/baidu/search.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/baidu/search.js	(date 1678350678345)
+@@ -1,128 +1,113 @@
+-(function($) {
+-  if (window !== top) {
+-    return
+-  }
+-  if (!window.pagination) {
+-    window.pagination = new window.Pagination()
+-  }
+-  if ($('body[baidu]').length) {
+-    console.log('页面已经被标记')
+-    return
+-  }
+-  window.indirectUrls = []
+-  const callback = function() {
+-    const url = $(this).attr('href')
+-    window.indirectUrls.push({
+-      type: 'ajax',
+-      data: {
+-        type: 'GET',
+-        originalUrl: url,
+-        url: url.startsWith('http://') ? url.replace('http://', 'https://') : url
+-      }
+-    })
+-  }
+-  const parseUrl = function() {
+-    if (window.indirectUrls.length) {
+-      const action = window.indirectUrls.shift()
+-      chrome && chrome.runtime && chrome.runtime.sendMessage(action, response => {
+-        parseUrl()
+-        if (!response) {
+-          return
+-        }
+-        const data = JSON.parse(response)
+-        $(`[href='${action.data.originalUrl}']`).attr('href', data.responseURL)
+-      })
++(function ($) {
++  if ($('body[baidu]').length) {
++    return console.log('脚本重复注入')
++  }
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('Baidu script is on standby')
++    callback({ msg: 'baidu-script-injected' })
++    const config = data.config || {}
++    if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
++      return
++    }
++    if (!window.pagination) {
++      window.pagination = new window.Pagination()
+     }
+-  }
+-  const detectLink = function() {
+-    const $headers = $('[baidu] h3 a[data-click]')
+-    if (!$headers.length) {
+-      setTimeout(detectLink, 10)
+-      return
+-    }
+-    $headers.each(callback)
+-    const $links = $('[baidu] a[href*="://www.baidu.com/link?"]')
+-    $links.length && $links.each(callback)
+-    $(`[baidu] a.kuaizhao:not([target='_blank'])`).attr('target', '_blank')
+-    $(`[baidu] [data-click*='snapshot']:not([target='_blank'])`).attr('target', '_blank')
+-    parseUrl()
+-  }
+-  const cleanAdsStyle = function() {
+-    const $elements = $('[baidu] #content_left > div:not(.result):not(.result-op):not(.c-group-wrapper)')
+-    $elements.each(function() {this.style = 'display: none !important;' })
+-    window.adBlocker = setTimeout(cleanAdsStyle, 100)
+-  }
+-  window.adBlocker = setTimeout(cleanAdsStyle, 100)
+-  window.Pagination.prototype.nextPage = function() {
+-    if (window !== top) {
+-      return
+-    }
+-    const next = $('#page a:contains("下一页")')
+-    if (!next.length || this.iframe === next.attr('href')) {
+-      return
+-    }
+-    this.iframe = next.attr('href')
+-    if ($('#page .tuner-loading-block').length) {
+-      return
+-    }
+-    console.log('开始加载下一页')
+-    const loading = $.loading.mask('#page').start()
+-    $.get(next.attr('href'), function(data) {
+-      const page = $(data)
+-      loading.end().remove()
+-      console.log('下一页加载完成')
+-      setTimeout(detectLink, 10)
+-      $('#content_left').append(page.find('#content_left').html())
+-      $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
+-    })
+-    $('#page').css({ 'position': 'relative' })
+-  }
+-  const key = 'baidu-search'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到百度配置信息')
+-    const config = { ...data[key] }
+-    if (!config.hasOwnProperty('enable')) {
+-      config.enable = true
++    window.Pagination.prototype.nextPage = function () {
++      if (window !== top) {
++        return
++      }
++      const next = $('#page a:contains("下一页")')
++      if (!next.length || this.iframe === next.attr('href')) {
++        return
++      }
++      this.iframe = next.attr('href')
++      if ($('#page .tuner-loading-block').length) {
++        return
++      }
++      console.log('开始加载下一页')
++      const loading = $.loading.mask('#page').start()
++      $.get(next.attr('href'), function (data) {
++        const page = $(data)
++        loading.end().remove()
++        console.log('下一页加载完成')
++        requestAnimationFrame(detectLink)
++        let node = page.find('#content_left')[0].firstChild
++        while (node) {
++          $('#content_left')[0].appendChild(node)
++          node = page.find('#content_left')[0].firstChild
++        }
++        $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
++      })
++      $('#page').css({ 'position': 'relative' })
+     }
+-    if (!config.hasOwnProperty('autoPaging')) {
+-      config.autoPaging = true
+-    }
+-    if (!config.enable) {
+-      // sendResponse('未开启百度页面配置')
+-      return
++  })
++  window.indirectUrls = []
++
++  function resolveRealAddress () {
++    if (window.indirectUrls.length) {
++      const action = window.indirectUrls.shift()
++      chrome && chrome.runtime && chrome.runtime.sendMessage(action, function (response) {
++        resolveRealAddress()
++        if (!response) {
++          return
++        }
++        $(`[href='${action.data.originalUrl}']`).attr('href', response.responseURL)
++      })
+     }
+-    if (!config.autoPaging) {
+-      window.Pagination.prototype.nextPage = function() {
++  }
++
++  function acceptFakeLink () {
++    const url = $(this).attr('href')
++    window.indirectUrls.push({
++      type: 'ajax',
++      data: {
++        type: 'GET',
++        originalUrl: url,
++        url: url.startsWith('http://') ? url.replace('http://', 'https://') : url
+       }
++    })
++  }
++
++  function detectLink () {
++    const $headers = $('[baidu] h3 a[data-click]')
++    if (!$headers.length) {
++      return window.baiduLinkResolver = requestAnimationFrame(detectLink)
+     }
++    $headers.each(acceptFakeLink)
++    const $links = $('[baidu] a[href*="://www.baidu.com/link?"]')
++    $links.length && $links.each(acceptFakeLink)
++    $(`[baidu] a.kuaizhao:not([target='_blank'])`).attr('target', '_blank')
++    $(`[baidu] [data-click*='snapshot']:not([target='_blank'])`).attr('target', '_blank')
++    resolveRealAddress()
++  }
++
++  function cleanAdsStyle () {
++    $('[baidu] #content_left > div:not(.result):not(.result-op):not(.c-group-wrapper)').each(function () {
++      this.style = 'display: none !important;'
++    })
++    window.baiduAdBlocker = requestAnimationFrame(cleanAdsStyle)
++  }
+ 
+-    function initial() {
+-      const $body = $('body')
+-      if (!$body.length) {
+-        setTimeout(initial)
+-        return
+-      }
+-      $body.attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
+-      // Firefox和Chrome早期版本中带有前缀
+-      const $baidu = $('[baidu] #content_left')
+-      if (!$baidu.length) {
+-        setTimeout(initial)
+-        return
+-      }
+-      const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+-      // 选择目标节点
+-      // 配置观察选项,传入目标节点和观察选项
+-      new MutationObserver(mutations => {
+-        mutations.flatMap(mutation => Array.from(mutation.addedNodes))
+-          .filter(node => node.querySelector && node.querySelector('[class*="ec_tuiguang_pplink"]'))
+-          .forEach(node => (node.className += ' tuner-ads-block'))
+-      }).observe($baidu[0], { childList: true })
+-      setTimeout(detectLink, 10)
+-      // 随后,你还可以停止观察
+-      // observer.disconnect()
+-      // sendResponse('已完成百度页面配置初始化')
+-    }
++  function initialize () {
++    const $body = $('body')
++    if (!$body.length) {
++      return requestAnimationFrame(initialize)
++    }
++    $body.attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
++    const $baidu = $('[baidu] #content_left')
++    if (!$baidu.length) {
++      return requestAnimationFrame(initialize)
++    }
++    const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
++    new MutationObserver(mutations => {
++      mutations.flatMap(mutation => Array.from(mutation.addedNodes))
++        .filter(node => node.querySelector && node.querySelector('[class*="ec_tuiguang_pplink"]'))
++        .forEach(node => (node.className += ' tuner-ads-block'))
++    }).observe($baidu[0], { childList: true })
++    window.baiduAdBlocker = requestAnimationFrame(cleanAdsStyle)
++    window.baiduLinkResolver = requestAnimationFrame(detectLink)
++    // observer.disconnect()
++  }
+ 
+-    setTimeout(initial)
+-  })
++  requestAnimationFrame(initialize)
+ })(window.jQuery)
+Index: public/hack/google/search.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/google/search.js b/public/hack/google/search.js
+--- a/public/hack/google/search.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/google/search.js	(date 1678346204719)
+@@ -1,75 +1,70 @@
+-(function($) {
+-  if (!window.pagination) {
+-    window.pagination = new window.Pagination()
+-  }
+-  const detectLink = () => {
+-    const $search = $('#rhs,#search [data-hveid]').find('a:not([target="_blank"]):not([href="#"])')
+-    if ($search.length) {
+-      $search.each(function() {$(this).attr('target', '_blank')})
++(function ($) {
++  if ($('body[google]').length) {
++    return console.log('脚本重复注入')
++  }
++  // 筛选搜索条目的选择器 a[data-ved][href^=http]:has(h3)
++  // 整页翻译 https://translate.google.com/translate?hl=zh-CN&sl=auto&u=<page_url>&prev=search&pto=aue
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('Google script is on standby')
++    callback({ msg: 'google-script-injected' })
++    const config = data.config || {}
++    if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
++      return
++    }
++    if (!window.pagination) {
++      window.pagination = new window.Pagination()
+     }
+-    const $rso = $('#rso > div.g, #rso > div > div.g')
+-    if ($rso.css('width')) {
+-      $rso.css('width', 'auto')
+-    }
+-    setTimeout(detectLink, 10)
+-  }
+-  const paginationSelector = '#botstuff table.AaVjTc'
+-  window.Pagination.prototype.nextPage = function() {
+-    const next = $('#pnnext')
+-    if (!next.length || this.iframe.attr('src') === next.attr('href')) {
+-      return
+-    }
+-    if ($(paginationSelector).find('.tuner-loading-block').length) {
+-      return
+-    }
+-    $(paginationSelector).parent().css('position', 'relative')
+-    console.log('自动加载下一页')
+-    this.reloadFrame()
+-    $('#page').css({ 'position': 'relative' })
+-    const loading = $.loading.mask(paginationSelector).start()
+-    this.iframe.attr('src', next.attr('href'))
+-    const detectFrame = () => {
+-      const contents = this.iframe.contents()
+-      if (!contents.find('#search #rso').length || !contents.find(paginationSelector).length) {
+-        setTimeout(detectFrame, 100)
+-        return
+-      }
+-      $('#search #rso').append(this.select('#search #rso').html())
+-      $(paginationSelector).parent().html(this.select(paginationSelector).parent().html())
+-      loading.end().remove()
+-      console.log('下一页加载完成')
+-    }
+-    setTimeout(detectFrame, 100)
+-  }
+-  const key = 'google-search'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到Google配置信息')
+-    const config = { ...data[key] }
+-    if (!config.hasOwnProperty('enable')) {
+-      config.enable = true
++    const paginationSelector = '#botstuff table.AaVjTc'
++    window.Pagination.prototype.nextPage = function () {
++      const next = $('#pnnext')
++      if (!next.length || this.iframe.attr('src') === next.attr('href')) {
++        return
++      }
++      if ($(paginationSelector).find('.tuner-loading-block').length) {
++        return
++      }
++      $(paginationSelector).parent().css('position', 'relative')
++      console.log('自动加载下一页')
++      this.reloadFrame()
++      $('#page').css({ 'position': 'relative' })
++      const loading = $.loading.mask(paginationSelector).start()
++      this.iframe.attr('src', next.attr('href'))
++      const detectFrame = () => {
++        const contents = this.iframe.contents()
++        if (!contents.find('#search #rso').length || !contents.find(paginationSelector).length) {
++          return requestAnimationFrame(detectFrame)
++        }
++        const scrollX = window.scrollX
++        const scrollY = window.scrollY
++        $('#search #rso')[0].appendChild(this.select('#search #rso')[0])
++        $(paginationSelector).parent().html(this.select(paginationSelector).parent().html())
++        window.scrollTo(scrollX, scrollY)
++        loading.end().remove()
++        console.log('下一页加载完成')
++      }
++      requestAnimationFrame(detectFrame)
+     }
+-    if (!config.hasOwnProperty('autoPaging')) {
+-      config.autoPaging = true
++  })
++  const detectLink = () => {
++    const $search = $('#rhs,#search [data-hveid]').find('a:not([target="_blank"]):not([href="#"])')
++    if ($search.length) {
++      $search.each(function () {$(this).attr('target', '_blank')})
+     }
+-    if (!config.enable) {
+-      // sendResponse('未开启Google页面配置')
+-      return
++    const $rso = $('#rso > div.g, #rso > div > div.g')
++    if ($rso.css('width')) {
++      $rso.css('width', 'auto')
+     }
+-    if (!config.autoPaging) {
+-      window.Pagination.prototype.nextPage = function() {
+-      }
+-    }
++    requestAnimationFrame(detectLink)
++  }
+ 
+-    function initial() {
+-      const $body = $('body')
+-      if (!$body.length) {
+-        setTimeout(initial)
+-        return
+-      }
+-      $body.attr('google', '')
+-    }
++  function initialize () {
++    const $body = $('body')
++    if (!$body.length) {
++      return requestAnimationFrame(initialize)
++    }
++    $body.attr('google', '')
++    requestAnimationFrame(detectLink)
++  }
+ 
+-    setTimeout(initial, 10)
+-    setTimeout(detectLink, 10)
+-  })
++  requestAnimationFrame(initialize)
+ })(window.jQuery)
+Index: public/hack/common.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/common.js b/public/hack/common.js
+--- a/public/hack/common.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/common.js	(date 1678344733767)
+@@ -1,4 +1,4 @@
+-(function($) {
++(function ($) {
+   if ($ && !$.loading) {
+     const TEMPLATE = `
+       <i class="tuner-loading-layer displayNone">
+@@ -11,7 +11,7 @@
+           </i>
+         </i>
+       </i>`
+-    const LoadingMask = function(options) {
++    const LoadingMask = function (options) {
+       const selector = options.selector || 'body'
+       const layerStyle = $.extend({}, options.layerStyle)
+       const spinnerStyle = $.extend({}, options.spinnerStyle)
+@@ -19,31 +19,31 @@
+         .find('.tuner-loading-block').css(spinnerStyle).end()
+         .appendTo(selector)
+     }
+-    LoadingMask.prototype.start = function(countDown) {
++    LoadingMask.prototype.start = function (countDown) {
+       countDown = countDown || 0
+       if (this.countDown) {
+         this.countDown += countDown
+       } else {
+         this.countDown = countDown
+       }
+-      this.loaded.removeClass("displayNone")
++      this.loaded.removeClass('displayNone')
+       return this
+     }
+-    LoadingMask.prototype.end = function() {
++    LoadingMask.prototype.end = function () {
+       if (this.countDown) {
+         this.countDown--
+       }
+       if (this.countDown > 0) {
+         return this
+       }
+-      this.loaded.addClass("displayNone")
++      this.loaded.addClass('displayNone')
+       return this
+     }
+-    LoadingMask.prototype.remove = function() {
++    LoadingMask.prototype.remove = function () {
+       return this.loaded.remove()
+     }
+     $.loading = new LoadingMask({})
+-    $.loading.mask = function() {
++    $.loading.mask = function () {
+       if (arguments.length <= 0) {
+         return $.loading
+       }
+@@ -59,25 +59,24 @@
+     }
+   }
+   if ($ && !$.detect) {
+-    $.detect = function(selector, callback) {
++    $.detect = function (selector, callback) {
+       const element = $(selector)
+       if (!element.length) {
+-        setTimeout(() => $.detect(selector, callback), 100)
+-        return
++        return requestAnimationFrame(() => $.detect(selector, callback))
+       }
+       console.log('找到', element)
+       callback(element)
+     }
+   }
+ })(window.jQuery);
+-(function($) {
++(function ($) {
+   if (!$) {
+     return
+   }
+-  const Pagination = function() {
++  const Pagination = function () {
+     this.initial()
+   }
+-  Pagination.prototype.initial = function(selector) {
++  Pagination.prototype.initial = function (selector) {
+     this.iframe = $('iframe#tuner-crx')
+     if (!this.iframe.length) {
+       console.log('创建隐藏iframe')
+@@ -87,14 +86,14 @@
+     this.iframe.attr('id', 'tuner-crx')
+     this.iframe.appendTo('body')
+   }
+-  Pagination.prototype.select = function(selector) {
++  Pagination.prototype.select = function (selector) {
+     return $(selector, this.iframe.prop('contentDocument'))
+   }
+-  Pagination.prototype.reloadFrame = function() {
++  Pagination.prototype.reloadFrame = function () {
+     this.iframe.remove()
+     this.initial()
+   }
+-  Pagination.prototype.nextPage = function() {
++  Pagination.prototype.nextPage = function () {
+     console.log('自动加载下一页')
+   }
+   window.PRELOAD_MARGIN = 200
+Index: public/hack/pagination.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/pagination.js b/.npmrc
+rename from public/hack/pagination.js
+rename to .npmrc
+--- a/public/hack/pagination.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/.npmrc	(date 1678257968902)
+@@ -1,0 +1,3 @@
++shamefully-hoist=true
++auto-install-peers=true
++strict-peer-dependencies=false
+Index: src/background/common/support.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/background/common/support.js b/src/common/support.ts
+rename from src/background/common/support.js
+rename to src/common/support.ts
+--- a/src/background/common/support.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/common/support.ts	(date 1678350617060)
+@@ -1,52 +1,118 @@
+-import { HackMappings } from './constant'
++import {HackMappings} from './constant'
+ 
+-function injectFiles(tabId, site) {
+-  chrome.action.enable(tabId).then(console.log)
+-  chrome.action.setBadgeText({ text: 'ON' }).then(console.log)
+-  chrome.action.setBadgeBackgroundColor({ color: '#4688F1' }).then(console.log)
+-}
+-
+-export const ajaxProxy = (request, sender, sendResponse) => {
++export function ajaxProxy(request: any, sender: any, sendResponse: Function) {
+   const data = request.data
+   fetch(data.url, {
+     method: data.type,
+     body: data.body
+-  }).then(response => {
+-    response.text().then(text => {
+-      console.log(response.status, response.url)
+-      sendResponse(JSON.stringify({
+-        url: data.url,
+-        status: response.status,
+-        responseURL: response.url,
+-        responseText: text
+-      }))
+-    })
+-  }).catch(error => console.log(data, error))
++  }).then(async response => sendResponse({
++    url: data.url,
++    status: response.status,
++    responseURL: response.url,
++    responseText: await response.text()
++  })).catch(error => sendResponse('') || console.log('跨域请求失败：', data, error))
++}
++
++function asArray(maybeString: string | any[]) {
++  if (typeof maybeString === 'string') {
++    return [maybeString];
++  }
++  return maybeString;
+ }
+-export const contentScripts = () => {
+-  return HackMappings.filter(site => site.id).map(site => {
+-    const option = {
+-      matches: site.matchPatterns,
+-      id: site.id || 'undefined',
+-      runAt: 'document_start',
+-      allFrames: true
+-    }
+-    if (site.cssFiles) {
+-      option.css = Array.isArray(site.cssFiles) ? site.cssFiles : [site.cssFiles]
+-    }
+-    if (site.scriptFiles) {
+-      option.js = Array.isArray(site.scriptFiles) ? site.scriptFiles : [site.scriptFiles]
+-    }
+-    return option
++
++function asBoolean(config: any, key: string): boolean {
++  return !config.hasOwnProperty(key) || config[key]
++}
++
++function insertScript(site: any, tabId: number, tab: any, config: any) {
++  if (!asBoolean(config, 'enable') || !asBoolean(config, 'injectScript')) {
++    return console.log('该页面脚本注入未启用')
++  }
++  const files = ['hack/injected.js'];
++  const script = asArray(site.hacker.script) || []
++  script.forEach(file => files.push(file))
++  const target: chrome.scripting.InjectionTarget = {
++    allFrames: !tab.frameId,
++    tabId
++  };
++  if (tab.frameId) {
++    target.frameIds = [tab.frameId]
++  }
++  chrome.scripting.executeScript({
++    files,
++    target,
++    injectImmediately: true
++  }).then(() => {
++    console.log('页面脚本注入完成: ', tab.url, files)
++    // 提供回调的话，接收方需要三个参数：transferData, sender, callback，
++    // 为了让扩展不提示The message port closed before a response was received，
++    // 还需要在接收方调用callback方法传递响应数据
++    messageTab(tabId, Object.assign({site}, {config}), (response: any) => console.log('传递页面配置完成', response));
+   })
+ }
+-export const chromeStorage = function(keys, callback) {
+-  if (!keys || !chrome.storage || !chrome.storage.local) {
+-    return
++
++function insertCss(site: any, tabId: number, tab: any, config: any) {
++  if (!asBoolean(config, 'enable') || !asBoolean(config, 'injectCSS')) {
++    return console.log('该页面样式注入未启用')
++  }
++  const files = ['hack/common.css']
++  const style = asArray(site.hacker.style) || []
++  style.forEach(file => files.push(file))
++  const target: chrome.scripting.InjectionTarget = {
++    allFrames: !tab.frameId,
++    tabId
+   }
+-  if (typeof keys === 'string' || Array.isArray(keys)) {
+-    chrome.storage.local.get(keys, callback || (config => console.log(`取值成功: ${JSON.stringify(config)}`)))
++  if (tab.frameId) {
++    target.frameIds = [tab.frameId]
++  }
++  chrome.scripting.insertCSS({
++    files,
++    target
++  }).then(() => console.log('页面样式注入完成: ', tab.url, files))
++}
++
++// iframe => https://codingdict.com/questions/13895
++export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
++  if (!tab || !tab.url || !tab.url.startsWith('http://') && !tab.url.startsWith('https://')) {
+     return
+   }
+-  chrome.storage.local.set(keys, callback || (() => console.log(`保存成功: ${JSON.stringify(keys)}`)))
++  const site = HackMappings.find(mapping => mapping.expectUrl(tab)) || {
++    hacker: {state: undefined},
++    description: {enable: false},
++    id: new Date().toISOString()
++  };
++  site.id && chrome.action.enable(tabId);
++  const status = changeInfo && changeInfo.status;
++  if (site.hacker && (status === site.hacker.state || status === true)) {
++    getStorage(site.id).then((response: any) => {
++      const config = Object.assign({configId: site.id}, site.description, response[site.id])
++      console.log('页面配置获取成功: ', tab.url, config)
++      insertCss(site, tabId, tab, config);
++      insertScript(site, tabId, tab, config);
++    })
++  }
++}
++
++export function messageTab(tabId: number, message: any, callback: (response: any) => void) {
++  chrome.tabs.sendMessage(tabId, message, callback)
++}
++
++export function setStorage(keys: any) {
++  if (!keys || !chrome.storage || !chrome.storage.local) {
++    return new Promise(resolve => resolve({}))
++  }
++  return chrome.storage.local.set(keys)
++}
++
++export function getStorage(keys?: string | string[] | { [key: string]: any } | null) {
++  if (!keys || !chrome.storage || !chrome.storage.local) {
++    return new Promise(resolve => resolve({}))
++  }
++  if (typeof keys === 'string') {
++    return chrome.storage.local.get([keys])
++  }
++  if (Array.isArray(keys)) {
++    return chrome.storage.local.get(keys)
++  }
++  return chrome.storage.local.get(keys)
+ }
+Index: src/popup/component/SliderField.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/component/SliderField.vue b/src/popup/component/SliderField.vue
+--- a/src/popup/component/SliderField.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/component/SliderField.vue	(date 1678344733747)
+@@ -2,53 +2,41 @@
+   <div class="el-slider__wrapper">
+     <span class="el-slider__label">{{ config.label }}</span>
+     <el-slider
+-        :min="config.min"
+-        :max="config.max"
+-        @change="onChange"
+-        :step="config.step"
+-        :marks="config.marks"
+-        v-model="config.value"
+-        :show-input="config.showInput"
++      :min="config.min"
++      :max="config.max"
++      @change="onChange"
++      :step="config.step"
++      :marks="config.marks"
++      v-model="config.value"
++      :show-input="config.showInput"
+     ></el-slider>
+   </div>
+ </template>
+-<script>
+-export default {
+-  name: 'SliderField',
+-  props: {
+-    config: {
+-      type: Object,
+-      default: {}
+-    }
+-  },
+-  watch: {},
+-  data() {
+-    return {}
+-  },
+-  methods: {
+-    onChange(value) {
+-      if (this.config.handler && typeof this.config.handler === 'function') {
+-        this.config.handler.call(this, value)
+-      }
+-      this.$emit('store-config', {
+-        fields: [{
+-          key: this.config.key,
+-          value: this.config.value
+-        }]
+-      })
+-    }
+-  }
++<script setup lang="ts">
++const props = defineProps<{ config: any }>();
++const emits = defineEmits(['store-config']);
++
++function onChange(value) {
++  if (props.config.handler && typeof props.config.handler === 'function') {
++    props.config.handler(value)
++  }
++  emits('store-config', {
++    fields: [{
++      key: props.config.key,
++      value: props.config.value
++    }]
++  })
+ }
+ </script>
+-<style lang="scss" type="text/scss">
++<style lang="scss">
+ h3 {
+   width: 170px;
+ }
+ 
+-.el-slider__wrapper {
++.ep-slider__wrapper {
+   padding: 8px 0;
+ 
+-  .el-slider__label {
++  .ep-slider__label {
+     line-height: 1;
+     font-size: 14px;
+     font-weight: bold;
+@@ -56,11 +44,11 @@
+     color: var(--el-color-primary);
+   }
+ 
+-  .el-slider {
++  .ep-slider {
+     padding: 0 8px;
+     width: calc(100% - 16px);
+ 
+-    .el-slider__button {
++    .ep-slider__button {
+       --el-slider-button-size: 16px;
+     }
+   }
+Index: src/popup/component/SwitchField.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/component/SwitchField.vue b/src/popup/component/SwitchField.vue
+--- a/src/popup/component/SwitchField.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/component/SwitchField.vue	(date 1678257968954)
+@@ -1,35 +1,23 @@
+ <template>
+   <el-switch v-model="config.value" :active-text="config.label" @change="onChange"></el-switch>
+ </template>
+-<script>
+-export default {
+-  name: 'SwitchField',
+-  props: {
+-    config: {
+-      type: Object,
+-      default: {}
+-    }
+-  },
+-  watch: {},
+-  data() {
+-    return {}
+-  },
+-  methods: {
+-    onChange(value) {
+-      if (this.config.handler && typeof this.config.handler === 'function') {
+-        this.config.handler.call(this, value)
+-      }
+-      this.$emit('store-config', {
+-        fields: [{
+-          key: this.config.key,
+-          value: this.config.value
+-        }]
+-      })
+-    }
+-  }
++<script setup lang="ts">
++const props = defineProps<{ config: any }>();
++const emits = defineEmits(['store-config']);
++
++function onChange(value) {
++  if (props.config.handler && typeof props.config.handler === 'function') {
++    props.config.handler(value)
++  }
++  emits('store-config', {
++    fields: [{
++      key: props.config.key,
++      value: props.config.value
++    }]
++  })
+ }
+ </script>
+-<style lang="scss" type="text/scss">
++<style lang="scss">
+ h3 {
+   width: 170px;
+ }
+Index: public/hack/360/article.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/360/article.js b/public/hack/360/article.js
+--- a/public/hack/360/article.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/360/article.js	(date 1678346204670)
+@@ -1,17 +1,15 @@
+-(function($) {
+-  const key = '360-article'
+-  chrome.storage.local.get([key], function(data) {
+-    console.log('成功收到360doc配置信息')
++(function ($) {
++  if ($('body[doc360]').length) {
++    return console.log('脚本重复注入')
++  }
+ 
+-    function initial() {
+-      const $body = $('body')
+-      if (!$body.length) {
+-        setTimeout(initial)
+-        return
+-      }
+-      $body.attr('doc360', '')
+-    }
++  function initialize () {
++    const $body = $('body')
++    if (!$body.length) {
++      return requestAnimationFrame(initialize)
++    }
++    $body.attr('doc360', '')
++  }
+ 
+-    initial()
+-  })
++  requestAnimationFrame(initialize)
+ })(window.jQuery)
+Index: public/hack/csdn/article.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/csdn/article.css b/public/hack/csdn/article.css
+--- a/public/hack/csdn/article.css	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/csdn/article.css	(date 1678350983366)
+@@ -11,7 +11,8 @@
+ div.toolbar-container-left ~ div, .csdn-shop-window-common,
+ .toolbar-container-left .toolbar-menus li:not(.active),
+ #blogColumnPayAdvert, div.toolbar-advert, #toolBarBox,
+-#recommendNps, #csdn-toolbar {
++#content_views pre.set-code-hide .hide-preCode-box,
++#recommendNps, #csdn-toolbar, div.signin {
+     display: none !important;
+ }
+ 
+@@ -20,6 +21,10 @@
+     user-select: unset !important;
+ }
+ 
++main div.blog-content-box #content_views pre.set-code-hide {
++    height: auto !important;
++}
++
+ .main_father .container#mainBox main {
+     width: 100% !important;
+ }
+Index: src/popup/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/index.js b/src/popup/index.ts
+rename from src/popup/index.js
+rename to src/popup/index.ts
+--- a/src/popup/index.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/index.ts	(date 1678273293498)
+@@ -1,7 +1,8 @@
+-import ElementPlus from 'element-plus'
+-import 'element-plus/theme-chalk/index.css'
+-import { createApp } from 'vue'
+-import App from './view/App.vue'
+-import './index.css'
++import {createPinia} from 'pinia'
++import {createApp} from 'vue'
++import "~/styles/index.scss"
++// @ts-ignore
++import App from './App.vue'
++import 'uno.css'
+ 
+-createApp(App).use(ElementPlus).mount('#app')
++createApp(App).use(createPinia()).mount('#app')
+Index: public/hack/google/search.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/google/search.css b/public/hack/google/search.css
+--- a/public/hack/google/search.css	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/google/search.css	(date 1678332129870)
+@@ -1,8 +1,15 @@
+ [google] .g h2,
++[google] #sfooter,
++[google] #rso .ULSxyf,
++[google] #bres .ULSxyf,
+ [google] [data-text-ad] {
+     display: none !important;
+ }
+ 
++[google] .g li {
++    list-style: none;
++}
++
+ /**************************主体居中**************************/
+ 
+ div.Q3DXx.yIbDgf #tsf {
+@@ -63,8 +70,10 @@
+     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
+ }
+ 
+-#rso div.g {
+-    width: 100%;
++#rso div.g,
++#rso [jscontroller="SC7lYd"] {
++    margin: 0;
++    width: 100% !important;
+ }
+ 
+ #rso > div.g {
+@@ -81,7 +90,8 @@
+ }
+ 
+ #rso > div.g .yuRUbf,
+-#rso > div > div.g .yuRUbf {
++#rso > div > div.g .yuRUbf,
++#rso > div > div > div.g .yuRUbf {
+     padding-left: 8px;
+     background-color: #f0f0f0;
+     border-left: 5px solid #4486ef;
+@@ -92,6 +102,22 @@
+     padding-left: 12px;
+ }
+ 
++#rso .DKV0Md {
++    margin: 2px 4px;
++}
++
++#rso .H9lube {
++    margin: 0 12px;
++}
++
++#rso .H9lube ~ div {
++    display: flex;
++}
++
++#rso .csDOgf.L48a4c .rNSxBe {
++    top: -14px;
++}
++
+ #rhs.rhstc4 div.ss6qqb {
+     width: 690px;
+ }
+Index: public/manifest.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/manifest.json b/public/manifest.json
+--- a/public/manifest.json	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/manifest.json	(date 1678327225097)
+@@ -2,10 +2,11 @@
+   "name": "tuner-v3",
+   "description": "Chrome extension for hack different page",
+   "homepage_url": "https://www.ohohoho.com",
+-  "version": "1.0.135",
++  "version": "1.0.145",
+   "manifest_version": 3,
+   "background": {
+-    "service_worker": "background.js"
++    "service_worker": "assets/background.js",
++    "type": "module"
+   },
+   "icons": {
+     "16": "images/icon.png",
+@@ -22,6 +23,7 @@
+     "scripting",
+     "contextMenus",
+     "notifications",
++    "webNavigation",
+     "declarativeContent",
+     "declarativeNetRequest",
+     "declarativeNetRequestFeedback"
+Index: src/background/index.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/background/index.ts b/src/background/index.ts
+new file mode 100644
+--- /dev/null	(date 1678350617075)
++++ b/src/background/index.ts	(date 1678350617075)
+@@ -0,0 +1,34 @@
++import {ajaxProxy, pageHacker} from '~/common/support'
++
++// chrome.tabs.onCreated.addListener(tab => {
++//   if (typeof tab.id !== "number") {
++//     return
++//   }
++//   console.log('create tab', tab)
++//   pageHacker(tab.id, {status: tab.status}, tab);
++// })
++// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
++//   console.log('update tab', tab)
++//   pageHacker(tabId, changeInfo, tab)
++// })
++// chrome.webRequest.onBeforeRequest.addListener(details => {
++//   return {
++//     redirectUrl: details.url.replace('ajax.googleapis.com', 'cdn.bootcdn.net')
++//   }
++// }, { urls: ["*://*/portal/login/ajax/submit.do"] }, ["blocking"])
++chrome.webNavigation.onCommitted.addListener(function (e) {
++  if (e.url === 'about:blank') {
++    return
++  }
++  pageHacker(e.tabId, {status: true}, e)
++})
++chrome.runtime.onMessage.addListener(  (request, sender, sendResponse) => {
++  if (!request) {
++    return sendResponse({})
++  }
++  if (request.type === 'ajax') {
++      ajaxProxy(request, sender, sendResponse)
++    return true
++  }
++  return sendResponse({})
++})
+Index: src/styles/element/dark.scss
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/styles/element/dark.scss b/src/styles/element/dark.scss
+new file mode 100644
+--- /dev/null	(date 1676759140000)
++++ b/src/styles/element/dark.scss	(date 1676759140000)
+@@ -0,0 +1,11 @@
++// only scss variables
++
++$--colors: (
++  "primary": (
++    "base": #589ef8,
++  ),
++);
++
++@forward "element-plus/theme-chalk/src/dark/var.scss" with (
++  $colors: $--colors
++);
+Index: src/background/common/constant.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/background/common/constant.js b/src/common/constant.ts
+rename from src/background/common/constant.js
+rename to src/common/constant.ts
+--- a/src/background/common/constant.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/common/constant.ts	(date 1678346204705)
+@@ -1,5 +1,9 @@
+ export const DefaultConfig = {
+-  configLabel: '配置开关'
++  fields: [],
++  enable: true,
++  injectCSS: true,
++  injectScript: true,
++  configLabel: '配置开关',
+ }
+ export const ActiveTab = {
+   active: true,
+@@ -7,179 +11,198 @@
+ }
+ export const HackMappings = [{
+   id: 'baidu-search',
+-  expectUrl: tab => /http(s)?:\/\/(www.)?baidu.com.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://baidu.com/*',
+-    '*://www.baidu.com/*'
+-  ],
+-  cssFiles: ['hack/common.css', 'hack/baidu/search.css'],
+-  scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/baidu/search.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http(s)?:\/\/(www.)?baidu.com.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: ['hack/baidu/search.css'],
++    script: ['hack/jquery.min.js', "hack/common.js", 'hack/baidu/search.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
++    autoPaging: true,
+     injectScript: true,
+     configLabel: '"搜索"配置开关',
+-    fields: [// {
+-      //   key: 'injectCss',
+-      //   label: '注入样式',
+-      //   type: 'SwitchField',
+-      //   default: true
+-      // },
+-      // {
+-      //   key: 'injectScript',
+-      //   label: '注入脚本',
+-      //   type: 'SwitchField',
+-      //   default: true
+-      // }
++    fields: [
++      {
++        key: 'autoPaging',
++        label: '自动翻页',
++        type: 'SwitchField',
++      }
+     ]
+   }
+ }, {
+   id: 'baidu-zhidao',
+-  expectUrl: tab => /http[s]?:\/\/zhidao[.]baidu[.]com\/question\/.*.html/.test(tab.url),
+-  matchPatterns: [
+-    '*://zhidao.baidu.com/question/*.html'
+-  ],
+-  cssFiles: 'hack/baidu/zhidao.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/baidu/zhidao.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/zhidao[.]baidu[.]com\/question\/.*.html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/baidu/zhidao.css',
++    script: ['hack/jquery.min.js', 'hack/baidu/zhidao.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"知道"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'baidu-jingyan',
+-  expectUrl: tab => /http[s]?:\/\/jingyan[.]baidu[.]com\/article\/.*.html/.test(tab.url),
+-  matchPatterns: [
+-    '*://jingyan.baidu.com/article/*.html'
+-  ],
+-  cssFiles: 'hack/baidu/jingyan.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/baidu/jingyan.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/jingyan[.]baidu[.]com\/article\/.*.html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/baidu/jingyan.css',
++    script: ['hack/jquery.min.js', 'hack/baidu/jingyan.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"经验"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'baidu-baijiahao',
+-  expectUrl: tab => /http[s]?:\/\/baijiahao[.]baidu[.]com\/s.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://baijiahao.baidu.com/s*'
+-  ],
+-  cssFiles: 'hack/baidu/baijiahao.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/baidu/baijiahao.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/baijiahao[.]baidu[.]com\/s.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/baidu/baijiahao.css',
++    script: ['hack/jquery.min.js', 'hack/baidu/baijiahao.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"震惊"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'bing-search',
+-  expectUrl: tab => /http(s)?:\/\/cn.bing.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
+-  matchPatterns: [
+-    '*://cn.bing.com/search*&q=*',
+-    '*://cn.bing.com/search*?q=*'
+-  ],
+-  cssFiles: ['hack/common.css', 'hack/bing/search.css'],
+-  scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/bing/search.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http(s)?:\/\/cn.bing.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: ['hack/bing/search.css'],
++    script: ['hack/jquery.min.js', "hack/common.js", 'hack/bing/search.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
++    enableHta: true,
++    autoPaging: true,
+     injectScript: true,
+     configLabel: '"搜索"配置开关',
+-    fields: []
++    fields: [
++      {
++        key: 'autoPaging',
++        label: '自动翻页',
++        type: 'SwitchField',
++      },
++      {
++        key: 'enableHta',
++        label: '划词翻译',
++        type: 'SwitchField',
++      }
++    ]
+   }
+ }, {
+   id: 'google-search',
+-  expectUrl: tab => /http(s)?:\/\/www.google.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.google.com/search*&q=*',
+-    '*://www.google.com/search*?q=*'
+-  ],
+-  cssFiles: ['hack/common.css', 'hack/google/search.css'],
+-  scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/google/search.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http(s)?:\/\/www.google.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: ['hack/google/search.css'],
++    script: ['hack/jquery.min.js', "hack/common.js", 'hack/google/search.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
++    autoPaging: true,
+     injectScript: true,
+     configLabel: '"搜索"配置开关',
+-    fields: []
++    fields: [
++      {
++        key: 'autoPaging',
++        label: '自动翻页',
++        type: 'SwitchField',
++      }
++    ]
+   }
+ }, {
+   id: 'douyu-follow',
+-  expectUrl: tab => /http(s)?:\/\/www.douyu.com\/directory\/(myFollow|all)/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.douyu.com/directory/all',
+-    '*://www.douyu.com/directory/myFollow'
+-  ],
+-  cssFiles: 'hack/douyu/live-directory.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/douyu/live-directory.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http(s)?:\/\/www.douyu.com\/directory\/(myFollow|all)/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/douyu/live-directory.css',
++    script: ['hack/jquery.min.js', 'hack/douyu/live-directory.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"关注"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'douyu-room',
+-  expectUrl: tab => /http(s)?:\/\/www.douyu.com\/([0-9]+|topic\/.*[?]rid=[0-9]+)/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.douyu.com/*',
+-    '*://www.douyu.com/topic/*?rid=*'
+-  ],
+-  cssFiles: ['hack/common.css', 'hack/douyu/live-room.css'],
+-  scriptFiles: ['hack/jquery.min.js', "hack/common.js", 'hack/douyu/live-room.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http(s)?:\/\/www.douyu.com\/([0-9]+|topic\/.*[?]rid=[0-9]+)/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: ['hack/douyu/live-room.css'],
++    script: ['hack/jquery.min.js', "hack/common.js", 'hack/douyu/live-room.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    danMuSize: 30,
++    injectCSS: true,
+     injectScript: true,
++    fullWebScreen: true,
+     configLabel: '"直播"配置开关',
+-    fields: []
++    fields: [
++      {
++        key: 'fullWebScreen',
++        label: '网页全屏',
++        type: 'SwitchField',
++      },
++      {
++        key: 'danMuSize',
++        label: '弹幕大小',
++        type: 'SliderField',
++        showInput: false,
++        step: 1,
++        min: 12,
++        max: 100,
++        marks: {
++          24: '24',
++          48: '48',
++          72: '72',
++        }
++      }
++    ]
+   }
+ }, {
+   id: 'bilibili-video',
+-  expectUrl: tab => {
++  expectUrl: (tab: any) => {
+     return /http(s)?:\/\/www.bilibili.com\/((medialist\/play\/([0-9]+|ml[0-9]+\/BV[a-zA-Z0-9]+))|(bangumi\/play\/(ep|ss)[0-9]+)|(video\/(av|BV)[a-zA-Z0-9]+))(\?.*)?/.test(tab.url)
+   },
+-  matchPatterns: [
+-    '*://www.bilibili.com/medialist/play/*',
+-    '*://www.bilibili.com/bangumi/play/ep*',
+-    '*://www.bilibili.com/bangumi/play/ss*',
+-    '*://www.bilibili.com/video/av*',
+-    '*://www.bilibili.com/video/BV*'
+-  ],
+-  cssFiles: 'hack/bilibili/video.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/bilibili/video.js'],
+-  configDescription: {
++  hacker: {
++    state: 'loading',
++    style: 'hack/bilibili/video.css',
++    script: ['hack/jquery.min.js', 'hack/bilibili/video.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
++    playbackRate: 1.25,
+     injectScript: true,
++    autoStartPlay: true,
++    fullWebScreen: true,
+     configLabel: '"视频"配置开关',
+     fields: [
+       {
+         key: 'autoStartPlay',
+         label: '自动播放',
+         type: 'SwitchField',
+-        default: true
+       },
+       {
+         key: 'fullWebScreen',
+         label: '网页全屏',
+         type: 'SwitchField',
+-        default: true
+       },
+       {
+         key: 'playbackRate',
+         label: '播放速率',
+         type: 'SliderField',
+         showInput: false,
+-        default: 1.25,
+         step: 0.05,
+         min: 0.1,
+         max: 5.0,
+@@ -194,327 +217,294 @@
+   }
+ }, {
+   id: 'pc6-software',
+-  expectUrl: tab => /http[s]?:\/\/www[.]pc6[.]com\/softview\/SoftView_.*[.]html/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.pc6.com/softview/SoftView_*.html'
+-  ],
+-  cssFiles: 'hack/pc6/software.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/pc6/software.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]pc6[.]com\/softview\/SoftView_.*[.]html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/pc6/software.css',
++    script: ['hack/jquery.min.js', 'hack/pc6/software.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"应用"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'zhihu-question',
+-  expectUrl: tab => /http[s]:\/\/www[.]zhihu[.]com\/(search?.*|question\/.*)/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.zhihu.com/search?*',
+-    '*://www.zhihu.com/question/*'
+-  ],
+-  cssFiles: 'hack/zhihu/question.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/zhihu/question.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]zhihu[.]com\/(search?.*|question\/.*)/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/zhihu/question.css',
++    script: ['hack/jquery.min.js', 'hack/zhihu/question.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"问答"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'zhihu-zhuanlan',
+-  expectUrl: tab => /http[s]:\/\/zhuanlan[.]zhihu[.]com\/p\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://zhuanlan.zhihu.com/p/*'
+-  ],
+-  cssFiles: 'hack/zhihu/zhuanlan.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/zhihu/zhuanlan.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/zhuanlan[.]zhihu[.]com\/p\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/zhihu/zhuanlan.css',
++    script: ['hack/jquery.min.js', 'hack/zhihu/zhuanlan.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"专栏"配置开关',
+     fields: []
+   }
+ }, {
+   id: '51cto-blog',
+-  expectUrl: tab => /http[s]:\/\/blog[.]51cto[.]com\/[0-9]+\/[0-9]+/.test(tab.url),
+-  matchPatterns: [
+-    '*://blog.51cto.com/*/*'
+-  ],
+-  cssFiles: 'hack/51cto/blog.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/51cto/blog.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/blog[.]51cto[.]com\/[0-9]+\/[0-9]+/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/51cto/blog.css',
++    script: ['hack/jquery.min.js', 'hack/51cto/blog.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"博客"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'segmentfault-question',
+-  expectUrl: tab => /http.?:\/\/(.*[.])?segmentfault[.]com\/q\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://*.segmentfault.com/q/*'
+-  ],
+-  cssFiles: 'hack/segmentfault/question.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/segmentfault/question.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http.?:\/\/(.*[.])?segmentfault[.]com\/q\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/segmentfault/question.css',
++    script: ['hack/jquery.min.js', 'hack/segmentfault/question.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"问答"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'segmentfault-articles',
+-  expectUrl: tab => /http.?:\/\/(.*[.])?segmentfault[.]com\/a\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://*.segmentfault.com/a/*'
+-  ],
+-  cssFiles: 'hack/segmentfault/articles.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/segmentfault/articles.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /http.?:\/\/(.*[.])?segmentfault[.]com\/a\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/segmentfault/articles.css',
++    script: ['hack/jquery.min.js', 'hack/segmentfault/articles.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'cnblogs-articles',
+-  expectUrl: tab => /http[s]?:\/\/www[.]cnblogs[.]com\/.*\/(p|articles|archive)\/.*[.]html/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.cnblogs.com/*/p/*.html',
+-    '*://www.cnblogs.com/*/archive/*.html',
+-    '*://www.cnblogs.com/*/articles/*.html'
+-  ],
+-  cssFiles: 'hack/cnblogs/articles.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/cnblogs/articles.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]cnblogs[.]com\/.*\/(p|articles|archive)\/.*[.]html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/cnblogs/articles.css',
++    script: ['hack/jquery.min.js', 'hack/cnblogs/articles.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'iteye-magazines',
+-  expectUrl: tab => /http[s]?:\/\/www[.]iteye[.]com\/magazines\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.iteye.com/magazines/*'
+-  ],
+-  cssFiles: 'hack/iteye/magazines.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/iteye/magazines.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]iteye[.]com\/magazines\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/iteye/magazines.css',
++    script: ['hack/jquery.min.js', 'hack/iteye/magazines.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"杂志"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'iteye-blog',
+-  expectUrl: tab => /http[s]?:\/\/www[.]iteye[.]com\/blog\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.iteye.com/blog/*'
+-  ],
+-  cssFiles: 'hack/iteye/blog.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/iteye/blog.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]iteye[.]com\/blog\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/iteye/blog.css',
++    script: ['hack/jquery.min.js', 'hack/iteye/blog.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"博客"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'chinaunix-article',
+-  expectUrl: tab => /http[s]?:\/\/blog[.]chinaunix[.]net\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://blog.chinaunix.net/*'
+-  ],
+-  cssFiles: 'hack/chinaunix/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/chinaunix/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/blog[.]chinaunix[.]net\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/chinaunix/article.css',
++    script: ['hack/jquery.min.js', 'hack/chinaunix/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'bejson-json',
+-  expectUrl: tab => /http[s]?:\/\/www.bejson.com\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.bejson.com/*'
+-  ],
+-  cssFiles: 'hack/bejson/json.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/bejson/json.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www.bejson.com\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/bejson/json.css',
++    script: ['hack/jquery.min.js', 'hack/bejson/json.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"JSON"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'linuxidc-article',
+-  expectUrl: tab => /http[s]?:\/\/www[.]linuxidc[.]com\/Linux\/.*[.]htm[l]?/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.linuxidc.com/Linux/*.htm*'
+-  ],
+-  cssFiles: 'hack/linuxidc/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/linuxidc/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]linuxidc[.]com\/Linux\/.*[.]html?/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/linuxidc/article.css',
++    script: ['hack/jquery.min.js', 'hack/linuxidc/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'tencent-article',
+-  expectUrl: tab => /http[s]?:\/\/cloud[.]tencent[.]com\/developer\/article\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://cloud.tencent.com/developer/article/*'
+-  ],
+-  cssFiles: 'hack/tencent/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/tencent/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/cloud[.]tencent[.]com\/developer\/article\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/tencent/article.css',
++    script: ['hack/jquery.min.js', 'hack/tencent/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'jianshu-article',
+-  expectUrl: tab => /http[s]?:\/\/www[.]jianshu[.]com\/p\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.jianshu.com/p/*'
+-  ],
+-  cssFiles: 'hack/jianshu/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/jianshu/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]jianshu[.]com\/p\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/jianshu/article.css',
++    script: ['hack/jquery.min.js', 'hack/jianshu/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'csdn-article',
+-  expectUrl: tab => /http[s]?:\/\/([\w]+[.])?blog[.]csdn[.]net\/(.*\/)?article\/details\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://*.blog.csdn.net/article/details/*',
+-    '*://blog.csdn.net/*/article/details/*'
+-  ],
+-  cssFiles: 'hack/csdn/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/csdn/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/(\w+[.])?blog[.]csdn[.]net\/(.*\/)?article\/details\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/csdn/article.css',
++    script: ['hack/jquery.min.js', 'hack/csdn/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'csdn-topics',
+-  expectUrl: tab => /http[s]?:\/\/bbs[.]csdn[.]net\/topics\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://bbs.csdn.net/topics/*'
+-  ],
+-  cssFiles: 'hack/csdn/topics.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/csdn/topics.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/bbs[.]csdn[.]net\/topics\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/csdn/topics.css',
++    script: ['hack/jquery.min.js', 'hack/csdn/topics.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"话题"配置开关',
+     fields: []
+   }
+ }, {
+   id: '7down-soft',
+-  expectUrl: tab => /http[s]?:\/\/www[.]7down[.]com\/soft\/.*[.]html/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.7down.com/soft/*.html'
+-  ],
+-  cssFiles: 'hack/7down/soft.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/7down/soft.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]7down[.]com\/soft\/.*[.]html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/7down/soft.css',
++    script: ['hack/jquery.min.js', 'hack/7down/soft.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"软件"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'jb51-artical',
+-  expectUrl: tab => /http[s]?:\/\/www[.]jb51[.]net\/(artical\/)?.*[.]htm(l)?/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.jb51.net/*.html',
+-    '*://www.jb51.net/artical/*.html'
+-  ],
+-  cssFiles: 'hack/jb51/artical.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/jb51/artical.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/www[.]jb51[.]net\/(artical\/)?.*[.]htm(l)?/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/jb51/artical.css',
++    script: ['hack/jquery.min.js', 'hack/jb51/artical.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'mvcat-inject',
+-  expectUrl: tab => /http[s]?:\/\/(www.)?mvcat[.]com\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://www.mvcat.net/*'
+-  ],
+-  cssFiles: 'hack/mvcat/style.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/mvcat/script.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/(www.)?mvcat[.]com\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/mvcat/style.css',
++    script: ['hack/jquery.min.js', 'hack/mvcat/script.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"导航"配置开关',
+     fields: []
+   }
+ }, {
+   id: '360-article',
+-  expectUrl: tab => /http[s]?:\/\/(www.)?360doc[.](com|cn)\/(article|content)\/.*html/.test(tab.url),
+-  matchPatterns: [
+-    '*://360doc.cn/article/*.html',
+-    '*://360doc.cn/content/*.html',
+-    '*://360doc.com/article/*.html',
+-    '*://360doc.com/content/*.html',
+-    '*://www.360doc.cn/article/*.html',
+-    '*://www.360doc.cn/content/*.html',
+-    '*://www.360doc.com/article/*.html',
+-    '*://www.360doc.com/content/*.html'
+-  ],
+-  cssFiles: 'hack/360/article.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/360/article.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/(www.)?360doc[.](com|cn)\/(article|content)\/.*html/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/360/article.css',
++    script: ['hack/jquery.min.js', 'hack/360/article.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"文章"配置开关',
+     fields: []
+   }
+ }, {
+   id: 'stackoverflow-question',
+-  expectUrl: tab => /http[s]?:\/\/stackoverflow.com\/questions\/[0-9]+\/.*/.test(tab.url),
+-  matchPatterns: [
+-    '*://stackoverflow.com/questions/*/*'
+-  ],
+-  cssFiles: 'hack/stackoverflow/question.css',
+-  scriptFiles: ['hack/jquery.min.js', 'hack/stackoverflow/question.js'],
+-  configDescription: {
++  expectUrl: (tab: any) => /https?:\/\/stackoverflow.com\/questions\/[0-9]+\/.*/.test(tab.url),
++  hacker: {
++    state: 'loading',
++    style: 'hack/stackoverflow/question.css',
++    script: ['hack/jquery.min.js', 'hack/stackoverflow/question.js'],
++  }, description: {
+     enable: true,
+-    injectCss: true,
++    injectCSS: true,
+     injectScript: true,
+     configLabel: '"问答"配置开关',
+     fields: []
+Index: src/styles/element/index.scss
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/styles/element/index.scss b/src/styles/element/index.scss
+new file mode 100644
+--- /dev/null	(date 1678259642501)
++++ b/src/styles/element/index.scss	(date 1678259642501)
+@@ -0,0 +1,34 @@
++$--colors: (
++        "primary": (
++                "base": green,
++        ),
++        "success": (
++                "base": #21ba45,
++        ),
++        "warning": (
++                "base": #f2711c,
++        ),
++        "danger": (
++                "base": #db2828,
++        ),
++        "error": (
++                "base": #db2828,
++        ),
++        "info": (
++                "base": #42b8dd,
++        ),
++);
++
++// we can add this to custom namespace, default is 'el'
++@forward "element-plus/theme-chalk/src/mixins/config.scss" with (
++  $namespace: "ep"
++);
++
++// if you want to import all
++// @use "element-plus/theme-chalk/src/index.scss" as *;
++
++// You can comment it to hide debug info.
++// @debug $--colors;
++
++// custom dark variables
++@use "./dark.scss";
+Index: src/stores/popup-config.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/stores/popup-config.ts b/src/stores/popup-config.ts
+new file mode 100644
+--- /dev/null	(date 1678344733710)
++++ b/src/stores/popup-config.ts	(date 1678344733710)
+@@ -0,0 +1,52 @@
++import {markRaw} from "vue"
++import {merge} from 'lodash-es'
++import {defineStore} from 'pinia'
++// @ts-ignore
++import {setStorage} from "~/common/support"
++// @ts-ignore
++import {DefaultConfig} from "~/common/constant"
++import SliderField from "../popup/component/SliderField.vue"
++import SwitchField from "../popup/component/SwitchField.vue"
++
++const components = {
++  'SliderField': markRaw(SliderField),
++  'SwitchField': markRaw(SwitchField)
++}
++const {VITE_POPUP_ID, VITE_EMPTY_POPUP} = process.env
++export const usePopupConfigStore = defineStore('popup-config', {
++  state: () => ({
++    empty: VITE_EMPTY_POPUP === 'true',
++    description: {
++      ...DefaultConfig,
++      configId: VITE_POPUP_ID
++    }
++  }),
++  actions: {
++    saveDescription(data: any) {
++      const configId: any = this.description.configId;
++      const config = {[configId]: {...this.description, ...data, fields: []}};
++      const fields = data.fields || [];
++      fields.forEach((field: any) => {
++        config[configId][field.key] = field.value
++      })
++      setStorage(JSON.parse(JSON.stringify(config))).then(() => console.log('保存成功: ', config))
++    },
++    enableConfig() {
++      this.empty = false
++    },
++    mergeConfig(site: any) {
++      this.description.configId = site.id;
++      merge(this.description, site.description);
++      (this.description.fields || []).forEach((field: any) => {
++        if (this.description.hasOwnProperty(field.key)) {
++          // @ts-ignore
++          field.value = this.description[field.key]
++        }
++        if (components.hasOwnProperty(field.type)) {
++          // @ts-ignore
++          field.type = components[field.type]
++        }
++      })
++    },
++  }
++})
+Index: src/styles/index.scss
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/styles/index.scss b/src/styles/index.scss
+new file mode 100644
+--- /dev/null	(date 1678259901927)
++++ b/src/styles/index.scss	(date 1678259901927)
+@@ -0,0 +1,157 @@
++// import dark theme
++@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
++
++:root {
++    // 直接抄了官网的配色，懒得一个一个配
++    --ep-color-white: #ffffff;
++    --ep-color-black: #000000;
++    --ep-color-primary: #409eff;
++    --ep-color-primary-light-3: #79bbff;
++    --ep-color-primary-light-5: #a0cfff;
++    --ep-color-primary-light-7: #c6e2ff;
++    --ep-color-primary-light-8: #d9ecff;
++    --ep-color-primary-light-9: #ecf5ff;
++    --ep-color-primary-dark-2: #337ecc;
++    --ep-color-success: #67c23a;
++    --ep-color-success-light-3: #95d475;
++    --ep-color-success-light-5: #b3e19d;
++    --ep-color-success-light-7: #d1edc4;
++    --ep-color-success-light-8: #e1f3d8;
++    --ep-color-success-light-9: #f0f9eb;
++    --ep-color-success-dark-2: #529b2e;
++    --ep-color-warning: #e6a23c;
++    --ep-color-warning-light-3: #eebe77;
++    --ep-color-warning-light-5: #f3d19e;
++    --ep-color-warning-light-7: #f8e3c5;
++    --ep-color-warning-light-8: #faecd8;
++    --ep-color-warning-light-9: #fdf6ec;
++    --ep-color-warning-dark-2: #b88230;
++    --ep-color-danger: #f56c6c;
++    --ep-color-danger-light-3: #f89898;
++    --ep-color-danger-light-5: #fab6b6;
++    --ep-color-danger-light-7: #fcd3d3;
++    --ep-color-danger-light-8: #fde2e2;
++    --ep-color-danger-light-9: #fef0f0;
++    --ep-color-danger-dark-2: #c45656;
++    --ep-color-error: #f56c6c;
++    --ep-color-error-light-3: #f89898;
++    --ep-color-error-light-5: #fab6b6;
++    --ep-color-error-light-7: #fcd3d3;
++    --ep-color-error-light-8: #fde2e2;
++    --ep-color-error-light-9: #fef0f0;
++    --ep-color-error-dark-2: #c45656;
++    --ep-color-info: #909399;
++    --ep-color-info-light-3: #b1b3b8;
++    --ep-color-info-light-5: #c8c9cc;
++    --ep-color-info-light-7: #dedfe0;
++    --ep-color-info-light-8: #e9e9eb;
++    --ep-color-info-light-9: #f4f4f5;
++    --ep-color-info-dark-2: #73767a;
++    --ep-bg-color: #ffffff;
++    --ep-bg-color-page: #f2f3f5;
++    --ep-bg-color-overlay: #ffffff;
++    --ep-text-color-primary: #303133;
++    --ep-text-color-regular: #606266;
++    --ep-text-color-secondary: #909399;
++    --ep-text-color-placeholder: #a8abb2;
++    --ep-text-color-disabled: #c0c4cc;
++    --ep-border-color: #dcdfe6;
++    --ep-border-color-light: #e4e7ed;
++    --ep-border-color-lighter: #ebeef5;
++    --ep-border-color-extra-light: #f2f6fc;
++    --ep-border-color-dark: #d4d7de;
++    --ep-border-color-darker: #cdd0d6;
++    --ep-fill-color: #f0f2f5;
++    --ep-fill-color-light: #f5f7fa;
++    --ep-fill-color-lighter: #fafafa;
++    --ep-fill-color-extra-light: #fafcff;
++    --ep-fill-color-dark: #ebedf0;
++    --ep-fill-color-darker: #e6e8eb;
++    --ep-fill-color-blank: #ffffff;
++    --ep-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, .04), 0px 8px 20px rgba(0, 0, 0, .08);
++    --ep-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, .12);
++    --ep-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, .12);
++    --ep-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, .08), 0px 12px 32px rgba(0, 0, 0, .12), 0px 8px 16px -8px rgba(0, 0, 0, .16);
++    --ep-disabled-bg-color: var(--ep-fill-color-light);
++    --ep-disabled-text-color: var(--ep-text-color-placeholder);
++    --ep-disabled-border-color: var(--ep-border-color-light);
++    --ep-overlay-color: rgba(0, 0, 0, .8);
++    --ep-overlay-color-light: rgba(0, 0, 0, .7);
++    --ep-overlay-color-lighter: rgba(0, 0, 0, .5);
++    --ep-mask-color: rgba(255, 255, 255, .9);
++    --ep-mask-color-extra-light: rgba(255, 255, 255, .3);
++    --ep-border-width: 1px;
++    --ep-border-style: solid;
++    --ep-border-color-hover: var(--ep-text-color-disabled);
++    --ep-border: var(--ep-border-width) var(--ep-border-style) var(--ep-border-color);
++    --ep-svg-monochrome-grey: var(--ep-border-color);
++}
++
++html, body, #app {
++    --arrow-width: 5px;
++    --arrow-weight: 2px;
++    --corner-color: #6695da;
++    --corner-gradient-color: #6695da66;
++}
++
++body {
++    font-family: "Segoe UI", "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
++    "Microsoft YaHei", Arial, sans-serif;
++    -webkit-font-smoothing: antialiased;
++    -moz-osx-font-smoothing: grayscale;
++    margin: 0;
++}
++
++a {
++    color: var(--ep-color-primary);
++}
++
++code {
++    border-radius: 2px;
++    padding: 2px 4px;
++    background-color: var(--ep-color-primary-light-9);
++    color: var(--ep-color-primary);
++}
++
++.border-corner {
++    background: linear-gradient(to right, var(--corner-color) 4px, transparent 4px) 0 0,
++    linear-gradient(to right, var(--corner-color) 4px, transparent 4px) 0 100%,
++    linear-gradient(to left, var(--corner-color) 4px, transparent 4px) 100% 0,
++    linear-gradient(to left, var(--corner-color) 4px, transparent 4px) 100% 100%,
++    linear-gradient(to bottom, var(--corner-color) 4px, transparent 4px) 0 0,
++    linear-gradient(to bottom, var(--corner-color) 4px, transparent 4px) 100% 0,
++    linear-gradient(to top, var(--corner-color) 4px, transparent 4px) 0 100%,
++    linear-gradient(to top, var(--corner-color) 4px, transparent 4px) 100% 100%;
++    background-repeat: no-repeat;
++    background-size: 16px 16px;
++}
++
++.classify-icon {
++    width: 44px;
++    height: 44px;
++    border-radius: 50%;
++    border: 2px solid transparent;
++}
++
++.arrow {
++    display: inline-block;
++    padding: var(--arrow-width);
++    border: solid rgb(102, 149, 218);
++    border-width: 0 var(--arrow-weight) var(--arrow-weight) 0;
++}
++
++.right {
++    transform: rotate(-45deg);
++}
++
++.left {
++    transform: rotate(135deg);
++}
++
++.up {
++    transform: rotate(-135deg);
++}
++
++.down {
++    transform: rotate(45deg);
++}
+Index: src/components.d.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components.d.ts b/src/components.d.ts
+new file mode 100644
+--- /dev/null	(date 1678340761477)
++++ b/src/components.d.ts	(date 1678340761477)
+@@ -0,0 +1,24 @@
++/* eslint-disable */
++/* prettier-ignore */
++// @ts-nocheck
++// Generated by unplugin-vue-components
++// Read more: https://github.com/vuejs/core/pull/3399
++import '@vue/runtime-core'
++
++export {}
++
++declare module '@vue/runtime-core' {
++  export interface GlobalComponents {
++    ElCard: typeof import('element-plus/es')['ElCard']
++    ElCollapse: typeof import('element-plus/es')['ElCollapse']
++    ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
++    ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
++    ElDialog: typeof import('element-plus/es')['ElDialog']
++    ElIcon: typeof import('element-plus/es')['ElIcon']
++    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
++    ElSlider: typeof import('element-plus/es')['ElSlider']
++    ElSwitch: typeof import('element-plus/es')['ElSwitch']
++    RouterLink: typeof import('vue-router')['RouterLink']
++    RouterView: typeof import('vue-router')['RouterView']
++  }
++}
+Index: tsconfig.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tsconfig.json b/tsconfig.json
+new file mode 100644
+--- /dev/null	(date 1678273523606)
++++ b/tsconfig.json	(date 1678273523606)
+@@ -0,0 +1,34 @@
++{
++  "compilerOptions": {
++    "baseUrl": ".",
++    "target": "esnext",
++    "useDefineForClassFields": true,
++    "module": "esnext",
++    "moduleResolution": "node",
++    "strict": true,
++    "jsx": "preserve",
++    "sourceMap": false,
++    "resolveJsonModule": true,
++    "esModuleInterop": true,
++    "lib": [
++      "esnext",
++      "dom"
++    ],
++    "paths": {
++      "~/*": [
++        "src/*"
++      ]
++    },
++    "skipLibCheck": true
++  },
++  "include": [
++    "src/**/*.ts",
++    "src/**/*.d.ts",
++    "src/**/*.tsx",
++    "src/**/*.vue"
++  ],
++  "exclude": [
++    "node_modules",
++    "dist"
++  ]
++}
+Index: src/popup/view/App.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/view/App.vue b/src/popup/App.vue
+rename from src/popup/view/App.vue
+rename to src/popup/App.vue
+--- a/src/popup/view/App.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/App.vue	(date 1678342428945)
+@@ -1,62 +1,48 @@
+ <template>
+-  <h3 class="empty-content" v-if="empty">当前页面无可配置项</h3>
+-  <popup-config :description="configDescription" v-else></popup-config>
++  <el-config-provider namespace="ep">
++    <h3 class="empty-content" v-if="store.empty">当前页面无可配置项</h3>
++    <popup-config v-else />
++  </el-config-provider>
+ </template>
+-<script>
+-import { getRequest } from '../util/http'
+-import { ActiveTab, DefaultConfig, HackMappings } from '../../background/common/constant.js'
+-import PopupConfig from './PopupConfig.vue'
+-// const files = import.meta.glob("../component/*.vue", { eager: true })
+-// const components = Object.keys(files).reduce((previous, current) => {
+-//   const start = current.lastIndexOf('/') + 1
+-//   const end = current.lastIndexOf('.')
+-//   const name = current.substring(start, end)
+-//   previous[name] = files[current].default || files[current]
+-//   return previous
+-// }, {})
+-const empty = import.meta.env.VITE_EMPTY_POPUP === 'true'
+-const config = {
+-  ...DefaultConfig,
+-  configId: import.meta.env.VITE_POPUP_ID
+-}
+-export default {
+-  name: 'PopupIndex',
+-  components: { PopupConfig },
+-  beforeMount() {
+-    getRequest('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1', function(response) {
+-      const images = JSON.parse(response).images
+-      document.body.style.backgroundImage = images.map(image => `url('http://cn.bing.com${image.url}')`).join(',')
+-    })
+-  },
+-  data() {
+-    chrome.tabs && chrome.tabs.query(ActiveTab).then(([tab]) => {
+-      const site = HackMappings.find(mapping => mapping.expectUrl(tab))
+-      if (site) {
+-        this.empty = false
+-        this.configDescription = Object.assign(config, { configId: site.id }, site.configDescription)
+-      }
+-    })
+-    return {
+-      empty,
+-      configDescription: config
+-    }
+-  }
+-}
++<script setup lang="ts">
++import {onBeforeMount} from "vue"
++import {getRequest} from './util/http'
++import PopupConfig from './view/PopupConfig.vue'
++import {usePopupConfigStore} from "~/stores/popup-config"
++import {ActiveTab, HackMappings} from '~/common/constant'
++
++const store = usePopupConfigStore();
++chrome.tabs && chrome.tabs.query(ActiveTab).then(([tab]) => {
++  const site = HackMappings.find(mapping => mapping.expectUrl(tab))
++  if (site) {
++    store.enableConfig()
++    store.mergeConfig(site)
++  }
++})
++onBeforeMount(() => {
++  getRequest('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1', (response: any) => {
++    const images = JSON.parse(response).images
++    document.body.style.backgroundImage = images.map((image: any) => `url('http://cn.bing.com${image.url}')`).join(',')
++  })
++})
+ </script>
+-<style lang="scss" type="text/scss">
++<style lang="scss">
+ body {
+-  background-size: 100%;
++  background-size: cover;
++  background-repeat: no-repeat;
++  background-position: center center;
+ }
+ 
+ #app {
++  margin: 8px 12px;
+   backdrop-filter: blur(4px);
+ 
+   .empty-content {
+-    color: black;
+     padding: 10px;
++    color: #dfdfdf;
+     text-align: center;
+     border-radius: 5px;
+-    text-shadow: 0 0 10px rgb(255 255 255 / 60%);
++    text-shadow: 0 0 10px white;
+   }
+ }
+ 
+@@ -67,31 +53,32 @@
+ .popup-page-wrapper {
+   width: 256px;
+   display: flex;
++  user-select: none;
+   flex-direction: column;
+ 
+   .config-switch-card {
+     margin-bottom: 4px;
+   }
+ 
+-  .el-switch {
++  .ep-switch {
+     padding: 4px 0;
+   }
+ 
+-  .el-card {
++  .ep-card {
+     border: transparent;
+     //backdrop-filter: blur(10px);
+     background-color: rgba(0, 0, 0, .4);
+     //background-color: rgba(255, 255, 255, .7);
+ 
+-    .el-card__body {
++    .ep-card__body {
+       padding: 8px;
+ 
+-      .el-switch {
++      .ep-switch {
+         width: 100%;
+         flex-direction: row-reverse;
+         justify-content: space-between;
+ 
+-        .el-switch__label {
++        .ep-switch__label {
+           margin-left: 0;
+ 
+           &.is-active {
+@@ -109,13 +96,13 @@
+ 
+   .options-wrapper {
+ 
+-    .el-card__body {
++    .ep-card__body {
+       display: flex;
+       flex-direction: column;
+ 
+     }
+ 
+-    .el-divider--horizontal {
++    .ep-divider--horizontal {
+       margin: 4px 0;
+     }
+ 
+Index: src/popup/view/PopupConfig.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/popup/view/PopupConfig.vue b/src/popup/view/PopupConfig.vue
+--- a/src/popup/view/PopupConfig.vue	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/src/popup/view/PopupConfig.vue	(date 1678341387754)
+@@ -1,131 +1,74 @@
+ <template>
+   <div class="popup-page-wrapper">
+     <el-card class="config-switch-card">
+-      <el-switch v-model="enable" :active-text="configLabel" @change="onEnableSwitchChange"></el-switch>
+-      <el-switch v-model="enableCss" active-text="注入预设样式" @change="onCssSwitchChange"></el-switch>
+-      <el-switch v-model="enableScript" active-text="注入预设脚本" @change="onScriptSwitchChange"></el-switch>
++      <el-switch
++        @change="onEnableSwitchChange"
++        v-model="store.description.enable"
++        :active-text="store.description.configLabel"
++      ></el-switch>
++      <el-switch
++        active-text="注入预设样式"
++        @change="onCssSwitchChange"
++        v-if="store.description.enable"
++        v-model="store.description.injectCSS"
++      ></el-switch>
++      <el-switch
++        active-text="注入预设脚本"
++        @change="onScriptSwitchChange"
++        v-if="store.description.enable"
++        v-model="store.description.injectScript"
++      ></el-switch>
+     </el-card>
+-    <el-card class="options-wrapper" v-if="enable && fields.length">
++    <el-card class="options-wrapper" v-if="store.description.enable && store.description.fields.length">
+       <component
+-          v-for="field in fields"
+-          :key="field.key"
+-          v-bind:is="field.type"
+-          :config="field"
+-          @store-config="storePopupConfig"
++        :config="field"
++        :is="field.type"
++        :key="field.key"
++        @store-config="store.saveDescription"
++        v-for="field in store.description.fields"
+       ></component>
+       <!--<el-switch v-model="autoPaging" active-text="自动分页开关" @change="onAutoPagingChange"></el-switch>-->
+     </el-card>
+   </div>
+ </template>
+-<script>
+-import { DefaultConfig, HackMappings } from '../../background/common/constant'
+-import { chromeStorage } from '../../background/common/support'
++<script setup lang="ts">
++import {onMounted, ref} from "vue"
++import {getStorage} from '~/common/support'
++import {DefaultConfig} from '~/common/constant'
++import {usePopupConfigStore} from "~/stores/popup-config"
+ 
+-const files = import.meta.glob("../component/*.vue", { eager: true })
+-const components = Object.keys(files).reduce((previous, current) => {
+-  const start = current.lastIndexOf('/') + 1
+-  const end = current.lastIndexOf('.')
+-  const name = current.substring(start, end)
+-  previous[name] = files[current].default || files[current]
+-  return previous
+-}, {})
+-export default {
+-  name: 'PopupConfig',
+-  components,
+-  props: {
+-    description: {
+-      type: Object,
+-      default: DefaultConfig
+-    }
+-  },
+-  watch: {
+-    description: {
+-      deep: true,
+-      immediate: true,
+-      handler(value) {
+-        chromeStorage(value.configId, configs => {
+-          this.configLabel = value.configLabel
+-          const config = configs[value.configId] || {}
+-          this.enable = config.hasOwnProperty('enable') ? config.enable : true
+-          this.injectCss = config.hasOwnProperty('injectCss') ? config.injectCss : true
+-          this.injectScript = config.hasOwnProperty('injectScript') ? config.injectScript : true
+-          const fields = [];
+-          (value.fields || []).map(field => ({ ...field })).forEach(field => {
+-            if (!field.hasOwnProperty('value')) {
+-              field.value = field.default
+-            }
+-            if (config.hasOwnProperty(field.key)) {
+-              field.value = config[field.key]
+-            }
+-            fields.push(field)
+-          })
+-          this.fields = fields
+-          console.log(JSON.stringify(config))
+-        })
+-      }
+-    }
+-  },
+-  computed: {
+-    enableCss() {
+-      return this.enable && this.injectCss
+-    },
+-    enableScript() {
+-      return this.enable && this.injectScript
+-    }
+-  },
+-  data() {
+-    // const id = this.description.configId
+-    // if (!id || !chrome.storage || !chrome.storage.local) {
+-    //   return {}
+-    // }
+-    // chrome.storage.local.get([id], config => {
+-    //   console.log(this.description.configLabel)
+-    //   console.log(JSON.stringify(config))
+-    // })
+-    const mapping = HackMappings.find(mapping => mapping.id === this.description.configId)
+-    const fields = (mapping && mapping.configDescription.fields) || []
+-    fields.forEach(field => (field.value = field.default))
+-    return {
+-      enable: true,
+-      injectCss: true,
+-      injectScript: true,
+-      configLabel: '',
+-      fields: fields || []
+-    }
+-  },
+-  methods: {
+-    onEnableSwitchChange(value) {
+-      this.storePopupConfig({ enable: value })
+-    },
+-    onCssSwitchChange(value) {
+-      this.injectCss = value
+-      this.storePopupConfig({ injectCss: value })
+-    },
+-    onScriptSwitchChange(value) {
+-      this.injectScript = value
+-      this.storePopupConfig({ injectScript: value })
+-    },
+-    storePopupConfig(data) {
+-      const fieldsMap = {}
+-      if (data.fields) {
+-        data.fields.forEach(field => {fieldsMap[field.key] = field.value})
+-      }
+-      const configId = this.description.configId
+-      chromeStorage(configId, configs => {
+-        const merged = configs && configs[configId] || {}
+-        merged.enable = data.enable || this.enable
+-        merged.injectCss = data.injectCss || this.injectCss
+-        merged.injectScript = data.injectScript || this.injectScript
+-        Object.keys(fieldsMap).forEach(key => {
+-          merged[key] = fieldsMap[key]
+-        })
+-        chromeStorage({ [configId]: merged })
+-      })
+-    }
+-  }
+-}
++const store = usePopupConfigStore()
++const config = ref({...DefaultConfig})
++
++function loadConfig(configId: string = '', configLabel: string) {
++  getStorage(configId).then((configs: any) => {
++    store.mergeConfig({
++      description: {
++        ...configs[configId],
++        configId: configId,
++        configLabel: configLabel
++      }
++    })
++  })
++}
++
++function onEnableSwitchChange(value: boolean) {
++  store.saveDescription({enable: value})
++}
++
++function onCssSwitchChange(value: boolean) {
++  store.saveDescription({injectCSS: value})
++}
++
++function onScriptSwitchChange(value: boolean) {
++  store.saveDescription({injectScript: value})
++}
++
++onMounted(() => {
++  loadConfig(store.description.configId, store.description.configLabel)
++})
+ </script>
+-<style lang="scss" type="text/scss">
++<style lang="scss">
+ h3 {
+   width: 170px;
+ }
+Index: public/hack/bejson/json.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/bejson/json.js b/public/hack/bejson/json.js
+--- a/public/hack/bejson/json.js	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/public/hack/bejson/json.js	(date 1678346204756)
+@@ -1,17 +1,15 @@
+-(function() {
+-  const key = 'bejson-json'
+-  chrome.storage.local.get([key], function(data) {
+-    const config = data[key]
+-    console.log(config)
++(function ($) {
++  if ($('body[bejson]').length) {
++    return console.log('脚本重复注入')
++  }
+ 
+-    function mark() {
+-      const body = document.querySelector('body')
+-      if (!body) {
+-        return setTimeout(mark, 100)
+-      }
+-      body.setAttribute('bejson', location.pathname)
+-    }
++  function initialize () {
++    const body = document.querySelector('body')
++    if (!body) {
++      return requestAnimationFrame(initialize)
++    }
++    body.setAttribute('bejson', location.pathname)
++  }
+ 
+-    setTimeout(mark, 100)
+-  })
+-})()
++  requestAnimationFrame(initialize)
++})(window.jQuery)
+Index: public/hack/injected.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/hack/injected.js b/public/hack/injected.js
+new file mode 100644
+--- /dev/null	(date 1678332809462)
++++ b/public/hack/injected.js	(date 1678332809462)
+@@ -0,0 +1,31 @@
++(function () {
++  if (window.tunerLoaded) {
++    return
++  }
++  window.tunerLoaded = {
++    insertScript (urls) {
++      while (urls.length) {
++        const url = urls.shift()
++        if (document.getElementById(url)) {
++          return
++        }
++        const style = document.createElement('script')
++        style.setAttribute('id', url)
++        style.setAttribute('src', url)
++        style.setAttribute('type', 'text/javascript')
++        document.body.appendChild(style)
++      }
++    }
++  }
++  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
++    console.log('Tuner-crx is on standby')
++    callback({ msg: 'hack-injected' })
++    const site = data.site || {}
++    const config = data.config || {}
++    const insert = site.insert || []
++    // 注入的脚本和页面加载的脚本是相互隔离的，
++    // 如果需要读取页面脚本的数据就需要在页面嵌入脚本
++    window.tunerLoaded.config = config
++    window.tunerLoaded.insertScript(insert.map(url => chrome.runtime.getURL(url)))
++  })
++})()
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package.json b/package.json
+--- a/package.json	(revision d7d41154c2f56926345bb0622d79f1db508efc20)
++++ b/package.json	(date 1678323715638)
+@@ -4,24 +4,34 @@
+   "description": "Migrate tuner-x to v3",
+   "scripts": {
+     "dev": "vite",
+-    "build": "npm run vite-build && npm run rollup-build && npm run post-rollup-build",
++    "build": "npm run vite-build && npm run post-rollup-build",
+     "vite-build": "vite build --assetsDir assets",
+-    "rollup-build": "rollup src/background/index.js -o dist/background.js -f iife",
+     "post-rollup-build": "node build/index.js"
+   },
+   "dependencies": {
+-    "@element-plus/icons-vue": "^0.2.6",
+-    "element-plus": "latest",
++    "@element-plus/icons-vue": "^2.1.0",
++    "element-plus": "^2.2.13",
+     "moment": "^2.29.4",
+-    "vue": "^3.0.5"
++    "pinia": "^2.0.33",
++    "vue": "^3.2.36"
+   },
+   "devDependencies": {
++    "@iconify-json/ep": "^1.1.4",
++    "@rollup/plugin-typescript": "^11.0.0",
++    "@types/chrome": "^0.0.220",
++    "@types/node": "^18.14.0",
+     "@vitejs/plugin-vue": "^4.0.0",
+-    "@vue/compiler-sfc": "^3.2.45",
+-    "sass": "^1.34.0",
+-    "sass-loader": "^11.1.1",
+-    "vite": "^4.0.2",
+-    "vue-router": "^4.0.2"
++    "esbuild": "0.8.33",
++    "esbuild-windows-64": "0.8.33",
++    "rollup": "^3.18.0",
++    "sass": "^1.53.0",
++    "typescript": "^4.7.2",
++    "unocss": "^0.49.7",
++    "unplugin-vue-components": "^0.24.0",
++    "vite": "^4.1.2",
++    "vite-ssg": "^0.22.1",
++    "vue-router": "^4.0.2",
++    "vue-tsc": "^1.1.3"
+   },
+   "keywords": [],
+   "author": "littlearphone"
+diff --git a/src/navigator/view/config/data.js b/src/navigator/config/data.js
+rename from src/navigator/view/config/data.js
+rename to src/navigator/config/data.js
