@@ -1,6 +1,13 @@
 [google] .g h2,
+[google] #sfooter,
+[google] #rso .ULSxyf,
+[google] #bres .ULSxyf,
 [google] [data-text-ad] {
     display: none !important;
+}
+
+[google] .g li {
+    list-style: none;
 }
 
 /**************************主体居中**************************/
@@ -63,8 +70,10 @@ div#center_col > [role=navigation] {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
 }
 
-#rso div.g {
-    width: 100%;
+#rso div.g,
+#rso [jscontroller="SC7lYd"] {
+    margin: 0;
+    width: 100% !important;
 }
 
 #rso > div.g {
@@ -81,7 +90,8 @@ div#center_col > [role=navigation] {
 }
 
 #rso > div.g .yuRUbf,
-#rso > div > div.g .yuRUbf {
+#rso > div > div.g .yuRUbf,
+#rso > div > div > div.g .yuRUbf {
     padding-left: 8px;
     background-color: #f0f0f0;
     border-left: 5px solid #4486ef;
@@ -90,6 +100,22 @@ div#center_col > [role=navigation] {
 #rso > div.g cite,
 #rso > div > div.g cite {
     padding-left: 12px;
+}
+
+#rso .DKV0Md {
+    margin: 2px 4px;
+}
+
+#rso .H9lube {
+    margin: 0 12px;
+}
+
+#rso .H9lube ~ div {
+    display: flex;
+}
+
+#rso .csDOgf.L48a4c .rNSxBe {
+    top: -14px;
 }
 
 #rhs.rhstc4 div.ss6qqb {

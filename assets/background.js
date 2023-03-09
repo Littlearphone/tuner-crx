@@ -1,0 +1,1 @@
+import{p as i,a as n}from"./support.js";chrome.webNavigation.onCommitted.addListener(function(a){a.url!=="about:blank"&&i(a.tabId,{status:!0},a)});chrome.runtime.onMessage.addListener((a,t,r)=>a?a.type==="ajax"?(n(a,t,r),!0):r({}):r({}));
