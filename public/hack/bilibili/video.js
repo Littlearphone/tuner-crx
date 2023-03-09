@@ -1,29 +1,18 @@
-(function($) {
+(function ($) {
   if ($.bilibiliLoaded) {
-    console.log('页面已经被标记')
-    return
+    return console.log('脚本重复注入')
   }
   console.log('bilibili脚本初始化')
   $.bilibiliLoaded = {}
-  const key = 'bilibili-video'
-  chrome.storage.local.get([key], function(data) {
-    console.log('成功收到Bilibili配置信息')
-    const config = { ...data[key] }
-    if (!config.hasOwnProperty('enable')) {
-      config.enable = true
-    }
-    if (!config.hasOwnProperty('playbackRate')) {
+  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
+    console.log('[]~(￣▽￣)~* script is on standby')
+    callback({ msg: '[]~(￣▽￣)~*-script-injected' })
+    const config = data.config || {}
+    if (!config.hasOwnProperty('playbackRate') || config.playbackRate <= 0) {
       config.playbackRate = 1.25
     }
-    if (!config.hasOwnProperty('autoStartPlay')) {
-      config.autoStartPlay = true
-    }
-    if (!config.hasOwnProperty('fullWebScreen')) {
-      config.fullWebScreen = true
-    }
-    if (!config.enable) {
-      return
-    }
+    config.autoStartPlay = !config.hasOwnProperty('autoStartPlay') || config.autoStartPlay
+    config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
     // const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
     const videoPlayerObject = () => {
       const selector = [
@@ -77,16 +66,16 @@
         '.squirtle-video-speed ul li',
         '.bpx-player-ctrl-playbackrate ul li',
         '.bilibili-player-video-btn-speed-menu-list'
-      ].join(",")
+      ].join(',')
       return document.querySelectorAll(selector)
     }
     if (!window.EventBus) {
-      window.EventBus = function() {
+      window.EventBus = function () {
         this.uuid = new Date().getTime()
         this.events = []
         console.log(`创建事件总线: ${this.uuid}`)
       }
-      window.EventBus.prototype.emit = function(type, data) {
+      window.EventBus.prototype.emit = function (type, data) {
         this.events.push({
           type,
           data
@@ -94,10 +83,10 @@
         this.start()
         console.log(`收到事件: ${type}`)
       }
-      window.EventBus.prototype.clear = function() {
+      window.EventBus.prototype.clear = function () {
         this.events.length = 0
       }
-      window.EventBus.prototype.start = function() {
+      window.EventBus.prototype.start = function () {
         if (this.timer) {
           clearTimeout(this.timer)
         }
@@ -123,7 +112,7 @@
         this.events.push(event)
       }
     }
-    const onVideoFinish = function() {
+    const onVideoFinish = function () {
       window.bus.clear()
       const nextButton = playNextVideoButton()
       if (!playLoopOption().checked && nextButton) {
@@ -139,7 +128,7 @@
     // const onVideoCanplay = function(event) {
     //   console.log(`Video canplay: ${this.currentTime}`)
     // }
-    const onVideoStart = function() {
+    const onVideoStart = function () {
       console.log(`补充播放结束事件`)
       this.removeEventListener('ended', onVideoFinish)
       // this.removeEventListener('seeking', onVideoSeeking)
@@ -150,7 +139,7 @@
       // this.addEventListener('seeking', onVideoSeeking)
       // this.addEventListener('canplaythrough', onVideoCanplay)
     }
-    window.startPlay = function(data) {
+    window.startPlay = function (data) {
       const playButton = startPlayButton()
       const player = videoPlayerObject()
       if (!player || !playButton) {
@@ -164,7 +153,7 @@
       console.log(`开始播放视频`)
       return false
     }
-    window.skipSponsor = function() {
+    window.skipSponsor = function () {
       const buttons = Array.from(electricJumpButton())
       if (!buttons.length || buttons.filter(button => !button.offsetParent).length === buttons.length) {
         return false
@@ -173,12 +162,12 @@
       console.log(`跳过等待或连播`)
       return true
     }
-    const filterSpeedOption = function(speed, option) {
+    const filterSpeedOption = function (speed, option) {
       const attribute = option.attributes['data-value']
       const value = (attribute && attribute.value) || option.innerText
       return String(parseFloat(value)) === String(speed)
     }
-    window.adjustSpeed = function(data) {
+    window.adjustSpeed = function (data) {
       const options = videoSpeedRateOptions()
       if (!options || !options.length) {
         return false
@@ -193,7 +182,7 @@
       const player = videoPlayerObject()
       return player && (player.playbackRate = data.playbackRate)
     }
-    window.fullWebScreen = function(data) {
+    window.fullWebScreen = function (data) {
       if (!data.fullWebScreen) {
         return true
       }

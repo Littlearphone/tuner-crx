@@ -1,17 +1,15 @@
-(function($) {
-  const key = '360-article'
-  chrome.storage.local.get([key], function(data) {
-    console.log('成功收到360doc配置信息')
+(function ($) {
+  if ($('body[doc360]').length) {
+    return console.log('脚本重复注入')
+  }
 
-    function initial() {
-      const $body = $('body')
-      if (!$body.length) {
-        setTimeout(initial)
-        return
-      }
-      $body.attr('doc360', '')
+  function initialize () {
+    const $body = $('body')
+    if (!$body.length) {
+      return requestAnimationFrame(initialize)
     }
+    $body.attr('doc360', '')
+  }
 
-    initial()
-  })
+  requestAnimationFrame(initialize)
 })(window.jQuery)

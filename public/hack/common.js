@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
   if ($ && !$.loading) {
     const TEMPLATE = `
       <i class="tuner-loading-layer displayNone">
@@ -11,7 +11,7 @@
           </i>
         </i>
       </i>`
-    const LoadingMask = function(options) {
+    const LoadingMask = function (options) {
       const selector = options.selector || 'body'
       const layerStyle = $.extend({}, options.layerStyle)
       const spinnerStyle = $.extend({}, options.spinnerStyle)
@@ -19,31 +19,31 @@
         .find('.tuner-loading-block').css(spinnerStyle).end()
         .appendTo(selector)
     }
-    LoadingMask.prototype.start = function(countDown) {
+    LoadingMask.prototype.start = function (countDown) {
       countDown = countDown || 0
       if (this.countDown) {
         this.countDown += countDown
       } else {
         this.countDown = countDown
       }
-      this.loaded.removeClass("displayNone")
+      this.loaded.removeClass('displayNone')
       return this
     }
-    LoadingMask.prototype.end = function() {
+    LoadingMask.prototype.end = function () {
       if (this.countDown) {
         this.countDown--
       }
       if (this.countDown > 0) {
         return this
       }
-      this.loaded.addClass("displayNone")
+      this.loaded.addClass('displayNone')
       return this
     }
-    LoadingMask.prototype.remove = function() {
+    LoadingMask.prototype.remove = function () {
       return this.loaded.remove()
     }
     $.loading = new LoadingMask({})
-    $.loading.mask = function() {
+    $.loading.mask = function () {
       if (arguments.length <= 0) {
         return $.loading
       }
@@ -59,25 +59,24 @@
     }
   }
   if ($ && !$.detect) {
-    $.detect = function(selector, callback) {
+    $.detect = function (selector, callback) {
       const element = $(selector)
       if (!element.length) {
-        setTimeout(() => $.detect(selector, callback), 100)
-        return
+        return requestAnimationFrame(() => $.detect(selector, callback))
       }
       console.log('找到', element)
       callback(element)
     }
   }
 })(window.jQuery);
-(function($) {
+(function ($) {
   if (!$) {
     return
   }
-  const Pagination = function() {
+  const Pagination = function () {
     this.initial()
   }
-  Pagination.prototype.initial = function(selector) {
+  Pagination.prototype.initial = function (selector) {
     this.iframe = $('iframe#tuner-crx')
     if (!this.iframe.length) {
       console.log('创建隐藏iframe')
@@ -87,14 +86,14 @@
     this.iframe.attr('id', 'tuner-crx')
     this.iframe.appendTo('body')
   }
-  Pagination.prototype.select = function(selector) {
+  Pagination.prototype.select = function (selector) {
     return $(selector, this.iframe.prop('contentDocument'))
   }
-  Pagination.prototype.reloadFrame = function() {
+  Pagination.prototype.reloadFrame = function () {
     this.iframe.remove()
     this.initial()
   }
-  Pagination.prototype.nextPage = function() {
+  Pagination.prototype.nextPage = function () {
     console.log('自动加载下一页')
   }
   window.PRELOAD_MARGIN = 200

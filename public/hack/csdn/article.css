@@ -11,13 +11,18 @@ div.template-box, div.blog-footer-bottom, div.leftPop,
 div.toolbar-container-left ~ div, .csdn-shop-window-common,
 .toolbar-container-left .toolbar-menus li:not(.active),
 #blogColumnPayAdvert, div.toolbar-advert, #toolBarBox,
-#recommendNps, #csdn-toolbar {
+#content_views pre.set-code-hide .hide-preCode-box,
+#recommendNps, #csdn-toolbar, div.signin {
     display: none !important;
 }
 
 #content_views pre,
 #content_views pre code {
     user-select: unset !important;
+}
+
+main div.blog-content-box #content_views pre.set-code-hide {
+    height: auto !important;
 }
 
 .main_father .container#mainBox main {

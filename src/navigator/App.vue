@@ -1,120 +1,121 @@
 <template>
-  <div @contextmenu="showGlobalMenus">
-    <div class="background-layer" :style="backgroundLayerStyle"></div>
-    <div class="effect-layer" :style="effectLayerStyle"></div>
-    <div class="app-layer">
-      <el-scrollbar>
-        <div ref="appContainer" class="app-container" :style="containerStyle">
-          <div
+  <el-config-provider namespace="ep">
+    <div @contextmenu="showGlobalMenus">
+      <div class="background-layer" :style="backgroundLayerStyle"></div>
+      <div class="effect-layer" :style="effectLayerStyle"></div>
+      <div class="app-layer">
+        <el-scrollbar>
+          <div ref="appContainer" class="app-container" :style="containerStyle">
+            <div
               class="app-block"
               v-for="app in apps"
               :style="appBlockStyle(app)"
               @click="e => clickAppBlock(app, e)"
               @contextmenu="disableContextMenu"
-          >
-            <div class="app-head" v-if="appHeadText(app)" :style="appHeadStyle(app)">
-              {{ appHeadText(app) }}
-            </div>
-            <div class="app-body" v-if="appBodyText(app)" :style="appBodyStyle(app)">
-              {{ appBodyText(app) }}
-            </div>
-            <div class="app-tail" v-if="appTailText(app)" :style="appTailStyle(app)">
-              {{ appTailText(app) }}
+            >
+              <div class="app-head" v-if="appHeadText(app)" :style="appHeadStyle(app)">
+                {{ appHeadText(app) }}
+              </div>
+              <div class="app-body" v-if="appBodyText(app)" :style="appBodyStyle(app)">
+                {{ appBodyText(app) }}
+              </div>
+              <div class="app-tail" v-if="appTailText(app)" :style="appTailStyle(app)">
+                {{ appTailText(app) }}
+              </div>
             </div>
           </div>
+        </el-scrollbar>
+        <div class="contextmenu-block" :style="contextMenuStyle" v-show="contextMenuVisible">
+          <div v-for="item in contextMenus" @click="clickContextMenuItem(item.action)" class="contextmenu-item">
+            <el-icon v-if="item.icon">
+              <component :is="item.icon" />
+            </el-icon>
+            <span class="contextmenu-text">{{ item.name }}</span>
+          </div>
         </div>
-      </el-scrollbar>
-      <div class="contextmenu-block" :style="contextMenuStyle" v-show="contextMenuVisible">
-        <div v-for="item in contextMenus" @click="clickContextMenuItem(item.action)" class="contextmenu-item">
-          <el-icon v-if="item.icon">
-            <component :is="item.icon" />
-          </el-icon>
-          <span class="contextmenu-text">{{ item.name }}</span>
-        </div>
+        <!--<div class="contextmenu-layer" @click="hideContextMenu">-->
+        <!--</div>-->
       </div>
-      <!--<div class="contextmenu-layer" @click="hideContextMenu">-->
-      <!--</div>-->
-    </div>
-    <div class="app-dialog" @contextmenu="disableContextMenu">
-      <el-dialog v-model="appDialogVisible" destroy-on-close :fullscreen="appDialogFullscreen">
-        <el-collapse v-model="activeName" accordion>
-          <el-collapse-item title="Consistency" name="1">
-          </el-collapse-item>
-          <el-collapse-item title="Feedback" name="2">
-          </el-collapse-item>
-          <el-collapse-item title="Efficiency" name="3">
-          </el-collapse-item>
-          <el-collapse-item title="Controllability" name="4">
-          </el-collapse-item>
-        </el-collapse>
-      </el-dialog>
-    </div>
-    <div class="config-panel" @contextmenu="disableContextMenu">
-      <el-dialog v-model="configPanelVisible" destroy-on-close>
-        <el-collapse v-model="activeName" accordion>
-          <el-collapse-item title="组件图标设置" name="1">
-            <el-card>
-              <div class="config-item">
-                <span class="config-item-text">组件图标间距</span>
-                <el-slider class="config-item-element" v-model="containerProperties.gapLength" show-input></el-slider>
-              </div>
-              <div class="config-item">
-                <span class="config-item-text">组件图标大小</span>
-                <el-slider
+      <div class="app-dialog" @contextmenu="disableContextMenu">
+        <el-dialog v-model="appDialogVisible" destroy-on-close :fullscreen="appDialogFullscreen">
+          <el-collapse v-model="activeName" accordion>
+            <el-collapse-item title="Consistency" name="1">
+            </el-collapse-item>
+            <el-collapse-item title="Feedback" name="2">
+            </el-collapse-item>
+            <el-collapse-item title="Efficiency" name="3">
+            </el-collapse-item>
+            <el-collapse-item title="Controllability" name="4">
+            </el-collapse-item>
+          </el-collapse>
+        </el-dialog>
+      </div>
+      <div class="config-panel" @contextmenu="disableContextMenu">
+        <el-dialog v-model="configPanelVisible" destroy-on-close>
+          <el-collapse v-model="activeName" accordion>
+            <el-collapse-item title="组件图标设置" name="1">
+              <el-card>
+                <div class="config-item">
+                  <span class="config-item-text">组件图标间距</span>
+                  <el-slider class="config-item-element" v-model="containerProperties.gapLength" show-input></el-slider>
+                </div>
+                <div class="config-item">
+                  <span class="config-item-text">组件图标大小</span>
+                  <el-slider
                     :min="64"
                     :max="128"
                     show-input
                     class="config-item-element"
                     v-model="containerProperties.unitLength"
-                ></el-slider>
-              </div>
-              <div class="config-item">
-                <span class="config-item-text">组件图标圆角</span>
-                <el-slider
+                  ></el-slider>
+                </div>
+                <div class="config-item">
+                  <span class="config-item-text">组件图标圆角</span>
+                  <el-slider
                     :min="0"
                     :max="64"
                     show-input
                     class="config-item-element"
                     v-model="containerProperties.unitRadius"
-                ></el-slider>
-              </div>
-            </el-card>
-          </el-collapse-item>
-          <el-collapse-item title="组件交互设置" name="2">
-            <el-card>
-              <div class="config-item">
-                <el-switch v-model="appLinkOpenWindow" size="large" inactive-text="链接在新窗口打开" />
-              </div>
-              <div class="config-item">
-                <el-switch v-model="appDialogFullscreen" size="large" inactive-text="小组件全屏" />
-              </div>
-            </el-card>
-          </el-collapse-item>
-          <el-collapse-item title="主题设置" name="3">
-            <el-card></el-card>
-          </el-collapse-item>
-          <el-collapse-item title="其它设置" name="4">
-            <el-card></el-card>
-          </el-collapse-item>
-        </el-collapse>
-      </el-dialog>
+                  ></el-slider>
+                </div>
+              </el-card>
+            </el-collapse-item>
+            <el-collapse-item title="组件交互设置" name="2">
+              <el-card>
+                <div class="config-item">
+                  <el-switch v-model="appLinkOpenWindow" size="large" inactive-text="链接在新窗口打开" />
+                </div>
+                <div class="config-item">
+                  <el-switch v-model="appDialogFullscreen" size="large" inactive-text="小组件全屏" />
+                </div>
+              </el-card>
+            </el-collapse-item>
+            <el-collapse-item title="主题设置" name="3">
+              <el-card></el-card>
+            </el-collapse-item>
+            <el-collapse-item title="其它设置" name="4">
+              <el-card></el-card>
+            </el-collapse-item>
+          </el-collapse>
+        </el-dialog>
+      </div>
     </div>
-  </div>
+  </el-config-provider>
 </template>
 <script>
-import setting from '@element-plus/icons-vue/dist/es/setting.mjs'
-import dataLine from '@element-plus/icons-vue/dist/es/data-line.mjs'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
-import { APP_BLOCKS, BACKGROUND } from './config/data'
+import { APP_BLOCKS, BACKGROUND } from './config/data.js'
+import { DataLine, Setting } from '@element-plus/icons-vue'
 
 export default {
   name: 'App',
   components: {
-    setting,
-    dataLine
+    Setting,
+    DataLine
   },
-  mounted() {
+  mounted () {
     this.refreshClock()
     Array.from(document.styleSheets).forEach((sheet, index) => {
       const fadeInIndex = Array.from(sheet.cssRules).findIndex(rule => rule.name === 'dialog-fade-in')
@@ -128,7 +129,7 @@ export default {
     })
   },
   computed: {
-    containerStyle() {
+    containerStyle () {
       const gapLength = this.containerProperties.gapLength
       const unitLength = this.containerProperties.unitLength
       return {
@@ -139,7 +140,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       fadeInIndex: -1,
       fadeOutIndex: -1,
@@ -187,7 +188,7 @@ export default {
     }
   },
   methods: {
-    refreshClock() {
+    refreshClock () {
       const clocks = this.apps.filter(app => app.type === 'clock')
       clocks.forEach(app => {
         if (app.head && app.head.text) {
@@ -210,25 +211,25 @@ export default {
         setTimeout(() => this.refreshClock(), 1000)
       }
     },
-    appHeadText(app) {
+    appHeadText (app) {
       return (app.head && app.head.text) || app.head
     },
-    appHeadStyle(app) {
+    appHeadStyle (app) {
       return app.head && app.head.style
     },
-    appBodyText(app) {
+    appBodyText (app) {
       return (app.body && app.body.text) || app.body
     },
-    appBodyStyle(app) {
+    appBodyStyle (app) {
       return app.body && app.body.style
     },
-    appTailText(app) {
+    appTailText (app) {
       return (app.tail && app.tail.text) || app.tail
     },
-    appTailStyle(app) {
+    appTailStyle (app) {
       return app.tail && app.tail.style
     },
-    appBlockStyle(app) {
+    appBlockStyle (app) {
       const rowGap = this.containerProperties.gapLength
       const columnGap = this.containerProperties.gapLength
       const unitWidth = this.containerProperties.unitLength
@@ -244,7 +245,7 @@ export default {
         width: `${(column - 1) * columnGap + column * unitWidth}px`
       })
     },
-    clickAppBlock(app, e) {
+    clickAppBlock (app, e) {
       e && e.preventDefault()
       e && e.stopPropagation()
       switch (app.type || 'dialog') {
@@ -265,7 +266,7 @@ export default {
           break
       }
     },
-    updateDialogAnimation(target) {
+    updateDialogAnimation (target) {
       if (this.fadeSheetIndex < 0) {
         return
       }
@@ -304,31 +305,31 @@ export default {
       }
       `, this.fadeOutIndex)
     },
-    disableContextMenu(e) {
+    disableContextMenu (e) {
       e && e.preventDefault()
       e && e.stopPropagation()
     },
-    testActionMethod() {},
-    showConfigPanel() {
+    testActionMethod () {},
+    showConfigPanel () {
       this.configPanelVisible = true
     },
-    clickContextMenuItem(callback) {
+    clickContextMenuItem (callback) {
       callback.call(this)
       this.hideContextMenu()
     },
-    hideContextMenu(e) {
+    hideContextMenu (e) {
       e && e.preventDefault()
       e && e.stopPropagation()
       this.contextMenuVisible = false
       document.removeEventListener('click', this.hideContextMenu)
     },
-    showBlockMenus(e) {
+    showBlockMenus (e) {
       this.showContextMenus(e, this.blockMenus)
     },
-    showGlobalMenus(e) {
+    showGlobalMenus (e) {
       this.showContextMenus(e, this.globalMenus)
     },
-    showContextMenus(e, menus) {
+    showContextMenus (e, menus) {
       e && e.preventDefault()
       e && e.stopPropagation()
       this.contextMenus = menus
@@ -338,7 +339,7 @@ export default {
       document.addEventListener('click', this.hideContextMenu)
     }
   },
-  destroyed() {
+  destroyed () {
     document.removeEventListener('click', this.hideContextMenu)
   }
 }
@@ -352,15 +353,15 @@ html, body, #app {
 }
 
 .config-panel {
-  .el-dialog__header {
+  .ep-dialog__header {
     display: none;
   }
 
-  .el-dialog__body {
+  .ep-dialog__body {
     padding-top: 0;
     padding-bottom: 0;
 
-    .el-collapse-item__content {
+    .ep-collapse-item__content {
       padding-bottom: 12px;
     }
 
@@ -379,7 +380,7 @@ html, body, #app {
         width: calc(100% - 100px);
       }
 
-      .el-switch {
+      .ep-switch {
         width: 100%;
         align-self: center;
         justify-content: space-between;

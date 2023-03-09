@@ -1,17 +1,15 @@
-(function() {
-  const key = 'bejson-json'
-  chrome.storage.local.get([key], function(data) {
-    const config = data[key]
-    console.log(config)
+(function ($) {
+  if ($('body[bejson]').length) {
+    return console.log('脚本重复注入')
+  }
 
-    function mark() {
-      const body = document.querySelector('body')
-      if (!body) {
-        return setTimeout(mark, 100)
-      }
-      body.setAttribute('bejson', location.pathname)
+  function initialize () {
+    const body = document.querySelector('body')
+    if (!body) {
+      return requestAnimationFrame(initialize)
     }
+    body.setAttribute('bejson', location.pathname)
+  }
 
-    setTimeout(mark, 100)
-  })
-})()
+  requestAnimationFrame(initialize)
+})(window.jQuery)

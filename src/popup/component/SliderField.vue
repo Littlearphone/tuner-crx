@@ -2,53 +2,41 @@
   <div class="el-slider__wrapper">
     <span class="el-slider__label">{{ config.label }}</span>
     <el-slider
-        :min="config.min"
-        :max="config.max"
-        @change="onChange"
-        :step="config.step"
-        :marks="config.marks"
-        v-model="config.value"
-        :show-input="config.showInput"
+      :min="config.min"
+      :max="config.max"
+      @change="onChange"
+      :step="config.step"
+      :marks="config.marks"
+      v-model="config.value"
+      :show-input="config.showInput"
     ></el-slider>
   </div>
 </template>
-<script>
-export default {
-  name: 'SliderField',
-  props: {
-    config: {
-      type: Object,
-      default: {}
-    }
-  },
-  watch: {},
-  data() {
-    return {}
-  },
-  methods: {
-    onChange(value) {
-      if (this.config.handler && typeof this.config.handler === 'function') {
-        this.config.handler.call(this, value)
-      }
-      this.$emit('store-config', {
-        fields: [{
-          key: this.config.key,
-          value: this.config.value
-        }]
-      })
-    }
+<script setup lang="ts">
+const props = defineProps<{ config: any }>();
+const emits = defineEmits(['store-config']);
+
+function onChange(value) {
+  if (props.config.handler && typeof props.config.handler === 'function') {
+    props.config.handler(value)
   }
+  emits('store-config', {
+    fields: [{
+      key: props.config.key,
+      value: props.config.value
+    }]
+  })
 }
 </script>
-<style lang="scss" type="text/scss">
+<style lang="scss">
 h3 {
   width: 170px;
 }
 
-.el-slider__wrapper {
+.ep-slider__wrapper {
   padding: 8px 0;
 
-  .el-slider__label {
+  .ep-slider__label {
     line-height: 1;
     font-size: 14px;
     font-weight: bold;
@@ -56,11 +44,11 @@ h3 {
     color: var(--el-color-primary);
   }
 
-  .el-slider {
+  .ep-slider {
     padding: 0 8px;
     width: calc(100% - 16px);
 
-    .el-slider__button {
+    .ep-slider__button {
       --el-slider-button-size: 16px;
     }
   }
