@@ -1,6 +1,6 @@
 <template>
-  <div class="el-slider__wrapper">
-    <span class="el-slider__label">{{ config.label }}</span>
+  <div class="ep-slider__wrapper">
+    <span class="ep-slider__label">{{ config.label }}</span>
     <el-slider
       :min="config.min"
       :max="config.max"
@@ -41,7 +41,7 @@ h3 {
     font-size: 14px;
     font-weight: bold;
     display: inline-block;
-    color: var(--el-color-primary);
+    color: var(--ep-color-primary);
   }
 
   .ep-slider {
@@ -49,9 +49,12 @@ h3 {
     width: calc(100% - 16px);
 
     .ep-slider__button {
-      --el-slider-button-size: 16px;
+      --ep-slider-button-size: 16px;
+    }
+
+    .ep-slider__marks-text {
+      font-weight: 700;
     }
   }
-
 }
 </style>
