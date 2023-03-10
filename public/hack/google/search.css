@@ -1,4 +1,3 @@
-[google] .g h2,
 [google] #sfooter,
 [google] #rso .ULSxyf,
 [google] #bres .ULSxyf,
@@ -6,205 +5,60 @@
     display: none !important;
 }
 
-[google] .g li {
-    list-style: none;
+[google] #searchform > div {
+    justify-content: center;
 }
 
-/**************************主体居中**************************/
-
-div.Q3DXx.yIbDgf #tsf {
-    padding-right: 32px;
+[google] #tsf,
+[google] #rcnt,
+[google] #rcnt,
+[google] #appbar,
+[google] #hdtb-msb {
+    --center-abs-margin: 0;
 }
 
-div.Q3DXx.yIbDgf,
-div#hdtb-msb,
-#slim_appbar,
-#rcnt > div[class] {
+[google] #slim_appbar {
     display: flex;
     justify-content: center;
 }
 
-#rcnt #center_col {
-    flex-direction: column;
+[google] #slim_appbar > div {
+    width: 1000px;
+    justify-content: flex-start;
 }
 
-#rcnt {
-    display: flex;
+[google] #rcnt:has(#rhs) {
     margin: 0 auto;
-    align-items: center;
     justify-content: center;
-    flex-direction: column-reverse;
 }
 
-div#rhs {
-    margin: 0;
-}
-
-div#hdtb-msb,
-#rcnt > div[class] {
-    width: 100%;
-}
-
-div#rhs[class] > h2[class] ~ div[class] {
-    width: 100%;
-}
-
-div#hdtb-msb .MUFPAc,
-div#center_col {
-    margin: 0;
-}
-
-div#center_col > [role=navigation] {
-    position: relative;
-}
-
-/**************************主体居中**************************/
-/**************************条目边框**************************/
-
-#rso > div {
-    padding: 8px;
-    border: 1px solid rgb(235, 238, 245);
-}
-
-#rso > div:hover {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .3);
-}
-
-#rso div.g,
-#rso [jscontroller="SC7lYd"] {
-    margin: 0;
-    width: 100% !important;
-}
-
-#rso > div.g {
-    width: calc(100% - 16px);
-}
-
-#rso > div > div.g {
-    width: 100%;
-    position: relative;
-}
-
-#rso > div > div.g div[style*='width'] {
-    width: auto !important;
-}
-
-#rso > div.g .yuRUbf,
-#rso > div > div.g .yuRUbf,
-#rso > div > div > div.g .yuRUbf {
-    padding-left: 8px;
-    background-color: #f0f0f0;
-    border-left: 5px solid #4486ef;
-}
-
-#rso > div.g cite,
-#rso .byrV5b cite,
-#rso > div > div.g cite {
-    padding-left: 16px;
-}
-
-#rso .d4rhi ul.FxLDp {
-    padding-left: 0;
-}
-
-#rso .DKV0Md {
-    margin: 2px 4px;
-}
-
-#rso .H9lube {
-    margin: 0 12px;
-}
-
-#rso .H9lube ~ div {
-    display: flex;
-}
-
-#rso .csDOgf.L48a4c .rNSxBe {
-    top: -14px;
-}
-
-#rhs.rhstc4 div.ss6qqb {
-    width: 690px;
-}
-
-#rhs div.Jb0Zif.ss6qqb {
-    margin: 0;
-}
-
-div.dXiKIc {
-    display: flex;
-    max-width: 48em;
-    margin-top: 4px;
-    line-height: 1.58;
-}
-
-div.NqpkQc {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.03;
-    position: absolute;
-    background-color: #000;
-}
-
-div.i5w0Le {
-    top: 46%;
-    left: 50%;
-    color: #fff;
-    opacity: 0.87;
-    position: absolute;
-    transform: translate(-50%, -50%);
-}
-
-div.ZWiQ5 {
-    bottom: 0;
-    display: flex;
+[google] #rcnt:not(:has(#rhs)) {
+    margin: 0 auto;
     flex-direction: column;
+    width: calc(652px + var(--rhs-margin) + var(--rhs-width));
+}
+
+[google] #rcnt:not(:has(#rhs)) #center_col {
+    flex-grow: 1;
+    width: calc(652px + var(--rhs-margin) + var(--rhs-width));
+}
+
+[google] #top_nav #hdtb-msb {
+    float: none;
+    width: 1000px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+[google] #top_nav #hdtb #hdtbMenus {
     left: 0;
-    position: absolute;
-    width: 100%;
+    right: 0;
+    padding: 0;
+    width: 1000px;
+    margin: 0 auto;
+    --center-abs-margin: 0;
 }
 
-div.U1TUId.LYh3vc {
-    border-radius: 12px;
-    width: 178px;
-    height: 100px;
+[google] #top_nav #hdtb-msb #hdtb-tls {
+    margin-right: 80px;
 }
-
-div.U1TUId {
-    border-radius: 8px;
-    height: 65px;
-    justify-content: center;
-    margin-right: 16px;
-    margin-top: 4px;
-    overflow: hidden;
-    position: relative;
-    width: 116px;
-}
-
-div.FwaFif {
-    position: relative;
-    align-items: center;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-div.XmLlIe {
-    padding: 0 4px;
-    display: inline-block;
-}
-
-div.YC0knb {
-    margin-top: 16px;
-    color: #70757a;
-    font-size: 14px;
-    line-height: 22px;
-}
-
-div.jbmlle {
-    line-height: 20px;
-    padding: 16px;
-}
-
-/**************************条目边框**************************/
