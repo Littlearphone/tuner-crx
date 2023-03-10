@@ -98,8 +98,13 @@ div#center_col > [role=navigation] {
 }
 
 #rso > div.g cite,
+#rso .byrV5b cite,
 #rso > div > div.g cite {
-    padding-left: 12px;
+    padding-left: 16px;
+}
+
+#rso .d4rhi ul.FxLDp {
+    padding-left: 0;
 }
 
 #rso .DKV0Md {
