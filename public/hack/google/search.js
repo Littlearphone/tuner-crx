@@ -36,7 +36,9 @@
         }
         const scrollX = window.scrollX
         const scrollY = window.scrollY
-        $('#search #rso')[0].appendChild(this.select('#search #rso')[0])
+        const innerItems = this.select('#search #rso')[0]
+        innerItems.prepend(this.select('#center_col > style')[0])
+        $('#search #rso')[0].appendChild(innerItems)
         $(paginationSelector).parent().html(this.select(paginationSelector).parent().html())
         window.scrollTo(scrollX, scrollY)
         loading.end().remove()
