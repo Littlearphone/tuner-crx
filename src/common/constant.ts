@@ -15,7 +15,7 @@ export const HackMappings = [{
   hacker: {
     state: 'loading',
     style: ['hack/baidu/search.css'],
-    script: ['hack/jquery.min.js', "hack/common.js", 'hack/baidu/search.js'],
+    script: ['hack/jquery.min.js', 'hack/common.js', 'hack/baidu/search.js'],
   }, description: {
     enable: true,
     injectCSS: true,
@@ -78,7 +78,7 @@ export const HackMappings = [{
   hacker: {
     state: 'loading',
     style: ['hack/bing/search.css'],
-    script: ['hack/jquery.min.js', "hack/common.js", 'hack/bing/search.js'],
+    script: ['hack/jquery.min.js', 'hack/common.js', 'hack/bing/search.js'],
   }, description: {
     enable: true,
     injectCSS: true,
@@ -105,7 +105,7 @@ export const HackMappings = [{
   hacker: {
     state: 'loading',
     style: ['hack/google/search.css'],
-    script: ['hack/jquery.min.js', "hack/common.js", 'hack/google/search.js'],
+    script: ['hack/jquery.min.js', 'hack/common.js', 'hack/google/search.js'],
   }, description: {
     enable: true,
     injectCSS: true,
@@ -140,7 +140,7 @@ export const HackMappings = [{
   hacker: {
     state: 'loading',
     style: ['hack/douyu/live-room.css'],
-    script: ['hack/jquery.min.js', "hack/common.js", 'hack/douyu/live-room.js'],
+    script: ['hack/jquery.min.js', 'hack/common.js', 'hack/douyu/live-room.js'],
   }, description: {
     enable: true,
     danMuSize: 30,
@@ -216,20 +216,6 @@ export const HackMappings = [{
     ]
   }
 }, {
-  id: 'pc6-software',
-  expectUrl: (tab: any) => /https?:\/\/www[.]pc6[.]com\/softview\/SoftView_.*[.]html/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/pc6/software.css',
-    script: ['hack/jquery.min.js', 'hack/pc6/software.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"应用"配置开关',
-    fields: []
-  }
-}, {
   id: 'zhihu-question',
   expectUrl: (tab: any) => /https?:\/\/www[.]zhihu[.]com\/(search?.*|question\/.*)/.test(tab.url),
   hacker: {
@@ -255,20 +241,6 @@ export const HackMappings = [{
     injectCSS: true,
     injectScript: true,
     configLabel: '"专栏"配置开关',
-    fields: []
-  }
-}, {
-  id: '51cto-blog',
-  expectUrl: (tab: any) => /https?:\/\/blog[.]51cto[.]com\/[0-9]+\/[0-9]+/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/51cto/blog.css',
-    script: ['hack/jquery.min.js', 'hack/51cto/blog.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"博客"配置开关',
     fields: []
   }
 }, {
@@ -342,76 +314,6 @@ export const HackMappings = [{
     fields: []
   }
 }, {
-  id: 'chinaunix-article',
-  expectUrl: (tab: any) => /https?:\/\/blog[.]chinaunix[.]net\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/chinaunix/article.css',
-    script: ['hack/jquery.min.js', 'hack/chinaunix/article.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
-  id: 'bejson-json',
-  expectUrl: (tab: any) => /https?:\/\/www.bejson.com\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/bejson/json.css',
-    script: ['hack/jquery.min.js', 'hack/bejson/json.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"JSON"配置开关',
-    fields: []
-  }
-}, {
-  id: 'linuxidc-article',
-  expectUrl: (tab: any) => /https?:\/\/www[.]linuxidc[.]com\/Linux\/.*[.]html?/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/linuxidc/article.css',
-    script: ['hack/jquery.min.js', 'hack/linuxidc/article.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
-  id: 'tencent-article',
-  expectUrl: (tab: any) => /https?:\/\/cloud[.]tencent[.]com\/developer\/article\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/tencent/article.css',
-    script: ['hack/jquery.min.js', 'hack/tencent/article.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
-  id: 'jianshu-article',
-  expectUrl: (tab: any) => /https?:\/\/www[.]jianshu[.]com\/p\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/jianshu/article.css',
-    script: ['hack/jquery.min.js', 'hack/jianshu/article.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
   id: 'csdn-article',
   expectUrl: (tab: any) => /https?:\/\/(\w+[.])?blog[.]csdn[.]net\/(.*\/)?article\/details\/.*/.test(tab.url),
   hacker: {
@@ -440,73 +342,17 @@ export const HackMappings = [{
     fields: []
   }
 }, {
-  id: '7down-soft',
-  expectUrl: (tab: any) => /https?:\/\/www[.]7down[.]com\/soft\/.*[.]html/.test(tab.url),
+  id: 'snippet-hack',
+  expectUrl: (tab: any) => true,
   hacker: {
     state: 'loading',
-    style: 'hack/7down/soft.css',
-    script: ['hack/jquery.min.js', 'hack/7down/soft.js'],
+    style: 'hack/snippet/snippet.css',
+    script: ['hack/jquery.min.js', 'hack/snippet/snippet.js'],
   }, description: {
     enable: true,
     injectCSS: true,
     injectScript: true,
-    configLabel: '"软件"配置开关',
-    fields: []
-  }
-}, {
-  id: 'jb51-artical',
-  expectUrl: (tab: any) => /https?:\/\/www[.]jb51[.]net\/(artical\/)?.*[.]htm(l)?/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/jb51/artical.css',
-    script: ['hack/jquery.min.js', 'hack/jb51/artical.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
-  id: 'mvcat-inject',
-  expectUrl: (tab: any) => /https?:\/\/(www.)?mvcat[.]com\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/mvcat/style.css',
-    script: ['hack/jquery.min.js', 'hack/mvcat/script.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"导航"配置开关',
-    fields: []
-  }
-}, {
-  id: '360-article',
-  expectUrl: (tab: any) => /https?:\/\/(www.)?360doc[.](com|cn)\/(article|content)\/.*html/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/360/article.css',
-    script: ['hack/jquery.min.js', 'hack/360/article.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"文章"配置开关',
-    fields: []
-  }
-}, {
-  id: 'stackoverflow-question',
-  expectUrl: (tab: any) => /https?:\/\/stackoverflow.com\/questions\/[0-9]+\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/stackoverflow/question.css',
-    script: ['hack/jquery.min.js', 'hack/stackoverflow/question.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"问答"配置开关',
+    configLabel: '"通用"配置开关',
     fields: []
   }
 }]

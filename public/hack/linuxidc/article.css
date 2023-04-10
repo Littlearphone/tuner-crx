@@ -1,7 +1,0 @@
-.topBar, #middle > tbody > tr > td:nth-child(2), #footer {
-    display: none !important;
-}
-
-#content {
-    padding: 5px !important;
-}

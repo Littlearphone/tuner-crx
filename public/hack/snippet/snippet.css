@@ -19,3 +19,458 @@ body[www-dmzj-com] .rank_tabs_first .rank_first_con p {
     overflow: hidden;
     white-space: nowrap;
 }
+
+/**********************************************************/
+body[www-7down-com] .top,
+body[www-7down-com] .nav,
+body[www-7down-com] a.xza,
+body[www-7down-com] .tit04,
+body[www-7down-com] .game02,
+body[www-7down-com] .game04,
+body[www-7down-com] .subnav,
+body[www-7down-com] .footer,
+body[www-7down-com] #btndowns,
+body[www-7down-com] .soft-left,
+body[www-7down-com] #downloads,
+body[www-7down-com] .down_right,
+body[www-7down-com] #specialbox,
+body[www-7down-com] #downlist > *,
+body[www-7down-com] .header div p,
+body[www-7down-com] .soft-body .head {
+    display: none !important;
+}
+
+body[www-7down-com] #downlist > .off ~ dd {
+    display: block !important;
+}
+
+body[www-7down-com] .soft-body {
+    width: auto !important;
+}
+
+body[www-7down-com] .down_left {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+body[www-7down-com] .down-info {
+    height: auto !important;
+}
+
+body[www-7down-com] .downlist {
+    position: absolute;
+    top: 200px;
+    left: 100px;
+}
+
+body[www-7down-com] .downbox {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+body[www-7down-com] #downloadbox {
+    right: 0;
+    top: 20px;
+    left: auto;
+    bottom: auto;
+    position: relative;
+}
+
+/**********************************************************/
+body[www-360doc-com] header,
+body[www-360doc-com] .a_right,
+body[www-360doc-com] section ~ *,
+body[www-360doc-com] #arttopbdad,
+body[www-360doc-com] #copytoolbar,
+body[www-360doc-com] .floatqrcode,
+body[www-360doc-com] .fixedtoolbar,
+body[www-360doc-com] .article_data,
+body[www-360doc-com] .article_showall,
+body[www-360doc-com] .contextmenu,
+body[www-360doc-com] .atfixednav,
+body[www-360doc-com] #bevip__ ~ *,
+body[www-360doc-com] #bgchange ~ *,
+body[www-360doc-com] #upartcolor ~ *,
+body[www-360doc-com] #printArticle ~ *,
+body[www-360doc-com] #currbackgroudcolor ~ *,
+body[www-360doc-com] #goTop2 > div:first-child ~ * {
+    display: none !important;
+}
+
+body[www-360doc-com] #goTop2 > div:first-child {
+    right: 20px;
+    bottom: 20px;
+    position: fixed;
+}
+
+body[www-360doc-com] .article_maxh,
+body[www-360doc-com].articleMaxH .article_container {
+    height: fit-content;
+}
+
+body[www-360doc-com] .doc360article_content {
+    margin: 0 !important;
+    padding: 10px 20px !important;
+    width: calc(100% - 40px) !important;
+}
+
+body[www-360doc-com] .a_left,
+body[www-360doc-com] .a_left #bgchange,
+body[www-360doc-com] #articlecontent table,
+body[www-360doc-com] #articlecontent table pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+/**********************************************************/
+body[blog-51cto-com] #mask,
+body[blog-51cto-com] #mask ~ *,
+body[blog-51cto-com] div[id^=topbanner],
+body[blog-51cto-com] .Content-box .Content.Index > .Page ~ * {
+    display: none !important;
+}
+
+/**********************************************************/
+body[www-bejson-com] h1,
+body[www-bejson-com] footer,
+body[www-bejson-com] #resize,
+body[www-bejson-com] .top1-link,
+body[www-bejson-com] footer ~ *,
+body[www-bejson-com] .footer-nav,
+body[www-bejson-com] .save-data-con,
+body[www-bejson-com] .recent-use-box,
+body[www-bejson-com] .container form ~ *,
+body[www-bejson-com] .resizable-textarea {
+    display: none !important;
+}
+
+body[www-bejson-com] #editor {
+    display: block !important;
+    position: fixed !important;
+    width: unset !important;
+    top: 100px;
+    bottom: 30px;
+    left: 10px;
+    right: 10px;
+}
+
+body[www-bejson-com] #editor ~ div,
+body[www-bejson-com] .t-huge-margin,
+body[www-bejson-com] .t-huge2-margin {
+    display: block !important;
+    position: fixed !important;
+    margin: 0 !important;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+}
+
+body[www-bejson-com] .CodeMirror {
+    height: 100%;
+}
+
+body[www-bejson-com] .CodeMirror-scroll {
+    display: block !important;
+    position: fixed !important;
+    height: unset !important;
+    padding: 0 !important;
+    bottom: 75px;
+    top: 100px;
+    left: 10px;
+    right: 10px;
+}
+
+/**********************************************************/
+body[www-mvcat-com] .wxfollow,
+body[www-mvcat-com] #tooltip {
+    display: none !important;
+}
+
+/**********************************************************/
+body[www-jianshu-com] aside,
+body[www-jianshu-com] iframe,
+body[www-jianshu-com] footer ~ *,
+body[www-jianshu-com] nav a[href="/"],
+body[www-jianshu-com] [class$="-mask"],
+body[www-jianshu-com] nav a[href*="/app"],
+body[www-jianshu-com] [aria-label="简书钻"],
+body[www-jianshu-com] [aria-label="添加评论"],
+body[www-jianshu-com] [aria-label="baidu-ad"],
+body[www-jianshu-com] [class$="-mask"] ~ div,
+body[www-jianshu-com] [aria-label="简书"] ~ *,
+body[www-jianshu-com] [aria-label="ic-nav-mode"],
+body[www-jianshu-com] #__next section article ~ *,
+body[www-jianshu-com] #note-page-comment ~ section,
+body[www-jianshu-com] [aria-label="添加评论"] ~ div,
+body[www-jianshu-com] section:has(article) ~ section {
+    display: none !important;
+}
+
+body[www-jianshu-com] body {
+    overflow: auto !important;
+}
+
+body[www-jianshu-com] header + div > div > div:nth-child(1) {
+    width: 100% !important;
+}
+
+body[www-jianshu-com] footer textarea {
+    width: 850px !important;
+}
+
+body[www-jianshu-com] #__next section article {
+    height: fit-content;
+}
+
+/**********************************************************/
+body[www-linuxidc-com] .topBar,
+body[www-linuxidc-com] #footer,
+body[www-linuxidc-com] #middle > tbody > tr > td:nth-child(2) {
+    display: none !important;
+}
+
+body[www-linuxidc-com] #content {
+    padding: 5px !important;
+}
+
+/**********************************************************/
+body[www-stackoverflow-com] #footer,
+body[www-stackoverflow-com] #sidebar,
+body[www-stackoverflow-com] #left-sidebar,
+body[www-stackoverflow-com] .js-consent-banner {
+    display: none !important;
+}
+
+body[www-stackoverflow-com] div#content {
+    border-right-width: 1px;
+}
+
+body[www-stackoverflow-com] div#mainbar,
+body[www-stackoverflow-com] div.mainbar {
+    width: 100%;
+}
+
+/**********************************************************/
+body[www-jb51-net] .gs,
+body[www-jb51-net] #nav,
+body[www-jb51-net] #xgw1,
+body[www-jb51-net] #down4,
+body[www-jb51-net] #gaosu,
+body[www-jb51-net] iframe,
+body[www-jb51-net] #topbar,
+body[www-jb51-net] #header,
+body[www-jb51-net] .art_xg,
+body[www-jb51-net] #footer,
+body[www-jb51-net] #con_all,
+body[www-jb51-net] .art_xg ~ *,
+body[www-jb51-net] .main-right,
+body[www-jb51-net] #right-share,
+body[www-jb51-net] .lbd.clearfix,
+body[www-jb51-net] #mtab .tabNav,
+body[www-jb51-net] .normal_li ~ *,
+body[www-jb51-net] .xgcomm.clearfix,
+body[www-jb51-net] #container .tip ~ *,
+body[www-jb51-net] #container .tonglan,
+body[www-jb51-net] #container .softsfwtl,
+body[www-jb51-net] #container .pt10.clearfix,
+body[www-jb51-net] #download .address-wrap ~ *,
+body[www-jb51-net] #container #param-content ~ * {
+    display: none !important;
+}
+
+body[www-jb51-net] #main .main-left,
+body[www-jb51-net] li.address-wrap,
+body[www-jb51-net] #content code,
+body[www-jb51-net] #content pre,
+body[www-jb51-net] #download,
+body[www-jb51-net] #param {
+    width: 100% !important;
+}
+
+body[www-jb51-net] li.address-wrap {
+    height: auto !important;
+}
+
+body[www-jb51-net] .search {
+    margin: 5px auto !important;
+}
+
+body[www-jb51-net] #content {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+body[www-jb51-net] #mtab {
+    height: auto !important;
+}
+
+body[www-jb51-net] #soft-info {
+    order: 0 !important;
+}
+
+body[www-jb51-net] #download {
+    order: -1 !important;
+}
+
+body[www-jb51-net] #sm {
+    order: 1 !important;
+}
+
+body[www-jb51-net] #recomc {
+    order: 2 !important;
+}
+
+/**********************************************************/
+body[blog-chinaunix-com] div[class*='Blog_header'],
+body[blog-chinaunix-com] .Blog_left1_1 ~ *,
+body[blog-chinaunix-com] .Blog_left1 ~ *,
+body[blog-chinaunix-com] .Blog_left ~ *,
+body[blog-chinaunix-com] .Blog_footer,
+body[blog-chinaunix-com] iframe {
+    display: none !important;
+}
+
+body[blog-chinaunix-com] #full {
+    position: fixed !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    top: auto !important;
+}
+
+body[blog-chinaunix-com] .box > div:nth-child(1) {
+    margin: 10px !important;
+}
+
+body[blog-chinaunix-com] .Blog_contain {
+    position: relative !important;
+    margin: 0 !important;
+}
+
+body[blog-chinaunix-com] .Blog_left {
+    position: absolute !important;
+    float: none !important;
+    width: auto !important;
+    z-index: 1 !important;
+    right: 0 !important;
+}
+
+body[blog-chinaunix-com] .Blog_left1 {
+    padding: 0 !important;
+}
+
+body[blog-chinaunix-com] .Blog_left1_1 {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: 96px !important;
+}
+
+body[blog-chinaunix-com] .Blog_left1_1 img {
+    max-width: 66% !important;
+}
+
+body[blog-chinaunix-com] .Blog_left1_1 p {
+    margin: 0 !important;
+}
+
+body[blog-chinaunix-com] .Blog_right1 {
+    margin: 0 !important;
+}
+
+/**********************************************************/
+body[www-pc6-com] #xgk,
+body[www-pc6-com] #xgd,
+body[www-pc6-com] #xgw,
+body[www-pc6-com] #reci,
+body[www-pc6-com] #mtab,
+body[www-pc6-com] #bdfx,
+body[www-pc6-com] #sidebar,
+body[www-pc6-com] #topNavC,
+body[www-pc6-com] .bdcs-hot,
+body[www-pc6-com] #header dd,
+body[www-pc6-com] .ad-download,
+body[www-pc6-com] .sendErr-wrap,
+body[www-pc6-com] #xzbtn .downnow,
+body[www-pc6-com] .address-wrap h2,
+body[www-pc6-com] .address-wrap h3,
+body[www-pc6-com] .address-wrap #gaosuxiazai {
+    display: none !important;
+}
+
+body[www-pc6-com] #content {
+    width: auto !important;
+}
+
+body[www-pc6-com] .address-wrap,
+body[www-pc6-com] #param-box,
+body[www-pc6-com] #param {
+    height: auto !important;
+}
+
+body[www-pc6-com] #autotab {
+    top: 100px;
+    right: 40px;
+    left: auto;
+    background: white;
+    border: 1px solid #390;
+    padding: 10px;
+}
+
+body[www-pc6-com] #main,
+body[www-pc6-com] #cmtMsg,
+body[www-pc6-com] #param-box {
+    width: 100% !important;
+}
+
+body[www-pc6-com] #param-content {
+    float: right !important;
+}
+
+/**********************************************************/
+body[cloud-tencent-com] .J-footer,
+body[cloud-tencent-com] .J-sharingBar,
+body[cloud-tencent-com] .J-authorPanel ~ *,
+body[cloud-tencent-com] .J-articlePanel ~ *,
+body[cloud-tencent-com] .J-authorPanel header,
+body[cloud-tencent-com] .J-authorPanel .com-author-intro-desc,
+body[cloud-tencent-com] .J-authorPanel .com-author-intro-btns,
+body[cloud-tencent-com] .J-authorPanel .com-author-intro-infos {
+    display: none !important;
+}
+
+body[cloud-tencent-com] .com-3-layout {
+    position: relative !important;
+}
+
+body[cloud-tencent-com] .J-authorPanel {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+body[cloud-tencent-com] .layout-main {
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+body[cloud-tencent-com] .layout-side {
+    width: 120px !important;
+    position: absolute !important;
+    right: 0 !important;
+}
+
+body[cloud-tencent-com] .J-authorPanel .com-author-intro-object {
+    margin: 5px 0 !important;
+}
+
+body[cloud-tencent-com] .com-author-intro-name {
+    margin-bottom: 10px !important;
+}
+
+/**********************************************************/
+/**********************************************************/
+/**********************************************************/
+/**********************************************************/
+/**********************************************************/
+/**********************************************************/
