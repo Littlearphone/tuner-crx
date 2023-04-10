@@ -16,6 +16,8 @@
     "vue": "^3.2.36"
   },
   "devDependencies": {
+    "esbuild": "0.8.33",
+    "esbuild-windows-64": "0.8.33",
     "@iconify-json/ep": "^1.1.4",
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/chrome": "^0.0.220",
