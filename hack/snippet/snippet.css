@@ -126,10 +126,21 @@ body[www-360doc-com] #articlecontent table pre {
 
 /**********************************************************/
 body[blog-51cto-com] #mask,
+body[blog-51cto-com] .ac-box,
 body[blog-51cto-com] #mask ~ *,
+body[blog-51cto-com] div.Footer,
+body[blog-51cto-com] ul.Navigates,
+body[blog-51cto-com] #comment ~ *,
+body[blog-51cto-com] header.home-top,
 body[blog-51cto-com] div[id^=topbanner],
+body[blog-51cto-com] aside.action-aside,
+body[blog-51cto-com] .minmenu li:not(.scrollToTop),
 body[blog-51cto-com] .Content-box .Content.Index > .Page ~ * {
     display: none !important;
+}
+
+body[blog-51cto-com] div.Header {
+    top: 0 !important;
 }
 
 /**********************************************************/
