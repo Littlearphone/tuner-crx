@@ -216,34 +216,6 @@ export const HackMappings = [{
     ]
   }
 }, {
-  id: 'zhihu-question',
-  expectUrl: (tab: any) => /https?:\/\/www[.]zhihu[.]com\/(search?.*|question\/.*)/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/zhihu/question.css',
-    script: ['hack/jquery.min.js', 'hack/zhihu/question.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"问答"配置开关',
-    fields: []
-  }
-}, {
-  id: 'zhihu-zhuanlan',
-  expectUrl: (tab: any) => /https?:\/\/zhuanlan[.]zhihu[.]com\/p\/.*/.test(tab.url),
-  hacker: {
-    state: 'loading',
-    style: 'hack/zhihu/zhuanlan.css',
-    script: ['hack/jquery.min.js', 'hack/zhihu/zhuanlan.js'],
-  }, description: {
-    enable: true,
-    injectCSS: true,
-    injectScript: true,
-    configLabel: '"专栏"配置开关',
-    fields: []
-  }
-}, {
   id: 'segmentfault-question',
   expectUrl: (tab: any) => /http.?:\/\/(.*[.])?segmentfault[.]com\/q\/.*/.test(tab.url),
   hacker: {

@@ -247,19 +247,41 @@ body[www-linuxidc-com] #content {
 }
 
 /**********************************************************/
-body[www-stackoverflow-com] #footer,
-body[www-stackoverflow-com] #sidebar,
-body[www-stackoverflow-com] #left-sidebar,
-body[www-stackoverflow-com] .js-consent-banner {
+body[stackoverflow-com].question-page #footer,
+body[stackoverflow-com].question-page #sidebar,
+body[stackoverflow-com].question-page #left-sidebar,
+body[stackoverflow-com].question-page .js-consent-banner {
     display: none !important;
 }
 
-body[www-stackoverflow-com] div#content {
+body[stackoverflow-com].question-page div#content {
+    border: none;
+    padding: 16px 0;
     border-right-width: 1px;
 }
 
-body[www-stackoverflow-com] div#mainbar,
-body[www-stackoverflow-com] div.mainbar {
+body[stackoverflow-com].question-page div#mainbar .question,
+body[stackoverflow-com].question-page div#mainbar #answers .answer,
+body[stackoverflow-com].question-page .inner-content > div:not(#mainbar),
+body[stackoverflow-com].question-page div#mainbar #answers #answers-header {
+    padding: 0 16px;
+}
+
+body[stackoverflow-com].question-page div#mainbar .question,
+body[stackoverflow-com].question-page div#mainbar #answers .answer {
+    margin: 8px 0;
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1px solid hsl(210, 8%, 90%);
+}
+
+body[stackoverflow-com].question-page div#mainbar .question:hover,
+body[stackoverflow-com].question-page div#mainbar #answers .answer:hover {
+    box-shadow: 0 0 16px 0 #056de888;
+}
+
+body[stackoverflow-com].question-page div#mainbar,
+body[stackoverflow-com].question-page div.mainbar {
     width: 100%;
 }
 
@@ -480,8 +502,230 @@ body[cloud-tencent-com] .com-author-intro-name {
 }
 
 /**********************************************************/
+body[www-infoq-cn] div.header-notice,
+body[www-infoq-cn] div.operation-bar,
+body[www-infoq-cn] div.layout-footer-wrap,
+body[www-infoq-cn] div.main-content .aside,
+body[www-infoq-cn] div.friendship-link-wrap,
+body[www-infoq-cn] div.nav-search-wrap div.nav,
+body[www-infoq-cn] div.content-main div.slot-extra,
+body[www-infoq-cn] div.sidebar-artilce .ppt-module,
+body[www-infoq-cn] div.sidebar-artilce .widget-minibook,
+body[www-infoq-cn] div.sidebar-artilce .sidebar-related,
+body[www-infoq-cn] div.sidebar-artilce .com-app-download,
+body[xie-infoq-cn] div.article-content div.side-operation {
+    display: none !important;
+}
+
+body[www-infoq-cn] .header-content {
+    height: 42px;
+}
+
+body[www-infoq-cn] .inner-content.had-notice {
+    padding-top: 42px;
+}
+
+body[www-infoq-cn] div.main-content .page-topic-list {
+    width: 100%;
+}
+
 /**********************************************************/
+body[www-bbsmax-com] #footer,
+body[www-bbsmax-com] h2 + ol,
+body[www-bbsmax-com] ol + h2,
+body[www-bbsmax-com] div.widget:has(h3),
+body[www-bbsmax-com] div:not([class]):not([id]),
+body[www-bbsmax-com] div.blog-post > .ajax-load-con,
+body[www-bbsmax-com] span:not([class]):not([id]):has(img),
+body[www-bbsmax-com] div.blog-posts > .ajax-load-con:first-child {
+    display: none !important;
+}
+
+body[www-bbsmax-com] .content-box {
+    padding: 12px;
+}
+
+body[www-bbsmax-com] .content-box h2 {
+    padding: 0;
+}
+
+body[www-bbsmax-com] .content-box h2::after {
+    width: 100%;
+}
+
+body[www-bbsmax-com] .ajax-load-con.content {
+    margin-bottom: 12px;
+    border: 1px solid transparent;
+}
+
+body[www-bbsmax-com] .ajax-load-con.content:hover {
+    border: 1px solid #dfdfdf;
+    box-shadow: 0 2px 12px 2px #dfdfdf;
+}
+
 /**********************************************************/
+body[juejin-cn] div.sidebar,
+body[juejin-cn] aside.aside,
+body[juejin-cn] ul li.vip-entry,
+body[juejin-cn] ul li.creator-item,
+body[juejin-cn] ul li.main-nav-list,
+body[juejin-cn] div.recommended-area,
+body[juejin-cn] div.recommended-links,
+body[juejin-cn] div.login-guide-popup,
+body[juejin-cn] div.hot-list-container,
+body[juejin-cn] div.article-suspended-panel,
+body[juejin-cn] div.category-course-recommend,
+body[juejin-cn] div.article-area div.article-end,
+body[juejin-cn] .timeline-entry-list .entry-list > li:not(:has(.dislike-button)) {
+    display: none !important;
+}
+
+body[juejin-cn] .index-nav {
+    min-width: fit-content;
+}
+
+body[juejin-cn] .article-area {
+    margin: 0;
+    width: 100%;
+}
+
+body[juejin-cn] .timeline-entry-list {
+    margin: 0;
+    width: 100%;
+}
+
+body[juejin-cn] * {
+    transition: all .5s;
+}
+
 /**********************************************************/
+body[zhuanlan-zhihu-com] .Modal-wrapper,
+body[zhuanlan-zhihu-com] .Post-SideActions,
+body[zhuanlan-zhihu-com] .Modal-enter-done,
+body[zhuanlan-zhihu-com] .AppHeader-inner a,
+body[zhuanlan-zhihu-com] .AppHeader-inner ul,
+body[zhuanlan-zhihu-com] .AppHeader-userInfo,
+body[zhuanlan-zhihu-com] .Recommendations-Main,
+body[zhuanlan-zhihu-com] .ColumnPageHeader-profile,
+body[zhuanlan-zhihu-com] .ColumnPageHeader-WriteButton,
+body[zhuanlan-zhihu-com] div:not([class]):not([id]):has(svg[class*='ZDI--X']) {
+    display: none !important;
+}
+
+html:has(body[zhuanlan-zhihu-com]) {
+    overflow: auto !important;
+}
+
+body[zhuanlan-zhihu-com] * {
+    transition: all .5s;
+}
+
 /**********************************************************/
+body[www-zhihu-com] .SearchSideBar,
+body[www-zhihu-com] .Modal-wrapper,
+body[www-zhihu-com] .AppHeader-inner a,
+body[www-zhihu-com] .AppHeader-inner ul,
+body[www-zhihu-com] .AppHeader-userInfo,
+body[www-zhihu-com] .Profile-sideColumn,
+body[www-zhihu-com] .Question-sideColumn,
+body[www-zhihu-com] div.GoodQuestionAction,
+body[www-zhihu-com] div.QuestionButtonGroup,
+body[www-zhihu-com] .Question-mainColumnLogin,
+body[www-zhihu-com] [aria-controls="Search-live"],
+body[www-zhihu-com] [aria-controls="Search-album"],
+body[www-zhihu-com] .QuestionHeaderActions > button,
+body[www-zhihu-com] div.QuestionHeader-Comment ~ div,
+body[www-zhihu-com] [aria-controls="Search-clubentity"],
+body[www-zhihu-com] [aria-controls="Search-publication"],
+body[www-zhihu-com] div:not([class]):not([id]):has(svg[class*='ZDI--X']),
+body[www-zhihu-com] #QuestionAnswers-answers div.List-item ~ :not(.List-item) {
+    display: none !important;
+}
+
+html:has(body[www-zhihu-com]) {
+    overflow: auto !important;
+}
+
+body[www-zhihu-com] .SearchMain,
+body[www-zhihu-com] .Question-mainColumn,
+body[www-zhihu-com] .AppHeader-inner .SearchBar,
+body[www-zhihu-com] .AppHeader-inner .SearchBar-tool,
+body[www-zhihu-com] .AppHeader-inner .SearchBar-input,
+body[www-zhihu-com] .AppHeader-inner .SearchBar-toolWrapper {
+    width: 100% !important;
+    transition: all .5s;
+}
+
+body[www-zhihu-com] [data-zop-question] {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+body[www-zhihu-com] .QuestionHeader {
+    display: flex;
+    min-width: 1000px;
+    flex-direction: column;
+}
+
+body[www-zhihu-com] .Question-main {
+    justify-content: center;
+}
+
+body[www-zhihu-com] .QuestionRichText-more {
+    margin: 0 8px;
+}
+
+body[www-zhihu-com] .Profile-mainColumn,
+body[www-zhihu-com] .QuestionHeader-main {
+    width: 100%;
+    padding: 8px 20px;
+}
+
+body[www-zhihu-com] .QuestionHeader-content,
+body[www-zhihu-com] .QuestionHeader-footer-inner {
+    padding: 0;
+    width: 100%;
+}
+
+body[www-zhihu-com] .QuestionHeader .QuestionHeader-content {
+    flex-direction: column-reverse;
+}
+
+body[www-zhihu-com] div.QuestionHeader-side,
+body[www-zhihu-com] div.AnswerItem-authorInfo {
+    min-width: 100%;
+    max-width: 100%;
+    height: fit-content;
+}
+
+body[www-zhihu-com] div.QuestionFollowStatus-counts {
+    margin: 0;
+    width: 100%;
+}
+
+body[www-zhihu-com] div.Profile-mainColumn div.List-header,
+body[www-zhihu-com] div.Question-mainColumn div.List-header {
+    margin: 0;
+    padding: 0 20px;
+    background-color: white;
+}
+
+body[www-zhihu-com] div.Profile-mainColumn div.ListShortcut,
+body[www-zhihu-com] div.Question-mainColumn div.ListShortcut {
+    background-color: #f6f6f6;
+}
+
+
+body[www-zhihu-com] div.Profile-mainColumn div.List-item,
+body[www-zhihu-com] div.Question-mainColumn div.List-item {
+    margin: 8px 0;
+    transition: all 500ms;
+    background-color: white;
+}
+
+body[www-zhihu-com] div.Profile-mainColumn div.List-item:hover,
+body[www-zhihu-com] div.Question-mainColumn div.List-item:hover {
+    box-shadow: 0 0 16px 0 #056de888;
+}
+
 /**********************************************************/

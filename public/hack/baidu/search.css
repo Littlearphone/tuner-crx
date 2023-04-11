@@ -23,6 +23,10 @@ html {
     display: none !important;
 }
 
+[baidu='wd'] {
+    background-color: #f6f6f6;
+}
+
 [baidu='wd'] div[tpl='rel-timeline'] {
     display: flex;
 }
@@ -138,7 +142,7 @@ html {
 }
 
 [baidu] #s_tab, [baidu] #bdpcImgTab {
-    padding: 60px 0 0 0 !important;
+    padding: 72px 0 0 0 !important;
 }
 
 [baidu] #s_tab .s_tab_inner,
@@ -182,11 +186,11 @@ html {
     transition: .3s;
     overflow: hidden;
     border-radius: 4px;
-    box-sizing: border-box;
     background-color: #fff;
-    padding: 10px !important;
+    box-sizing: border-box;
     margin: 10px 0 !important;
     border: 1px solid #ebeef5;
+    padding: 0 10px !important;
 }
 
 [baidu] #content_left .result,
@@ -197,19 +201,19 @@ html {
 
 [baidu] #content_left .result:hover,
 [baidu] #content_left .result-op:hover {
-    background-color: transparent;
-    box-shadow: rgba(0, 0, 0, .1) 0 0 12px 8px !important;
+    background-color: white;
+    box-shadow: 0 0 16px 0 #056de888 !important;
 }
 
 [baidu] #content_left .result h3,
 [baidu] #content_left .result-op h3 {
-    border-bottom: 1px solid #ebeef5;
-    box-sizing: border-box;
+    display: flex;
     padding: 5px 0;
     font-size: 20px;
-    display: flex;
-    justify-content: flex-start;
     align-items: center;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    border-bottom: 1px solid #ebeef5;
 }
 
 [baidu] #content_left .result h3:before,
