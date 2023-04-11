@@ -2,22 +2,24 @@ html {
     overflow-y: auto !important;
 }
 
-[baidu] [tpl="ads_b2c_universal_card"],
-[baidu] [class*='first-item-sub-abs_'],
-[baidu] [mu*="://b2b.baidu.com"],
-[baidu] #s-top-left.s-isindex-wrap,
+[baidu] div#searchTag,
 [baidu] #s_wrap.s-isindex-wrap,
-[baidu] #bottom_layer.s-isindex-wrap,
+[baidu] [mu*="://b2b.baidu.com"],
+[baidu] #container #content_right,
+[baidu] #s-top-left.s-isindex-wrap,
 [baidu] .s-isindex-wrap .s-top-nav,
 [baidu] #bottom_space.s-bottom-space,
+[baidu] #bottom_layer.s-isindex-wrap,
+[baidu] [tpl="ads_b2c_universal_card"],
+[baidu] [class*='first-item-sub-abs_'],
 [baidu] #s_side_wrapper, [baidu] #foot,
 [baidu] #container #rs, [baidu] .toindex,
-[baidu] #container #content_right,
+[baidu] [mu*='.recommend_list.baidu.com'],
 [baidu] .s_tab_inner [href^='/sf/vsearch'],
 [baidu] .s_tab_inner [href*='wenku.baidu.com'],
-[baidu] [href*='b2b.baidu.com'], [baidu] div.c-tools,
-[baidu] [mu*='.recommend_list.baidu.com'],
 [baidu] .s_tab_inner [href*='zhidao.baidu.com'],
+[baidu] div.result-molecule.new-pmd:has(#rs_new),
+[baidu] [href*='b2b.baidu.com'], [baidu] div.c-tools,
 [baidu] .new-pmd .c-recommend, [baidu] .tuner-ads-block,
 [baidu] #content_left > div.c-group-wrapper [class*="button-list_"] {
     display: none !important;
@@ -320,6 +322,7 @@ div.op-short-video-pc-img-new {
 
 [baidu] #container.sam_newgrid #content_left .result-op {
     border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: white;
     box-sizing: border-box;
     min-width: 1000px;
     padding: 10px;
