@@ -27,6 +27,11 @@ export const HackMappings = [{
         key: 'autoPaging',
         label: '自动翻页',
         type: 'SwitchField',
+      },
+      {
+        key: 'backgroundImage',
+        label: '背景图',
+        type: 'UploadField',
       }
     ]
   }

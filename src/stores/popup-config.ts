@@ -1,16 +1,18 @@
-import {markRaw} from "vue"
+import {markRaw} from 'vue'
 import {merge} from 'lodash-es'
 import {defineStore} from 'pinia'
 // @ts-ignore
-import {setStorage} from "~/common/support"
+import {setStorage} from '~/common/support'
 // @ts-ignore
-import {DefaultConfig} from "~/common/constant"
-import SliderField from "../popup/component/SliderField.vue"
-import SwitchField from "../popup/component/SwitchField.vue"
+import {DefaultConfig} from '~/common/constant'
+import SliderField from '../popup/component/SliderField.vue'
+import SwitchField from '../popup/component/SwitchField.vue'
+import UploadField from '../popup/component/UploadField.vue'
 
 const components = {
   'SliderField': markRaw(SliderField),
-  'SwitchField': markRaw(SwitchField)
+  'SwitchField': markRaw(SwitchField),
+  'UploadField': markRaw(UploadField),
 }
 const {VITE_POPUP_ID, VITE_EMPTY_POPUP} = process.env
 export const usePopupConfigStore = defineStore('popup-config', {
