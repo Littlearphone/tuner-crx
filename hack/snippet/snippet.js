@@ -1,5 +1,5 @@
 (function () {
-  const attribute = location.host.replaceAll('.', '-')
+  const attribute = location.hostname.replaceAll('.', '-')
 
   function initialPage() {
     if (!document.body) {

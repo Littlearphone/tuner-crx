@@ -6,6 +6,12 @@
     console.log('Baidu script is on standby')
     callback({ msg: 'baidu-script-injected' })
     const config = data.config || {}
+    if (config.backgroundImage) {
+      document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
+    }
+    if (config.backgroundColor) {
+      document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
+    }
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
     }
@@ -43,7 +49,7 @@
   })
   window.indirectUrls = []
 
-  function resolveRealAddress () {
+  function resolveRealAddress() {
     if (window.indirectUrls.length) {
       const action = window.indirectUrls.shift()
       chrome && chrome.runtime && chrome.runtime.sendMessage(action, function (response) {
@@ -56,7 +62,7 @@
     }
   }
 
-  function acceptFakeLink () {
+  function acceptFakeLink() {
     const url = $(this).attr('href')
     window.indirectUrls.push({
       type: 'ajax',
@@ -68,7 +74,7 @@
     })
   }
 
-  function detectLink () {
+  function detectLink() {
     const $headers = $('[baidu] h3 a[data-click]')
     if (!$headers.length) {
       return window.baiduLinkResolver = requestAnimationFrame(detectLink)
@@ -81,14 +87,14 @@
     resolveRealAddress()
   }
 
-  function cleanAdsStyle () {
+  function cleanAdsStyle() {
     $('[baidu] #content_left > div:not(.result):not(.result-op):not(.c-group-wrapper)').each(function () {
       this.style = 'display: none !important;'
     })
     window.baiduAdBlocker = requestAnimationFrame(cleanAdsStyle)
   }
 
-  function initialize () {
+  function initialize() {
     const $body = $('body')
     if (!$body.length) {
       return requestAnimationFrame(initialize)
