@@ -49,6 +49,7 @@ function loadConfig(configLabel: string, configId: string = '') {
   //   autoPaging: true,
   //   injectScript: true,
   //   configId: 'baidu-search',
+  //   backgroundColor: '#f6f6f6',
   //   configLabel: '"搜索"配置开关',
   //   fields: [
   //     {
@@ -60,6 +61,11 @@ function loadConfig(configLabel: string, configId: string = '') {
   //       key: 'testSlider',
   //       label: '测试滑动组件',
   //       type: 'SliderField',
+  //     },
+  //     {
+  //       key: 'backgroundColor',
+  //       label: '测试颜色组件',
+  //       type: 'ColorField',
   //     },
   //     {
   //       key: 'backgroundImage',

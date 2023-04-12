@@ -10,7 +10,7 @@ import {presetAttributify, presetIcons, presetUno, transformerDirectives, transf
 const pathSrc = path.resolve(__dirname, 'src')
 
 // https://vitejs.dev/config/
-export default ({mode}) => defineConfig({
+export default ({mode}: any) => defineConfig({
   resolve: {
     alias: {
       '~/': `${pathSrc}/`,

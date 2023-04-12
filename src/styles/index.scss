@@ -126,6 +126,16 @@ code {
     background-size: 16px 16px;
 }
 
+.display-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    justify-content: space-between;
+}
+
 .classify-icon {
     width: 44px;
     height: 44px;

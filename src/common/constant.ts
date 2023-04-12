@@ -21,6 +21,8 @@ export const HackMappings = [{
     injectCSS: true,
     autoPaging: true,
     injectScript: true,
+    backgroundBlur: 12,
+    backgroundColor: '#f6f6f6',
     configLabel: '"搜索"配置开关',
     fields: [
       {
@@ -29,9 +31,28 @@ export const HackMappings = [{
         type: 'SwitchField',
       },
       {
+        key: 'backgroundColor',
+        label: '背景颜色',
+        type: 'ColorField',
+      },
+      {
         key: 'backgroundImage',
-        label: '背景图',
+        label: '背景图片',
         type: 'UploadField',
+      },
+      {
+        key: 'backgroundBlur',
+        label: '背景模糊',
+        type: 'SliderField',
+        showInput: false,
+        step: 1,
+        min: 0,
+        max: 100,
+        marks: {
+          24: '24',
+          48: '48',
+          72: '72',
+        }
       }
     ]
   }
@@ -320,7 +341,7 @@ export const HackMappings = [{
   }
 }, {
   id: 'snippet-hack',
-  expectUrl: (tab: any) => true,
+  expectUrl: (tab: any) => !tab.url.startsWith('chrome://') && !tab.url.startsWith('chrome-extension://'),
   hacker: {
     state: 'loading',
     style: 'hack/snippet/snippet.css',

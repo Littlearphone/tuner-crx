@@ -5,10 +5,10 @@
   </el-config-provider>
 </template>
 <script setup lang="ts">
-import {onBeforeMount} from "vue"
+import {onBeforeMount} from 'vue'
 import {getRequest} from './util/http'
 import PopupConfig from './view/PopupConfig.vue'
-import {usePopupConfigStore} from "~/stores/popup-config"
+import {usePopupConfigStore} from '~/stores/popup-config'
 import {ActiveTab, HackMappings} from '~/common/constant'
 
 const store = usePopupConfigStore();
@@ -51,7 +51,7 @@ body {
 }
 
 .popup-page-wrapper {
-  width: 256px;
+  width: 300px;
   display: flex;
   user-select: none;
   flex-direction: column;

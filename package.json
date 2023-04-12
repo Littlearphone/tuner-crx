@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
-    "element-plus": "^2.2.13",
+    "element-plus": "^2.3.3",
     "moment": "^2.29.4",
     "pinia": "^2.0.33",
     "vue": "^3.2.36"

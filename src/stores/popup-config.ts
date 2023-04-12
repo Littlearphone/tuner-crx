@@ -5,11 +5,13 @@ import {defineStore} from 'pinia'
 import {setStorage} from '~/common/support'
 // @ts-ignore
 import {DefaultConfig} from '~/common/constant'
+import ColorField from '../popup/component/ColorField.vue'
 import SliderField from '../popup/component/SliderField.vue'
 import SwitchField from '../popup/component/SwitchField.vue'
 import UploadField from '../popup/component/UploadField.vue'
 
 const components = {
+  'ColorField': markRaw(ColorField),
   'SliderField': markRaw(SliderField),
   'SwitchField': markRaw(SwitchField),
   'UploadField': markRaw(UploadField),

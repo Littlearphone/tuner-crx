@@ -9,9 +9,8 @@
     if (config.backgroundImage) {
       document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
     }
-    if (config.backgroundColor) {
-      document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
-    }
+    document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
+    document.body.style.setProperty('--baidu-background-blur', `${config.backgroundBlur}px` || '12px')
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
     }

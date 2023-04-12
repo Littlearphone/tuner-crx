@@ -28,10 +28,11 @@ html {
 :root {
     --baidu-background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Vg8AAnEBdzTCX3oAAAAASUVORK5CYII=);
     --baidu-background-color: #f6f6f6;
+    --baidu-background-blur: 12px;
 }
 
 [baidu='wd']::after {
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--baidu-background-blur));
 }
 
 [baidu='wd']::before,
