@@ -533,32 +533,46 @@ body[www-infoq-cn] div.main-content .page-topic-list {
 body[www-bbsmax-com] #footer,
 body[www-bbsmax-com] h2 + ol,
 body[www-bbsmax-com] ol + h2,
+body[www-shuzhiduo-com] #footer,
+body[www-shuzhiduo-com] h2 + ol,
+body[www-shuzhiduo-com] ol + h2,
 body[www-bbsmax-com] div.widget:has(h3),
+body[www-shuzhiduo-com] div.widget:has(h3),
 body[www-bbsmax-com] div:not([class]):not([id]),
+body[www-shuzhiduo-com] div:not([class]):not([id]),
 body[www-bbsmax-com] div.blog-post > .ajax-load-con,
+body[www-shuzhiduo-com] div.blog-post > .ajax-load-con,
 body[www-bbsmax-com] span:not([class]):not([id]):has(img),
-body[www-bbsmax-com] div.blog-posts > .ajax-load-con:first-child {
+body[www-shuzhiduo-com] span:not([class]):not([id]):has(img),
+body[www-bbsmax-com] div.blog-posts > .ajax-load-con:first-child,
+body[www-shuzhiduo-com] div.blog-posts > .ajax-load-con:first-child {
     display: none !important;
 }
 
-body[www-bbsmax-com] .content-box {
+
+body[www-bbsmax-com] .content-box,
+body[www-shuzhiduo-com] .content-box {
     padding: 12px;
 }
 
-body[www-bbsmax-com] .content-box h2 {
+body[www-bbsmax-com] .content-box h2,
+body[www-shuzhiduo-com] .content-box h2 {
     padding: 0;
 }
 
-body[www-bbsmax-com] .content-box h2::after {
+body[www-bbsmax-com] .content-box h2::after,
+body[www-shuzhiduo-com] .content-box h2::after {
     width: 100%;
 }
 
-body[www-bbsmax-com] .ajax-load-con.content {
+body[www-bbsmax-com] .ajax-load-con.content,
+body[www-shuzhiduo-com] .ajax-load-con.content {
     margin-bottom: 12px;
     border: 1px solid transparent;
 }
 
-body[www-bbsmax-com] .ajax-load-con.content:hover {
+body[www-bbsmax-com] .ajax-load-con.content:hover,
+body[www-shuzhiduo-com] .ajax-load-con.content:hover {
     border: 1px solid #dfdfdf;
     box-shadow: 0 2px 12px 2px #dfdfdf;
 }
@@ -575,9 +589,12 @@ body[juejin-cn] div.login-guide-popup,
 body[juejin-cn] div.hot-list-container,
 body[juejin-cn] div.article-suspended-panel,
 body[juejin-cn] div.category-course-recommend,
-body[juejin-cn] div.article-area div.article-end,
-body[juejin-cn] .timeline-entry-list .entry-list > li:not(:has(.dislike-button)) {
+body[juejin-cn] div.article-area div.article-end {
     display: none !important;
+}
+
+body[juejin-cn] .timeline-entry-list .entry-list > li:has(.advertisement) {
+    height: 0;
 }
 
 body[juejin-cn] .index-nav {
@@ -594,8 +611,8 @@ body[juejin-cn] .timeline-entry-list {
     width: 100%;
 }
 
-body[juejin-cn] * {
-    transition: all .5s;
+body[juejin-cn] .main-container * {
+    transition: all .3s cubic-bezier(0, 0, 0, 0.86);
 }
 
 /**********************************************************/
