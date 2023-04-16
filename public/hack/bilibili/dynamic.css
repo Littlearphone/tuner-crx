@@ -1,0 +1,42 @@
+section:has(div.bili-dyn-banner),
+section:has(div.bili-dyn-publishing),
+.bili-header ul.right-entry li:has([href*='/big?']),
+.bili-header ul.right-entry li:has([href*='member.bilibili.com/platform']),
+.bili-header ul.left-entry li:not(:has(.mini-header__title)):not(:has([href*='/anime/'])):not(:has([href*='live.bilibili'])) {
+    display: none !important;
+}
+
+div.bili-header div.bili-header__bar {
+    justify-content: center;
+}
+
+div.bili-header div.bili-header__bar div.center-search-container {
+    flex-grow: unset;
+}
+
+div.bili-dyn-item__main {
+    padding: 0 12px;
+}
+
+div.bili-dyn-item__header {
+    padding-left: 88px;
+}
+
+div.bili-dyn-item__body,
+div.bili-dyn-item__footer {
+    padding: 0 12px;
+}
+
+div.bili-dyn-item__footer {
+    justify-content: flex-end;
+}
+
+div.bili-dyn-content {
+    margin: 0;
+    width: 100%;
+}
+
+div.bili-dyn-content div.bili-dyn-content__orig__major {
+    width: 100%;
+}
+

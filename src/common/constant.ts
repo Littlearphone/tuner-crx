@@ -242,6 +242,22 @@ export const HackMappings = [{
     ]
   }
 }, {
+  id: 'bilibili-dynamic',
+  expectUrl: (tab: any) => {
+    return /http(s)?:\/\/t.bilibili.com(\/?.*)?/.test(tab.url)
+  },
+  hacker: {
+    state: 'loading',
+    style: 'hack/bilibili/dynamic.css',
+    script: ['hack/jquery.min.js', 'hack/bilibili/dynamic.js'],
+  }, description: {
+    enable: true,
+    injectCSS: true,
+    injectScript: true,
+    configLabel: '"主页"配置开关',
+    fields: []
+  }
+}, {
   id: 'segmentfault-question',
   expectUrl: (tab: any) => /http.?:\/\/(.*[.])?segmentfault[.]com\/q\/.*/.test(tab.url),
   hacker: {
