@@ -144,6 +144,32 @@ body[blog-51cto-com] div.Header {
 }
 
 /**********************************************************/
+body[www-51cto-com] #footerSet,
+body[www-51cto-com] .header-box,
+body[www-51cto-com] .article-left ~ *,
+body[www-51cto-com] .secondNavCover a.apply,
+body[www-51cto-com] .article-left article ~ *,
+body[www-51cto-com] .secondNavCover .parent-ul,
+body[www-51cto-com] section.suspension-pendant_r,
+body[www-51cto-com] .components-common-suspension span.line,
+body[www-51cto-com] .components-common-suspension span.business,
+body[www-51cto-com] .components-common-suspension div.customer_service {
+    display: none !important;
+}
+
+body[www-51cto-com] .components-child-nav .navFixed {
+    top: 0;
+}
+
+body[www-51cto-com] .components-page-article.article .article-left {
+    width: 100%;
+}
+
+body[www-51cto-com] .components-common-suspension.po_top .cbbfixed {
+    padding-top: 8px;
+}
+
+/**********************************************************/
 body[www-bejson-com] h1,
 body[www-bejson-com] footer,
 body[www-bejson-com] #resize,
@@ -589,6 +615,7 @@ body[juejin-cn] div.login-guide-popup,
 body[juejin-cn] div.hot-list-container,
 body[juejin-cn] div.article-suspended-panel,
 body[juejin-cn] div.category-course-recommend,
+body[juejin-cn] div.recommend-box div.extension,
 body[juejin-cn] div.article-area div.article-end {
     display: none !important;
 }
