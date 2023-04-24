@@ -1,5 +1,8 @@
 (function () {
-  const attribute = location.hostname.replaceAll('.', '-')
+  let attribute = location.hostname.replaceAll('.', '-')
+  if (attribute.match(/^\d/)) {
+    attribute = `http-${attribute}`
+  }
 
   function initialPage() {
     if (!document.body) {
