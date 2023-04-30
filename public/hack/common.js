@@ -110,7 +110,7 @@
   if (window && !window.expectBody) {
     window.expectBody = function (action) {
       if (!document.body) {
-        return requestAnimationFrame(window.expectBody)
+        return requestAnimationFrame(() => window.expectBody(action))
       }
       typeof action === 'function' && action()
     }
