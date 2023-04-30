@@ -5,46 +5,48 @@
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
     console.log('Baidu script is on standby')
     callback({ msg: 'baidu-script-injected' })
-    const config = data.config || {}
-    if (config.backgroundImage) {
-      document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
-    }
-    document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
-    document.body.style.setProperty('--baidu-background-blur', `${config.backgroundBlur}px` || '12px')
-    if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
-      return
-    }
-    if (!window.pagination) {
-      window.pagination = new window.Pagination()
-    }
-    window.Pagination.prototype.nextPage = function () {
-      if (window !== top) {
+    expectBody(() => {
+      const config = data.config || {}
+      if (config.backgroundImage) {
+        document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
+      }
+      document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
+      document.body.style.setProperty('--baidu-background-blur', `${config.backgroundBlur}px` || '12px')
+      if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
         return
       }
-      const next = $('#page a:contains("下一页")')
-      if (!next.length || this.iframe === next.attr('href')) {
-        return
+      if (!window.pagination) {
+        window.pagination = new window.Pagination()
       }
-      this.iframe = next.attr('href')
-      if ($('#page .tuner-loading-block').length) {
-        return
-      }
-      console.log('开始加载下一页')
-      const loading = $.loading.mask('#page').start()
-      $.get(next.attr('href'), function (data) {
-        const page = $(data)
-        loading.end().remove()
-        console.log('下一页加载完成')
-        requestAnimationFrame(detectLink)
-        let node = page.find('#content_left')[0].firstChild
-        while (node) {
-          $('#content_left')[0].appendChild(node)
-          node = page.find('#content_left')[0].firstChild
+      window.Pagination.prototype.nextPage = function () {
+        if (window !== top) {
+          return
         }
-        $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
-      })
-      $('#page').css({ 'position': 'relative' })
-    }
+        const next = $('#page a:contains("下一页")')
+        if (!next.length || this.iframe === next.attr('href')) {
+          return
+        }
+        this.iframe = next.attr('href')
+        if ($('#page .tuner-loading-block').length) {
+          return
+        }
+        console.log('开始加载下一页')
+        const loading = $.loading.mask('#page').start()
+        $.get(next.attr('href'), function (data) {
+          const page = $(data)
+          loading.end().remove()
+          console.log('下一页加载完成')
+          requestAnimationFrame(detectLink)
+          let node = page.find('#content_left')[0].firstChild
+          while (node) {
+            $('#content_left')[0].appendChild(node)
+            node = page.find('#content_left')[0].firstChild
+          }
+          $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
+        })
+        $('#page').css({ 'position': 'relative' })
+      }
+    })
   })
   window.indirectUrls = []
 
@@ -94,11 +96,7 @@
   }
 
   function initialize() {
-    const $body = $('body')
-    if (!$body.length) {
-      return requestAnimationFrame(initialize)
-    }
-    $body.attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
+    $('body').attr('baidu', location.href.indexOf('wd=') >= 0 ? 'wd' : '')
     const $baidu = $('[baidu] #content_left')
     if (!$baidu.length) {
       return requestAnimationFrame(initialize)
@@ -114,5 +112,5 @@
     // observer.disconnect()
   }
 
-  requestAnimationFrame(initialize)
+  expectBody(initialize)
 })(window.jQuery)
