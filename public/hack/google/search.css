@@ -41,8 +41,10 @@
     justify-content: center;
 }
 
-[google] #slim_appbar > div {
+[google] #slim_appbar > div,
+[google] #appbar [role="navigation"] {
     width: 1000px;
+    margin: 0 auto;
     justify-content: flex-start;
 }
 
