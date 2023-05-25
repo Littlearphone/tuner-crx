@@ -1,11 +1,11 @@
 (function ($) {
   if ($('body[baidu]').length) {
-    return console.log('脚本重复注入')
+    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log('Baidu script is on standby')
+    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '')
     callback({ msg: 'baidu-script-injected' })
-    expectBody(() => {
+    $.expectBody(() => {
       const config = data.config || {}
       if (config.backgroundImage) {
         document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
@@ -16,9 +16,9 @@
         return
       }
       if (!window.pagination) {
-        window.pagination = new window.Pagination()
+        window.pagination = new $.Pagination()
       }
-      window.Pagination.prototype.nextPage = function () {
+      $.Pagination.prototype.nextPage = function () {
         if (window !== top) {
           return
         }
@@ -30,12 +30,12 @@
         if ($('#page .tuner-loading-block').length) {
           return
         }
-        console.log('开始加载下一页')
+        console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
         const loading = $.loading.mask('#page').start()
         $.get(next.attr('href'), function (data) {
           const page = $(data)
           loading.end().remove()
-          console.log('下一页加载完成')
+          console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
           requestAnimationFrame(detectLink)
           let node = page.find('#content_left')[0].firstChild
           while (node) {
@@ -112,5 +112,5 @@
     // observer.disconnect()
   }
 
-  expectBody(initialize)
+  $.expectBody(initialize)
 })(window.jQuery)

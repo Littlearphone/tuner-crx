@@ -1,21 +1,21 @@
 (function ($) {
   if ($('body[google]').length) {
-    return console.log('脚本重复注入')
+    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
   // 筛选搜索条目的选择器 a[data-ved][href^=http]:has(h3)
   // 整页翻译 https://translate.google.com/translate?hl=zh-CN&sl=auto&u=<page_url>&prev=search&pto=aue
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log('Google script is on standby')
+    console.log(`${window.logPrefix}%c ===> Google 脚本已准备就绪`, window.logStyle, '')
     callback({ msg: 'google-script-injected' })
     const config = data.config || {}
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
     }
     if (!window.pagination) {
-      window.pagination = new window.Pagination()
+      window.pagination = new $.Pagination()
     }
     const paginationSelector = '#botstuff table.AaVjTc'
-    window.Pagination.prototype.nextPage = function () {
+    $.Pagination.prototype.nextPage = function () {
       const next = $('#pnnext')
       if (!next.length || this.iframe.attr('src') === next.attr('href')) {
         return
@@ -24,7 +24,7 @@
         return
       }
       $(paginationSelector).parent().css('position', 'relative')
-      console.log('自动加载下一页')
+      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
       this.reloadFrame()
       $('#page').css({ 'position': 'relative' })
       const loading = $.loading.mask(paginationSelector).start()
@@ -42,7 +42,7 @@
         $(paginationSelector).parent().html(this.select(paginationSelector).parent().html())
         window.scrollTo(scrollX, scrollY)
         loading.end().remove()
-        console.log('下一页加载完成')
+        console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
       }
       requestAnimationFrame(detectFrame)
     }

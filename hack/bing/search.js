@@ -1,9 +1,9 @@
 (function ($) {
   if ($('body[bing]').length) {
-    return console.log('脚本重复注入')
+    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log('Bing script is on standby')
+    console.log(`${window.logPrefix}%c ===> Bing 脚本已准备就绪`, window.logStyle, '')
     callback({ msg: 'bing-script-injected' })
     const config = data.config || {}
     config.enableHta = !config.hasOwnProperty('enableHta') || config.enableHta
@@ -20,14 +20,14 @@
       return
     }
     if (!window.pagination) {
-      window.pagination = new window.Pagination()
+      window.pagination = new $.Pagination()
     }
-    window.Pagination.prototype.nextPage = function () {
+    $.Pagination.prototype.nextPage = function () {
       const next = $('li a.sb_pagN')
       if (!next.length || this.iframe.attr('src') === next.attr('href')) {
         return
       }
-      console.log('自动加载下一页')
+      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
       if (!$('iframe#tuner-crx').length) {
         this.reloadFrame()
       }
@@ -47,6 +47,7 @@
         if (window.scrollY >= this.lastPosition) {
           window.scrollTo(window.scrollX, this.lastPosition)
         }
+        console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
       })
       this.iframe.attr('src', next.attr('href'))
     }

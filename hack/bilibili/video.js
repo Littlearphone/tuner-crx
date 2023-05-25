@@ -1,11 +1,11 @@
 (function ($) {
   if ($.bilibiliLoaded) {
-    return console.log('脚本重复注入')
+    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
-  console.log('bilibili脚本初始化')
+  console.log(`${window.logPrefix}%c ===> 开始初始化 Bilibili 脚本`, window.logStyle, '')
   $.bilibiliLoaded = {}
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log('[]~(￣▽￣)~* script is on standby')
+    console.log(`${window.logPrefix}%c ===> []~(￣▽￣)~* 脚本已准备就绪 `, window.logStyle, '')
     callback({ msg: '[]~(￣▽￣)~*-script-injected' })
     const config = data.config || {}
     if (!config.hasOwnProperty('playbackRate') || config.playbackRate <= 0) {
@@ -13,7 +13,6 @@
     }
     config.autoStartPlay = !config.hasOwnProperty('autoStartPlay') || config.autoStartPlay
     config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
-    // const historyJumpButton = () => document.querySelector('.bilibili-player-video-toast-item-jump')
     const videoPlayerObject = () => {
       const selector = [
         '.bilibili-player-video video',
@@ -73,7 +72,7 @@
       window.EventBus = function () {
         this.uuid = new Date().getTime()
         this.events = []
-        console.log(`创建事件总线: ${this.uuid}`)
+        console.log(`${window.logPrefix} ===> 创建事件总线`, window.logStyle, this.uuid)
       }
       window.EventBus.prototype.emit = function (type, data) {
         this.events.push({
@@ -81,7 +80,7 @@
           data
         })
         this.start()
-        console.log(`收到事件: ${type}`)
+        console.log(`${window.logPrefix} ===> 收到事件`, window.logStyle, type)
       }
       window.EventBus.prototype.clear = function () {
         this.events.length = 0
@@ -91,13 +90,13 @@
           clearTimeout(this.timer)
         }
         if (!this.events.length) {
-          console.log('事件队列为空')
+          console.log(`${window.logPrefix} ===> 事件队列为空`, window.logStyle)
           return
         }
         this.timer = setTimeout(this.start.bind(this), 100)
         const event = this.events.shift()
         if (!event) {
-          console.log('无效的事件对象')
+          console.log(`${window.logPrefix} ===> 无效的事件对象`, window.logStyle)
           return
         }
         const handler = window[event.type]
@@ -106,7 +105,7 @@
           return
         }
         if (handler.call(window, event.data, this)) {
-          console.log(`${event.type}事件执行完成`)
+          console.log(`${window.logPrefix} ===> 事件执行完成`, window.logStyle)
           return
         }
         this.events.push(event)
@@ -122,22 +121,11 @@
       }
       window.bus.emit('skipSponsor', config)
     }
-    // const onVideoSeeking = function(event) {
-    //     console.log(`Video seeking: ${this.currentTime}`)
-    // }
-    // const onVideoCanplay = function(event) {
-    //   console.log(`Video canplay: ${this.currentTime}`)
-    // }
     const onVideoStart = function () {
-      console.log(`补充播放结束事件`)
+      console.log(`${window.logPrefix} ===> 补充播放结束事件`, window.logStyle)
       this.removeEventListener('ended', onVideoFinish)
-      // this.removeEventListener('seeking', onVideoSeeking)
-      // this.removeEventListener('canplaythrough', onVideoCanplay)
-      // window.bus.emit('videoJump', config)
       window.bus.emit('adjustSpeed', config)
       this.addEventListener('ended', onVideoFinish)
-      // this.addEventListener('seeking', onVideoSeeking)
-      // this.addEventListener('canplaythrough', onVideoCanplay)
     }
     window.startPlay = function (data) {
       const playButton = startPlayButton()
@@ -150,7 +138,7 @@
         return playButton.className.indexOf('video-state-pause') < 0 || !document.querySelector('.bpx-state-paused')
       }
       data.autoStartPlay && playButton.click()
-      console.log(`开始播放视频`)
+      console.log(`${window.logPrefix} ===> 开始播放视频`, window.logStyle)
       return false
     }
     window.skipSponsor = function () {
@@ -159,7 +147,7 @@
         return false
       }
       buttons.forEach(element => element.click())
-      console.log(`跳过等待或连播`)
+      console.log(`${window.logPrefix} ===> 跳过等待或连播`, window.logStyle)
       return true
     }
     const filterSpeedOption = function (speed, option) {
@@ -172,7 +160,7 @@
       if (!options || !options.length) {
         return false
       }
-      console.log(`将播放速度调整为: ${data.playbackRate}`)
+      console.log(`${window.logPrefix} ===> 将播放速度调整为`, window.logStyle, data.playbackRate)
       const option = Array.from(options).find(option => filterSpeedOption(data.playbackRate, option))
       if (option) {
         const classList = option.classList
@@ -190,7 +178,7 @@
       if (!buttonArea) {
         return document.querySelector('.bpx-player-ctrl-web.bpx-state-entered')
       }
-      console.log('启动网页全屏')
+      console.log(`${window.logPrefix} ===> 启动网页全屏`, window.logStyle)
       const selector = [
         '.bpx-player-ctrl-web-enter',
         '.squirtle-pagefullscreen-inactive',
@@ -206,7 +194,7 @@
       window.bus.start()
       window.navigation.addEventListener('navigate', event => {
         window.bus.clear()
-        console.log('清除所有事件', event)
+        console.log(`${window.logPrefix} ===> 清除所有事件`, window.logStyle, event)
         setTimeout(initialize, 1000)
       })
     }
