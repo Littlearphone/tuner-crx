@@ -64,18 +64,18 @@
       if (!element.length) {
         return requestAnimationFrame(() => $.detect(selector, callback))
       }
-      console.log('找到', element)
+      console.log(`${window.logPrefix}%c ===> 检测到元素 %o`, window.logStyle, '', element)
       callback(element)
     }
   }
-  if (window && !window.Pagination) {
+  if ($ && !$.Pagination) {
     const Pagination = function () {
       this.initial()
     }
     Pagination.prototype.initial = function (selector) {
       this.iframe = $('iframe#tuner-crx')
       if (!this.iframe.length) {
-        console.log('创建隐藏iframe')
+        console.debug('创建隐藏的iframe用于自动分页')
         this.iframe = $('<iframe></iframe>')
       }
       this.iframe.hide()
@@ -90,7 +90,7 @@
       this.initial()
     }
     Pagination.prototype.nextPage = function () {
-      console.log('自动加载下一页')
+      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
     }
     window.PRELOAD_MARGIN = 200
     // Listen for the scroll event
@@ -105,12 +105,12 @@
     }
     document.removeEventListener('scroll', scrollListener)
     document.addEventListener('scroll', scrollListener)
-    window.Pagination = Pagination
+    $.Pagination = Pagination
   }
-  if (window && !window.expectBody) {
-    window.expectBody = function (action) {
+  if ($ && !$.expectBody) {
+    $.expectBody = function (action) {
       if (!document.body) {
-        return requestAnimationFrame(() => window.expectBody(action))
+        return requestAnimationFrame(() => $.expectBody(action))
       }
       typeof action === 'function' && action()
     }
