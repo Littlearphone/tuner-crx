@@ -5,10 +5,56 @@
     display: none !important;
 }
 
+/**关键字：摄氏度、Spring**/
+
 [google] .tuner-page-frame {
     width: 1px;
     height: 1px;
     border: none;
+}
+
+[google] #searchform > div {
+    gap: 32px;
+    justify-content: center;
+}
+
+[google] form#tsf > div > div {
+    margin: 0 auto;
+}
+
+[google] [role="navigation"]:has(#hdtb-tls) {
+    padding: 8px;
+}
+
+[google] [role="navigation"]:has(#hdtb-tls) > div {
+    justify-content: center;
+}
+
+[google] #appbar,
+[google] #appbar * {
+    padding: 0;
+    margin: 0 auto;
+    width: fit-content;
+    position: relative;
+}
+
+[google] #top_nav,
+[google] #top_nav * {
+    width: fit-content;
+}
+
+[google] #hdtb,
+[google] #top_nav,
+[google] #hdtbMenus,
+[google] #result-stats {
+    margin: 0 auto;
+    width: calc(var(--center-abs-margin) + var(--center-width) + var(--rhs-margin) + var(--rhs-width));
+}
+
+[google] #rhs,
+[google] #rcnt,
+[google] #center_col {
+    margin: 0 auto;
 }
 
 [google=iframe] #cnt,
@@ -17,3 +63,29 @@
     margin: 0;
     padding: 0;
 }
+
+/***********************/
+[google] .eniVJf {
+    gap: 4px;
+    display: inline-flex;
+}
+
+[google] #extabar div.uais2d {
+    padding: 0 8px;
+    border-radius: 0;
+}
+
+[google] .GpHuwc,
+[google] .zZWIwf,
+[google] .WjSTDe {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[google] .zZWIwf img {
+    margin: 0 !important;
+}
+
+/***********************/
