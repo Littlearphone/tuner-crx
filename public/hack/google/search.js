@@ -1,4 +1,9 @@
 (function ($) {
+  if (window !== top && !parent.document.querySelector(`iframe[src*="${location.pathname}${location.search}"]`).scrollHeight) {
+    console.groupCollapsed(`${window.logPrefix}%c ===> 不可见窗口`, window.logStyle, '')
+    console.log(location.href)
+    return console.groupEnd()
+  }
   if ($('body[google]').length) {
     return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
@@ -11,40 +16,39 @@
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
     }
-    if (!window.pagination) {
-      window.pagination = new $.Pagination()
-    }
     const paginationSelector = '#botstuff table.AaVjTc'
-    $.Pagination.prototype.nextPage = function () {
-      const next = $('#pnnext')
-      if (!next.length || this.iframe.attr('src') === next.attr('href')) {
-        return
-      }
-      if ($(paginationSelector).find('.tuner-loading-block').length) {
-        return
-      }
-      $(paginationSelector).parent().css('position', 'relative')
-      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
-      this.reloadFrame()
-      $('#page').css({ 'position': 'relative' })
-      const loading = $.loading.mask(paginationSelector).start()
-      this.iframe.attr('src', next.attr('href'))
-      const detectFrame = () => {
-        const contents = this.iframe.contents()
-        if (!contents.find('#search #rso').length || !contents.find(paginationSelector).length) {
-          return requestAnimationFrame(detectFrame)
+    if (!window.pagination) {
+      window.pagination = {
+        nextPage() {
+          if (window !== top) {
+            return
+          }
+          const nextLink = $('#pnnext')
+          if (!nextLink.length || $(`iframe[src='${nextLink.attr('href')}']`).length) {
+            return
+          }
+          if ($(paginationSelector).find('.tuner-loading-block').length) {
+            return
+          }
+          $(paginationSelector).parent().css('position', 'relative')
+          // $('#page').css({ 'position': 'relative' })
+          const loading = $.loading.mask(paginationSelector).start()
+          const nextPage = $(`<iframe src="${nextLink.attr('href')}" class="tuner-page-frame" scrolling="no"/>`)
+          $('#botstuff').before(nextPage.on('load', function () {
+            // const scrollX = window.scrollX
+            // const scrollY = window.scrollY
+            const contents = nextPage.contents()
+            const center = contents.find('[google=iframe] #center_col')
+            const width = center.width() + 10
+            const height = center.height() + 10
+            nextPage.width(width).height(height)
+            $(paginationSelector).parent().html(contents.find(paginationSelector).parent().html())
+            console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+            // window.scrollTo(scrollX, scrollY)
+            loading.end().remove()
+          }))
         }
-        const scrollX = window.scrollX
-        const scrollY = window.scrollY
-        const innerItems = this.select('#search #rso')[0]
-        innerItems.prepend(this.select('#center_col > style')[0])
-        $('#search #rso')[0].appendChild(innerItems)
-        $(paginationSelector).parent().html(this.select(paginationSelector).parent().html())
-        window.scrollTo(scrollX, scrollY)
-        loading.end().remove()
-        console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
       }
-      requestAnimationFrame(detectFrame)
     }
   })
   const detectLink = () => {
@@ -59,12 +63,12 @@
     requestAnimationFrame(detectLink)
   }
 
-  function initialize () {
+  function initialize() {
     const $body = $('body')
     if (!$body.length) {
       return requestAnimationFrame(initialize)
     }
-    $body.attr('google', '')
+    $body.attr('google', window !== top ? 'iframe' : '')
     requestAnimationFrame(detectLink)
   }
 
