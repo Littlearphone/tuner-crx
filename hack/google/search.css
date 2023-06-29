@@ -1,73 +1,19 @@
-[google] #sfooter,
-[google] #bres .ULSxyf,
-[google] [data-text-ad] {
+[google] #bres,
+[google=iframe] > :not(#main),
+[google=iframe] #cnt > :not(#rcnt),
+[google=iframe] #center_col > :not(#res) {
     display: none !important;
 }
 
-[google] #searchform > div {
-    justify-content: center;
+[google] .tuner-page-frame {
+    width: 1px;
+    height: 1px;
+    border: none;
 }
 
-[google] #top_nav #hdtb-msb {
-    float: none;
-    width: 1000px;
-    margin: 0 auto;
-    justify-content: space-between;
-}
-
-[google] #top_nav #hdtb #hdtbMenus {
-    left: 0;
-    right: 0;
+[google=iframe] #cnt,
+[google=iframe] #rcnt,
+[google=iframe] #center_col {
+    margin: 0;
     padding: 0;
-    width: 1000px;
-    margin: 0 auto;
-    --center-abs-margin: 0;
-}
-
-[google] #top_nav #hdtb-msb #hdtb-tls {
-    margin-right: 80px;
-}
-
-[google] #tsf,
-[google] #rcnt,
-[google] #rcnt,
-[google] #appbar,
-[google] #hdtb-msb {
-    --center-abs-margin: 0;
-}
-
-[google] #slim_appbar {
-    display: flex;
-    justify-content: center;
-}
-
-[google] #slim_appbar > div,
-[google] #appbar [role="navigation"] {
-    width: 1000px;
-    margin: 0 auto;
-    justify-content: flex-start;
-}
-
-/**关键字：摄氏度、Spring**/
-
-[google] #rcnt:has(#rhs) {
-    width: 1080px;
-    margin: 0 auto;
-    justify-content: center;
-}
-
-[google] #rcnt:has(#rhs) > div {
-    margin: 8px;
-    height: fit-content;
-}
-
-[google] #rcnt:not(:has(#rhs)) {
-    margin: 0 auto;
-    flex-direction: column;
-    width: calc(652px + var(--rhs-margin) + var(--rhs-width));
-}
-
-[google] #rcnt:not(:has(#rhs)) #center_col {
-    flex-grow: 1;
-    width: calc(652px + var(--rhs-margin) + var(--rhs-width));
 }

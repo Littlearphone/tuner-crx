@@ -1,4 +1,6 @@
 (function ($) {
+  window.logPrefix = '%cTuner-crx'
+  window.logStyle = 'color: white;background: #409eff;padding: 0 8px;'
   if (window.tunerLoaded) {
     return
   }
@@ -21,8 +23,6 @@
     }
   }
 
-  window.logPrefix = '%cTuner-crx'
-  window.logStyle = 'color: white;background: #409eff;padding: 0 8px;'
   console.groupCollapsed(`${window.logPrefix}%c ===> ${document.title || location.hostname}`, window.logStyle, '')
   console.log(location.href)
   console.groupEnd()
