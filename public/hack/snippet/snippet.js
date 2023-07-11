@@ -15,6 +15,12 @@
         return window.location.replace(decodeURIComponent(array[1]))
       }
     }
+    if (window.location.host === 'link.juejin.cn') {
+      const array = /\?target=([^&]+)(&|$)/.exec(location.search)
+      if (array.length > 1 && array[1]) {
+        return window.location.replace(decodeURIComponent(array[1]))
+      }
+    }
     const dmzj = document.querySelector('body[manhua-dmzj-com]')
     if (dmzj) {
       dmzj.querySelector('#moreLi').click()
