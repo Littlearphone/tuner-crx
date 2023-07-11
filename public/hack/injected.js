@@ -15,11 +15,11 @@
       if (!document.body) {
         return requestAnimationFrame(() => urls.unshift(url) && insertScript(urls))
       }
-      const style = document.createElement('script')
-      style.setAttribute('id', url)
-      style.setAttribute('src', url)
-      style.setAttribute('type', 'text/javascript')
-      document.body.appendChild(style)
+      const script = document.createElement('script')
+      script.setAttribute('id', url)
+      script.setAttribute('src', url)
+      script.setAttribute('type', 'text/javascript')
+      document.body.appendChild(script)
     }
   }
 

@@ -12,7 +12,7 @@ div.toolbar-container-left ~ div, .csdn-shop-window-common,
 .toolbar-container-left .toolbar-menus li:not(.active),
 #blogColumnPayAdvert, div.toolbar-advert, #toolBarBox,
 #content_views pre.set-code-hide .hide-preCode-box,
-#recommendNps, #csdn-toolbar, div.signin {
+#recommendNps, #csdn-toolbar, div.signin, #articleSearchTip {
     display: none !important;
 }
 

@@ -333,7 +333,8 @@ export const HackMappings = [{
   hacker: {
     state: 'loading',
     style: 'hack/csdn/article.css',
-    script: ['hack/jquery.min.js', 'hack/csdn/article.js'],
+    insert: ['hack/csdn/article-front.js'],
+    script: ['hack/jquery.min.js', 'hack/csdn/article-back.js'],
   }, description: {
     enable: true,
     injectCSS: true,
