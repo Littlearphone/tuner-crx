@@ -2,7 +2,7 @@
   "name": "tuner-v3",
   "description": "Chrome extension for hack different page",
   "homepage_url": "https://www.ohohoho.com",
-  "version": "1.0.161",
+  "version": "1.0.162",
   "manifest_version": 3,
   "background": {
     "service_worker": "assets/background.js",
@@ -17,6 +17,19 @@
     "default_title": "页面配置",
     "default_popup": "popup.html"
   },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "hack/**/*.js",
+        "hack/**/*.css",
+        "hack/*.js",
+        "hack/*.css"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
+  ],
   "permissions": [
     "tabs",
     "storage",
