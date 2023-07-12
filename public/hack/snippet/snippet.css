@@ -528,11 +528,14 @@ body[cloud-tencent-com] .com-author-intro-name {
 }
 
 /**********************************************************/
+body[www-infoq-cn] div.article-aside,
 body[www-infoq-cn] div.header-notice,
 body[www-infoq-cn] div.operation-bar,
+body[www-infoq-cn] div.write-btn-warp,
 body[www-infoq-cn] div.layout-footer-wrap,
 body[www-infoq-cn] div.main-content .aside,
 body[www-infoq-cn] div.friendship-link-wrap,
+body[www-infoq-cn] section[class^='Fix_fix-'],
 body[www-infoq-cn] div.nav-search-wrap div.nav,
 body[www-infoq-cn] div.content-main div.slot-extra,
 body[www-infoq-cn] div.sidebar-artilce .ppt-module,
@@ -547,10 +550,15 @@ body[www-infoq-cn] .header-content {
     height: 42px;
 }
 
+body[www-infoq-cn] div.content-main {
+    flex-grow: 1;
+}
+
 body[www-infoq-cn] .inner-content.had-notice {
     padding-top: 42px;
 }
 
+body[www-infoq-cn] div.content-main .article-main,
 body[www-infoq-cn] div.main-content .page-topic-list {
     width: 100%;
 }
