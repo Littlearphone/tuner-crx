@@ -27,6 +27,7 @@
           if (!nextLink.length || $(`iframe[src='${nextLink.attr('href')}']`).length) {
             return
           }
+          console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
           if ($(paginationSelector).find('.tuner-loading-block').length) {
             return
           }
@@ -64,11 +65,10 @@
   }
 
   function initialize() {
-    const $body = $('body')
-    if (!$body.length) {
+    if (!document.body) {
       return requestAnimationFrame(initialize)
     }
-    $body.attr('google', window !== top ? 'iframe' : '')
+    $('body').attr('google', window !== top ? 'iframe' : '')
     requestAnimationFrame(detectLink)
   }
 
