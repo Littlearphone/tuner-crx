@@ -100,7 +100,7 @@ export const HackMappings = [{
   }
 }, {
   id: 'bing-search',
-  expectUrl: (tab: any) => /http(s)?:\/\/cn.bing.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
+  expectUrl: (tab: any) => /http(s)?:\/\/(cn|www).bing.com(\/search)?.*([?&]q=.*).*/.test(tab.url),
   hacker: {
     state: 'loading',
     style: ['hack/bing/search.css'],
