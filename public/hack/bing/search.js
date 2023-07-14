@@ -19,43 +19,46 @@
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
     }
+    const paginationSelector = '#b_results li.b_pag'
     if (!window.pagination) {
-      window.pagination = new $.Pagination()
-    }
-    $.Pagination.prototype.nextPage = function () {
-      const next = $('li a.sb_pagN')
-      if (!next.length || this.iframe.attr('src') === next.attr('href')) {
-        return
+      window.pagination = {
+        nextPage() {
+          if (window !== top) {
+            return
+          }
+          const nextLink = $('li a.sb_pagN')
+          if (!nextLink.length || $(`iframe[src='${nextLink.attr('href')}']`).length) {
+            return
+          }
+          console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+          if ($(paginationSelector).find('.tuner-loading-block').length) {
+            return
+          }
+          // $(paginationSelector).parent().css('position', 'relative')
+          // $('#page').css({ 'position': 'relative' })
+          const loading = $.loading.mask(paginationSelector).start()
+          const nextPage = $(`<iframe src="${nextLink.attr('href')}" class="tuner-page-frame" scrolling="no"/>`)
+          $(paginationSelector).before(nextPage.on('load', function () {
+            // const scrollX = window.scrollX
+            // const scrollY = window.scrollY
+            const contents = nextPage.contents()
+            const center = contents.find('[bing=iframe] #b_results')
+            const width = $('[bing] #b_content').width()
+            const height = center.height()
+            nextPage.width(width).height(height)
+            $(paginationSelector).html(contents.find(paginationSelector).html())
+            console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+            // window.scrollTo(scrollX, scrollY)
+            loading.end().remove()
+          }))
+        }
       }
-      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
-      if (!$('iframe#tuner-crx').length) {
-        this.reloadFrame()
-      }
-      this.lastPosition = window.scrollY
-      const loading = $.loading.mask('li.b_pag').start()
-      this.iframe.on('load', () => {
-        $('li.b_pag').html(this.select('li.b_pag').html())
-        loading.end().remove()
-        const results = this.select('#b_results li.b_algo')
-        if (!results.length) {
-          return
-        }
-        const list = $('#b_results li.b_algo')
-        if (list.length) {
-          list.last().after(results)
-        }
-        if (window.scrollY >= this.lastPosition) {
-          window.scrollTo(window.scrollX, this.lastPosition)
-        }
-        console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
-      })
-      this.iframe.attr('src', next.attr('href'))
     }
   })
   const FaviconMapping = {}
   const defaultIcon = 'https://cn.bing.com/favicon.ico'
 
-  function faviconParse (result) {
+  function faviconParse(result) {
     const cite = result.querySelector('cite')
     if (!cite) {
       return `url("${defaultIcon}")`
@@ -72,11 +75,11 @@
     return `url("${'//' + urls[0].split('/')[0] + '/favicon.ico'}"), url("${defaultIcon}")`
   }
 
-  function initialPage () {
+  function initialPage() {
     if (!document.body) {
-      return requestAnimationFrame(initialPage)
+      return requestAnimationFrame(initialize)
     }
-    document.body.setAttribute('bing', '')
+    $('body').attr('bing', window !== top ? 'iframe' : '')
     $('[bing] #b_content #b_results li').each(function () {
       const h2 = $(this).find('h2')
       if (h2.find('i')) {
