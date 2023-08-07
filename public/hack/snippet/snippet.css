@@ -781,3 +781,19 @@ body[www-zhihu-com] div.Question-mainColumn div.List-item:hover {
 }
 
 /**********************************************************/
+body[news-sina-com-cn] ins.sinaads,
+body[news-sina-com-cn] div.top-banner,
+body[news-sina-com-cn] div#tab_related,
+body[news-sina-com-cn] .article-content-right,
+body[news-sina-com-cn] [node-type="toRelated"],
+body[news-sina-com-cn] [class*="right-side-ad"],
+body[news-sina-com-cn] [id*="sinaadToolkitBox"] {
+    display: none !important;
+}
+
+body[news-sina-com-cn] div.article-content-left {
+    margin: 0;
+    width: 100%;
+}
+
+/**********************************************************/
