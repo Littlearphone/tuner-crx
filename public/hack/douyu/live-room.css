@@ -42,6 +42,8 @@ html, body, #js-room-activity,
 }
 
 #js-room-activity,
+.RechangeJulyPopups,
+[class*='ActAnnual'],
 .layout-Player .layout-Player-aside,
 .layout-Player [class*='broadcastDiv-'],
 .layout-Player [class*='recommendApp-'],
@@ -61,13 +63,14 @@ html, body, #js-room-activity,
 .layout-Player .AnchorPocketTips,
 .layout-Player .Title-sharkWeight,
 .layout-Player .FirstRechargePayPanel,
-.layout-Player .Title-anchorFriendWrapper {
+.layout-Player .PlayerToolbar-ContentCell,
+.layout-Player .Title-anchorFriendWrapper,
+.layout-Player .Title-row:has(.ClientJump) {
     display: none !important;
 }
 
 .layout-Player .layout-Player-main {
-    width: 100% !important;
-    height: 100% !important;
+    margin: 0 !important;
 }
 
 .layout-Player .layout-Player-video {
@@ -132,8 +135,8 @@ html, body, #js-room-activity,
 }
 
 .layout-Player-video .title-toggle-button::before {
-    border-bottom-color: gray;
-    border-top-width: 0;
+    border-top-color: gray;
+    border-bottom-width: 0;
 }
 
 .layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button {
@@ -143,10 +146,10 @@ html, body, #js-room-activity,
 }
 
 .layout-Player.toggle-layout-fold .layout-Player-video .title-toggle-button::before {
-    border-bottom-width: 0;
-    border-bottom-color: transparent;
-    border-top-width: 8px;
-    border-top-color: gray;
+    border-top-width: 0;
+    border-top-color: transparent;
+    border-bottom-width: 8px;
+    border-bottom-color: gray;
 }
 
 .layout-Player-video .toolbar-toggle-button {
@@ -154,8 +157,8 @@ html, body, #js-room-activity,
 }
 
 .layout-Player-video .toolbar-toggle-button::before {
-    border-top-color: gray;
-    border-bottom-width: 0;
+    border-bottom-color: gray;
+    border-top-width: 0;
 }
 
 .layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button {
@@ -165,10 +168,10 @@ html, body, #js-room-activity,
 }
 
 .layout-Player.toggle-layout-fold .layout-Player-video .toolbar-toggle-button::before {
-    border-top-width: 0;
-    border-top-color: transparent;
-    border-bottom-width: 8px;
-    border-bottom-color: gray;
+    border-bottom-width: 0;
+    border-bottom-color: transparent;
+    border-top-width: 8px;
+    border-top-color: gray;
 }
 
 .layout-Player .TitleShare,
@@ -189,12 +192,6 @@ html, body, #js-room-activity,
 .layout-Player .layout-Player-video video {
     width: 100% !important;
     height: 100% !important;
-}
-
-.layout-Player .layout-Player-video {
-    width: 100%;
-    height: calc(100% - 200px);
-    padding: 0;
 }
 
 .layout-Player.toggle-layout-fold .layout-Player-video {
