@@ -2,52 +2,6 @@
   if ($('body[baidu]').length) {
     return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
-  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '')
-    callback({ msg: 'baidu-script-injected' })
-    $.expectBody(() => {
-      const config = data.config || {}
-      if (config.backgroundImage) {
-        document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
-      }
-      document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
-      document.body.style.setProperty('--baidu-background-blur', `${config.backgroundBlur}px` || '12px')
-      if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
-        return
-      }
-      if (!window.pagination) {
-        window.pagination = new $.Pagination()
-      }
-      $.Pagination.prototype.nextPage = function () {
-        if (window !== top) {
-          return
-        }
-        const next = $('#page a:contains("下一页")')
-        if (!next.length || this.iframe === next.attr('href')) {
-          return
-        }
-        this.iframe = next.attr('href')
-        if ($('#page .tuner-loading-block').length) {
-          return
-        }
-        console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
-        const loading = $.loading.mask('#page').start()
-        $.get(next.attr('href'), function (data) {
-          const page = $(data)
-          loading.end().remove()
-          console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
-          requestAnimationFrame(detectLink)
-          let node = page.find('#content_left')[0].firstChild
-          while (node) {
-            $('#content_left')[0].appendChild(node)
-            node = page.find('#content_left')[0].firstChild
-          }
-          $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
-        })
-        $('#page').css({ 'position': 'relative' })
-      }
-    })
-  })
   window.indirectUrls = []
 
   function resolveRealAddress() {
@@ -106,11 +60,58 @@
       mutations.flatMap(mutation => Array.from(mutation.addedNodes))
         .filter(node => node.querySelector && node.querySelector('[class*="ec_tuiguang_pplink"]'))
         .forEach(node => (node.className += ' tuner-ads-block'))
-    }).observe($baidu[0], { childList: true })
+    }).observe($baidu[0], {childList: true})
     window.baiduAdBlocker = requestAnimationFrame(cleanAdsStyle)
     window.baiduLinkResolver = requestAnimationFrame(detectLink)
     // observer.disconnect()
   }
 
-  $.expectBody(initialize)
+  chrome.runtime.onMessage.addListener(function (data, sender, callback) {
+    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '')
+    callback({msg: 'baidu-script-injected'})
+    $.detect('body', () => {
+      initialize()
+      const config = data.config || {}
+      if (config.backgroundImage) {
+        document.body.style.setProperty('--baidu-background-image', `url(${config.backgroundImage})`)
+      }
+      document.body.style.setProperty('--baidu-background-color', config.backgroundColor || '#f6f6f6')
+      document.body.style.setProperty('--baidu-background-blur', `${config.backgroundBlur}px` || '12px')
+      if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
+        return
+      }
+      if (!window.pagination) {
+        window.pagination = new $.Pagination()
+      }
+      $.Pagination.prototype.nextPage = function () {
+        if (window !== top) {
+          return
+        }
+        const next = $('#page a:contains("下一页")')
+        if (!next.length || this.iframe === next.attr('href')) {
+          return
+        }
+        this.iframe = next.attr('href')
+        if ($('#page .tuner-loading-block').length) {
+          return
+        }
+        console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+        const loading = $.loading.mask('#page').start()
+        $.get(next.attr('href'), function (data) {
+          const page = $(data)
+          loading.end().remove()
+          console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+          requestAnimationFrame(detectLink)
+          let node = page.find('#content_left')[0].firstChild
+          while (node) {
+            $('#content_left')[0].appendChild(node)
+            node = page.find('#content_left')[0].firstChild
+          }
+          $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
+        })
+        $('#page').css({'position': 'relative'})
+      }
+    })
+  })
+
 })(window.jQuery)
