@@ -65,7 +65,7 @@
         return requestAnimationFrame(() => $.detect(selector, callback))
       }
       console.log(`${window.logPrefix}%c ===> 检测到元素 %o`, window.logStyle, '', element)
-      callback(element)
+      typeof callback === 'function' &&  callback(element)
     }
   }
   if ($ && !$.Pagination) {
@@ -106,13 +106,5 @@
     document.removeEventListener('scroll', scrollListener)
     document.addEventListener('scroll', scrollListener)
     $.Pagination = Pagination
-  }
-  if ($ && !$.expectBody) {
-    $.expectBody = function (action) {
-      if (!document.body) {
-        return requestAnimationFrame(() => $.expectBody(action))
-      }
-      typeof action === 'function' && action()
-    }
   }
 })(window.jQuery)

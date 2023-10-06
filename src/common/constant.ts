@@ -242,6 +242,29 @@ export const HackMappings = [{
     ]
   }
 }, {
+  id: 'bilibili-live',
+  expectUrl: (tab: any) => {
+    return /http(s)?:\/\/live.bilibili.com\/([a-zA-Z0-9]+)/.test(tab.url)
+  },
+  hacker: {
+    state: 'loading',
+    style: 'hack/bilibili/live.css',
+    script: ['hack/jquery.min.js', 'hack/common.js', 'hack/bilibili/live.js'],
+  }, description: {
+    enable: true,
+    injectCSS: true,
+    injectScript: true,
+    fullWebScreen: true,
+    configLabel: '"直播"配置开关',
+    fields: [
+      {
+        key: 'fullWebScreen',
+        label: '网页全屏',
+        type: 'SwitchField',
+      },
+    ]
+  }
+}, {
   id: 'bilibili-dynamic',
   expectUrl: (tab: any) => {
     return /http(s)?:\/\/t.bilibili.com(\/?.*)?/.test(tab.url)
