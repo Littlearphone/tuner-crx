@@ -10,7 +10,13 @@
     const config = data.config || {}
     config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
     $.detect('video', () => {
-      if (config.fullWebScreen) {
+      if (config.fullWebScreen && !document.body.classList.contains('player-full-win')) {
+        const event = new MouseEvent('dblclick', {
+          'view': window,
+          'bubbles': true,
+          'cancelable': true
+        })
+        document.getElementById('awesome-pk-vm').dispatchEvent(event)
         document.body.classList.add('player-full-win', 'over-hidden', 'hide-aside-area')
       } else {
         document.body.classList.remove('player-full-win', 'over-hidden', 'hide-aside-area')
