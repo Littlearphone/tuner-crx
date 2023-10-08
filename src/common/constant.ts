@@ -244,7 +244,7 @@ export const HackMappings = [{
 }, {
   id: 'bilibili-live',
   expectUrl: (tab: any) => {
-    return /http(s)?:\/\/live.bilibili.com\/([a-zA-Z0-9]+)/.test(tab.url)
+    return /http(s)?:\/\/live.bilibili.com\/[^/]+([?].*)?$/.test(tab.url)
   },
   hacker: {
     state: 'loading',
