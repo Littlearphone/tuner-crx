@@ -8,7 +8,7 @@
     if (!document.body) {
       return requestAnimationFrame(initialPage)
     }
-    document.body.setAttribute(attribute, '')
+    document.body && document.body.setAttribute(attribute, '')
     if (window.location.host === 'link.zhihu.com') {
       const array = /\?target=([^&]+)(&|$)/.exec(location.search)
       if (array.length > 1 && array[1]) {

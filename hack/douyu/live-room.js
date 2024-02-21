@@ -3,7 +3,10 @@
     return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> Douyu 脚本已准备就绪 `, window.logStyle, '')
+    if (!data.site || data.site.id !== 'douyu-room') {
+      return
+    }
+    console.log(`${window.logPrefix}%c ===> Douyu 脚本已准备就绪 `, window.logStyle, '', data)
     callback({ msg: 'douyu-script-injected' })
     const config = data.config || {}
     (function () {

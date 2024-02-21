@@ -67,7 +67,10 @@
   }
 
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '')
+    if (!data.site || data.site.id !== 'baidu-search') {
+      return
+    }
+    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '', data)
     callback({msg: 'baidu-script-injected'})
     $.detect('body', () => {
       initialize()
@@ -102,10 +105,9 @@
           loading.end().remove()
           console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
           requestAnimationFrame(detectLink)
-          let node = page.find('#content_left')[0].firstChild
-          while (node) {
-            $('#content_left')[0].appendChild(node)
-            node = page.find('#content_left')[0].firstChild
+          const children = page.find('#content_left').children()
+          if (children.length) {
+            $('#content_left').append(children)
           }
           $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
         })

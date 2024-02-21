@@ -10,7 +10,10 @@
   // 筛选搜索条目的选择器 a[data-ved][href^=http]:has(h3)
   // 整页翻译 https://translate.google.com/translate?hl=zh-CN&sl=auto&u=<page_url>&prev=search&pto=aue
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> Google 脚本已准备就绪`, window.logStyle, '')
+    if (!data.site || data.site.id !== 'google-search') {
+      return
+    }
+    console.log(`${window.logPrefix}%c ===> Google 脚本已准备就绪`, window.logStyle, '', data)
     callback({msg: 'google-script-injected'})
     const config = data.config || {}
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
