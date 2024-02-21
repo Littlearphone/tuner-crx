@@ -22,12 +22,12 @@ chrome.webNavigation.onCommitted.addListener(function (e) {
   }
   pageHacker(e.tabId, {status: true}, e)
 })
-chrome.runtime.onMessage.addListener(  (request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (!request) {
     return sendResponse({})
   }
   if (request.type === 'ajax') {
-      ajaxProxy(request, sender, sendResponse)
+    ajaxProxy(request, sender, sendResponse)
     return true
   }
   return sendResponse({})

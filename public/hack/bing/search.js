@@ -3,7 +3,10 @@
     return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> Bing 脚本已准备就绪`, window.logStyle, '')
+    if (!data.site || data.site.id !== 'bing-search') {
+      return
+    }
+    console.log(`${window.logPrefix}%c ===> Bing 脚本已准备就绪`, window.logStyle, '', data)
     callback({ msg: 'bing-script-injected' })
     const config = data.config || {}
     config.enableHta = !config.hasOwnProperty('enableHta') || config.enableHta

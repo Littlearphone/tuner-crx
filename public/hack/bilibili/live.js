@@ -24,7 +24,10 @@
   }
 
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
-    console.log(`${window.logPrefix}%c ===> []~(￣▽￣)~* 脚本已准备就绪 `, window.logStyle, '')
+    if (!data.site || data.site.id !== 'bilibili-live') {
+      return
+    }
+    console.log(`${window.logPrefix}%c ===> []~(￣▽￣)~* 脚本已准备就绪 `, window.logStyle, '', data)
     callback({msg: '[]~(￣▽￣)~*-script-injected'})
     const config = data.config || {}
     config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
