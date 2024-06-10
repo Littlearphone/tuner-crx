@@ -189,3 +189,7 @@ html[lang='zh'] [bing]:has(#b-scopeListItem-web.b_active) #b_results > li:not(#m
     position: relative;
     left: 0;
 }
+
+[bing] .b_algo .b_tpcn .tpic {
+    width: 28px;
+}
