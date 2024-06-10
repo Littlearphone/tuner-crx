@@ -16,8 +16,10 @@
         'cancelable': true
       })
       document.getElementById('awesome-pk-vm').dispatchEvent(event)
-      document.body.classList.add('player-full-win', 'over-hidden', 'hide-aside-area')
-      setTimeout(() => detectPlaying(video, config), 5000)
+      setTimeout(() => {
+        document.body.classList.add('player-full-win', 'over-hidden', 'hide-aside-area')
+        detectPlaying(video, config)
+      }, 5000)
     }
     // danmaku-item-container
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')))

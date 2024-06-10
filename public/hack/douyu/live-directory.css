@@ -79,6 +79,7 @@ html.shark-webp {
 .DropPane-ad,
 .layout-Banner,
 .DropMenuList-ad,
+.layout-Module-extra,
 .Header-broadcast-wrap,
 .Header-follow-wrap,
 .Header-download-wrap,
@@ -145,16 +146,6 @@ div.Header {
     margin: 0 !important;
 }
 
-.layout-Module-extra {
-    margin: 6px 10px !important;
-    height: 22px !important;
-    z-index: 999 !important;
-}
-
 i.BranchTool-selector-icon {
     margin: 10px 0 !important;
-}
-
-.layout-Module-extra .VideoTab-container {
-    margin: 0 !important;
 }

@@ -75,6 +75,16 @@ function insertCss(site: any, tabId: number, tab: any, config: any) {
   })
 }
 
+function handleError(tabId: any, callback: Function) {
+  chrome.tabs.get(tabId, () => {
+    if (chrome.runtime.lastError) {
+      console.log(chrome.runtime.lastError.message)
+    } else {
+      callback && callback()
+    }
+  })
+}
+
 // iframe => https://codingdict.com/questions/13895
 export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
   if (!tab || !tab.url || !tab.url.startsWith('http://') && !tab.url.startsWith('https://')) {
@@ -85,21 +95,23 @@ export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
     description: {enable: false},
     id: new Date().toISOString()
   }
-  site.id && chrome.action.enable(tabId)
-  const status = changeInfo && changeInfo.status
-  if (site.hacker && (status === site.hacker.state || status === true)) {
-    getStorage(site.id).then((response: any) => {
-      const config = Object.assign({configId: site.id}, site.description, response[site.id])
-      console.log('页面配置获取成功: ', tab.url)
-      console.table(config)
-      insertCss(site, tabId, tab, config)
-      insertScript(site, tabId, tab, config)
-    })
-  }
+  handleError(tabId, () => {
+    site.id && chrome.action.enable(tabId)
+    const status = changeInfo && changeInfo.status
+    if (site.hacker && (status === site.hacker.state || status === true)) {
+      getStorage(site.id).then((response: any) => {
+        const config = Object.assign({configId: site.id}, site.description, response[site.id])
+        console.log('页面配置获取成功: ', tab.url)
+        console.table(config)
+        insertCss(site, tabId, tab, config)
+        insertScript(site, tabId, tab, config)
+      })
+    }
+  })
 }
 
 export function messageTab(tabId: number, message: any, callback: (response: any) => void) {
-  chrome.tabs.sendMessage(tabId, message, callback)
+  handleError(tabId, () => chrome.tabs.sendMessage(tabId, message, callback))
 }
 
 export function setStorage(keys: any) {
