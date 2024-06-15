@@ -1,14 +1,14 @@
 (function ($) {
   if ($.bilibiliLoaded) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
-  console.log(`${window.logPrefix}%c ===> 开始初始化 Bilibili 脚本`, window.logStyle, '')
+  logger.debug('开始初始化 Bilibili 脚本')
   $.bilibiliLoaded = {}
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
     if (!data.site || data.site.id !== 'bilibili-video') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> []~(￣▽￣)~* 脚本已准备就绪 `, window.logStyle, '', data)
+    logger.debug('[]~(￣▽￣)~* 脚本已准备就绪')
     callback({ msg: '[]~(￣▽￣)~*-script-injected' })
     const config = data.config || {}
     if (!config.hasOwnProperty('playbackRate') || config.playbackRate <= 0) {
@@ -75,7 +75,7 @@
       window.EventBus = function () {
         this.uuid = new Date().getTime()
         this.events = []
-        console.log(`${window.logPrefix} ===> 创建事件总线`, window.logStyle, this.uuid)
+        logger.debug('创建事件总线', () => console.log(this.uuid))
       }
       window.EventBus.prototype.emit = function (type, data) {
         this.events.push({
@@ -83,7 +83,7 @@
           data
         })
         this.start()
-        console.log(`${window.logPrefix} ===> 收到事件`, window.logStyle, type)
+        logger.debug('收到事件', () => console.log(type))
       }
       window.EventBus.prototype.clear = function () {
         this.events.length = 0
@@ -93,23 +93,19 @@
           clearTimeout(this.timer)
         }
         if (!this.events.length) {
-          console.log(`${window.logPrefix} ===> 事件队列为空`, window.logStyle)
-          return
+          return logger.debug('事件队列为空')
         }
         this.timer = setTimeout(this.start.bind(this), 100)
         const event = this.events.shift()
         if (!event) {
-          console.log(`${window.logPrefix} ===> 无效的事件对象`, window.logStyle)
-          return
+          return logger.debug('无效的事件对象')
         }
         const handler = window[event.type]
         if (typeof handler !== 'function') {
-          this.events.push(event)
-          return
+          return this.events.push(event)
         }
         if (handler.call(window, event.data, this)) {
-          console.log(`${window.logPrefix} ===> 事件执行完成`, window.logStyle)
-          return
+          return logger.debug('事件执行完成')
         }
         this.events.push(event)
       }
@@ -125,7 +121,7 @@
       window.bus.emit('skipSponsor', config)
     }
     const onVideoStart = function () {
-      console.log(`${window.logPrefix} ===> 补充播放结束事件`, window.logStyle)
+      logger.debug('补充播放结束事件')
       this.removeEventListener('ended', onVideoFinish)
       window.bus.emit('adjustSpeed', config)
       this.addEventListener('ended', onVideoFinish)
@@ -141,7 +137,7 @@
         return playButton.className.indexOf('video-state-pause') < 0 || !document.querySelector('.bpx-state-paused')
       }
       data.autoStartPlay && playButton.click()
-      console.log(`${window.logPrefix} ===> 开始播放视频`, window.logStyle)
+      logger.debug('开始播放视频')
       return false
     }
     window.skipSponsor = function () {
@@ -150,7 +146,7 @@
         return false
       }
       buttons.forEach(element => element.click())
-      console.log(`${window.logPrefix} ===> 跳过等待或连播`, window.logStyle)
+      logger.debug('跳过等待或连播')
       return true
     }
     const filterSpeedOption = function (speed, option) {
@@ -163,7 +159,7 @@
       if (!options || !options.length) {
         return false
       }
-      console.log(`${window.logPrefix} ===> 将播放速度调整为`, window.logStyle, data.playbackRate)
+      logger.debug('将播放速度调整为', () => console.log(data.playbackRate))
       const option = Array.from(options).find(option => filterSpeedOption(data.playbackRate, option))
       if (option) {
         const classList = option.classList
@@ -181,7 +177,7 @@
       if (!buttonArea) {
         return document.querySelector('.bpx-player-ctrl-web.bpx-state-entered')
       }
-      console.log(`${window.logPrefix} ===> 启动网页全屏`, window.logStyle)
+      logger.debug('启动网页全屏')
       const selector = [
         '.bpx-player-ctrl-web-enter',
         '.squirtle-pagefullscreen-inactive',
@@ -197,7 +193,7 @@
       window.bus.start()
       window.navigation.addEventListener('navigate', event => {
         window.bus.clear()
-        console.log(`${window.logPrefix} ===> 清除所有事件`, window.logStyle, event)
+        logger.debug('清除所有事件', () => console.log(event))
         setTimeout(initialize, 1000)
       })
     }

@@ -1,12 +1,12 @@
 (function ($) {
   if ($('body[douyu]').length) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
     if (!data.site || data.site.id !== 'douyu-room') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> Douyu 脚本已准备就绪 `, window.logStyle, '', data)
+    logger.debug('Douyu 脚本已准备就绪')
     callback({ msg: 'douyu-script-injected' })
     const config = data.config || {}
     (function () {
@@ -44,7 +44,7 @@
     })()
   })
 
-  function initialize () {
+  function initialize() {
     const $body = $('body')
     if (!$body.length) {
       return requestAnimationFrame(initialize)

@@ -1,8 +1,8 @@
 (function ($) {
   if ($.bilibiliLoaded) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
-  console.log(`${window.logPrefix}%c ===> 开始初始化 Bilibili 脚本`, window.logStyle, '')
+  logger.debug('开始初始化 Bilibili 脚本')
   $.bilibiliLoaded = {}
 
   function detectPlaying(video, config) {
@@ -29,7 +29,7 @@
     if (!data.site || data.site.id !== 'bilibili-live') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> []~(￣▽￣)~* 脚本已准备就绪 `, window.logStyle, '', data)
+    logger.debug('[]~(￣▽￣)~* 脚本已准备就绪')
     callback({msg: '[]~(￣▽￣)~*-script-injected'})
     const config = data.config || {}
     config.fullWebScreen = !config.hasOwnProperty('fullWebScreen') || config.fullWebScreen
