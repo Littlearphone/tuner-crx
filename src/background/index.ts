@@ -32,3 +32,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   return sendResponse({})
 })
+
+function autoReload() {
+  setTimeout(autoReload, 5000)
+  const manifest = chrome.runtime.getManifest()
+  fetch('/manifest.json').then(res => res.json()).then(json => {
+    if (json.version !== manifest.version) {
+      chrome.runtime.reload()
+    }
+  })
+}
+
+chrome.management.getSelf(result => {
+  if (result.installType === 'development') {
+    autoReload()
+  }
+})
