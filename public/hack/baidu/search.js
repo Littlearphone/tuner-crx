@@ -1,6 +1,6 @@
 (function ($) {
   if ($('body[baidu]').length) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
   window.indirectUrls = []
 
@@ -60,7 +60,7 @@
       mutations.flatMap(mutation => Array.from(mutation.addedNodes))
         .filter(node => node.querySelector && node.querySelector('[class*="ec_tuiguang_pplink"]'))
         .forEach(node => (node.className += ' tuner-ads-block'))
-    }).observe($baidu[0], {childList: true})
+    }).observe($baidu[0], { childList: true })
     window.baiduAdBlocker = requestAnimationFrame(cleanAdsStyle)
     window.baiduLinkResolver = requestAnimationFrame(detectLink)
     // observer.disconnect()
@@ -70,8 +70,8 @@
     if (!data.site || data.site.id !== 'baidu-search') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> Baidu 脚本已准备就绪`, window.logStyle, '', data)
-    callback({msg: 'baidu-script-injected'})
+    logger.debug('Baidu 脚本已准备就绪')
+    callback({ msg: 'baidu-script-injected' })
     $.detect('body', () => {
       initialize()
       const config = data.config || {}
@@ -98,12 +98,12 @@
         if ($('#page .tuner-loading-block').length) {
           return
         }
-        console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+        logger.debug('自动加载下一页')
         const loading = $.loading.mask('#page').start()
         $.get(next.attr('href'), function (data) {
           const page = $(data)
           loading.end().remove()
-          console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+          logger.debug('下一页加载完成')
           requestAnimationFrame(detectLink)
           const children = page.find('#content_left').children()
           if (children.length) {
@@ -111,7 +111,7 @@
           }
           $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
         })
-        $('#page').css({'position': 'relative'})
+        $('#page').css({ 'position': 'relative' })
       }
     })
   })

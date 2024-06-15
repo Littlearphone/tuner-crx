@@ -1,11 +1,10 @@
 (function ($) {
   if (window !== top && !parent.document.querySelector(`iframe[src*="${location.pathname}${location.search}"]`).scrollHeight) {
-    console.groupCollapsed(`${window.logPrefix}%c ===> 不可见窗口`, window.logStyle, '')
-    console.log(location.href)
+    logger.debug('不可见窗口')
     return console.groupEnd()
   }
   if ($('body[google]').length) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
   // 筛选搜索条目的选择器 a[data-ved][href^=http]:has(h3)
   // 整页翻译 https://translate.google.com/translate?hl=zh-CN&sl=auto&u=<page_url>&prev=search&pto=aue
@@ -13,8 +12,8 @@
     if (!data.site || data.site.id !== 'google-search') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> Google 脚本已准备就绪`, window.logStyle, '', data)
-    callback({msg: 'google-script-injected'})
+    logger.debug('Google 脚本已准备就绪')
+    callback({ msg: 'google-script-injected' })
     const config = data.config || {}
     if (config.hasOwnProperty('autoPaging') && !config.autoPaging) {
       return
@@ -31,7 +30,7 @@
           if ((!nextLink.length && !moreResultsButton.length) || $(`iframe[src='${nextLink.attr('href')}']`).length) {
             return
           }
-          console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+          logger.debug('自动加载下一页')
           if (moreResultsButton.length) {
             return moreResultsButton.find('div').click()
           }
@@ -51,7 +50,7 @@
             const height = center.height() + 10
             nextPage.width(width).height(height)
             $(paginationSelector).parent().html(contents.find(paginationSelector).parent().html())
-            console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+            logger.debug('下一页加载完成')
             // window.scrollTo(scrollX, scrollY)
             loading.end().remove()
           }))

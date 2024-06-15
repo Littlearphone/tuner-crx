@@ -1,12 +1,12 @@
 (function ($) {
   if ($('body[bing]').length) {
-    return console.log(`${window.logPrefix} ===> 脚本重复注入`, window.logStyle)
+    return logger.debug('脚本重复注入')
   }
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
     if (!data.site || data.site.id !== 'bing-search') {
       return
     }
-    console.log(`${window.logPrefix}%c ===> Bing 脚本已准备就绪`, window.logStyle, '', data)
+    logger.debug('Bing 脚本已准备就绪')
     callback({ msg: 'bing-script-injected' })
     const config = data.config || {}
     config.enableHta = !config.hasOwnProperty('enableHta') || config.enableHta
@@ -33,7 +33,7 @@
           if (!nextLink.length || $(`iframe[src='${nextLink.attr('href')}']`).length) {
             return
           }
-          console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+          logger.debug('自动加载下一页')
           if ($(paginationSelector).find('.tuner-loading-block').length) {
             return
           }
@@ -50,7 +50,7 @@
             const height = center.height()
             nextPage.width(width).height(height)
             $(paginationSelector).html(contents.find(paginationSelector).html())
-            console.log(`${window.logPrefix}%c ===> 下一页加载完成`, window.logStyle, '')
+            logger.debug('下一页加载完成')
             // window.scrollTo(scrollX, scrollY)
             loading.end().remove()
           }))

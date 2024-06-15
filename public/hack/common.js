@@ -64,8 +64,8 @@
       if (!element.length) {
         return requestAnimationFrame(() => $.detect(selector, callback))
       }
-      console.log(`${window.logPrefix}%c ===> 检测到元素 %o`, window.logStyle, '', element)
-      typeof callback === 'function' &&  callback(element)
+      logger.debug(`检测到 ${selector} ==> %o`, element)
+      typeof callback === 'function' && callback(element)
     }
   }
   if ($ && !$.Pagination) {
@@ -75,7 +75,7 @@
     Pagination.prototype.initial = function (selector) {
       this.iframe = $('iframe#tuner-crx')
       if (!this.iframe.length) {
-        console.debug('创建隐藏的iframe用于自动分页')
+        logger.debug('创建隐藏的iframe用于自动分页')
         this.iframe = $('<iframe></iframe>')
       }
       this.iframe.hide()
@@ -90,7 +90,7 @@
       this.initial()
     }
     Pagination.prototype.nextPage = function () {
-      console.log(`${window.logPrefix}%c ===> 自动加载下一页`, window.logStyle, '')
+      logger.debug('自动加载下一页')
     }
     window.PRELOAD_MARGIN = 200
     // Listen for the scroll event
