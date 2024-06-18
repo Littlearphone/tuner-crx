@@ -47,7 +47,10 @@
     console.trace(location.href)
     if (typeof extraAction === 'function') {
       logger.depth++
-      extraAction()
+      const result = extraAction()
+      if (typeof result === 'string') {
+        leafx.logger.debug(result)
+      }
       logger.depth--
     }
     console.groupEnd()
@@ -83,7 +86,7 @@
         continue
       }
       if (!document.body) {
-        return requestAnimationFrame(() => urls.unshift(url) && insertScript(urls))
+        return setTimeout(() => urls.unshift(url) && insertScript(urls), 100)
       }
       const script = document.createElement('script')
       script.setAttribute('id', url)
