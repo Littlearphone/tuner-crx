@@ -49,7 +49,7 @@
       logger.depth++
       const result = extraAction()
       if (typeof result === 'string') {
-        leafx.logger.debug(result)
+        logger.debug(result)
       }
       logger.depth--
     }
