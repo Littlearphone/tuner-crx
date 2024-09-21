@@ -26,6 +26,25 @@ html {
     display: none !important;
 }
 
+[baidu][inline] #wrapper_wrapper > :not(#container),
+[baidu][inline] #wrapper > :not(#wrapper_wrapper),
+[baidu][inline] #container > :not(#content_left),
+[baidu][inline] > :not(#wrapper),
+[baidu][inline]::before,
+[baidu][inline]::after {
+    display: none !important;
+}
+
+[baidu][inline] {
+    background-color: transparent;
+}
+
+[baidu] iframe[class="tuner-page-frame"],
+[baidu][inline] #wrapper_wrapper {
+    border: 0;
+    width: 100%;
+}
+
 :root {
     --baidu-background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Vg8AAnEBdzTCX3oAAAAASUVORK5CYII=);
     --baidu-background-color: #f6f6f6;
@@ -142,6 +161,11 @@ html {
     justify-content: center;
 }
 
+[baidu='wd'] div.result-molecule #s_tab::after,
+[baidu='wd'] div.result-molecule #s_tab::before {
+    display: none;
+}
+
 [baidu='wd'] div.result-molecule #s_tab,
 [baidu='wd'] div.result-molecule:has(#s_tab),
 [baidu='wd'] div.result-molecule:has(#tsn_inner),
@@ -151,7 +175,8 @@ html {
     display: flex;
     max-width: 1200px;
     justify-content: center;
-    background-color: #ffffff;
+    backdrop-filter: blur(12px);
+    background-color: #ffffff33;
 }
 
 [baidu='wd'] div.result-molecule:has(#tsn_inner) {
@@ -233,11 +258,12 @@ html {
     transition: .3s;
     overflow: hidden;
     border-radius: 4px;
-    background-color: #fff;
     box-sizing: border-box;
     margin: 10px 0 !important;
     border: 1px solid #ebeef5;
     padding: 0 10px !important;
+    background-color: #ffffffaa;
+    backdrop-filter: blur(12px);
 }
 
 [baidu] #content_left .result,
@@ -384,10 +410,16 @@ div.op-short-video-pc-img-new {
 
 [baidu] #container.sam_newgrid #content_left .result-op {
     border: 1px solid rgba(0, 0, 0, 0.05);
-    background-color: white;
+    background-color: #ffffffaa;
+    backdrop-filter: blur(12px);
     box-sizing: border-box;
     min-width: 1000px;
     padding: 10px;
+}
+
+[baidu] #container.sam_newgrid #content_left .result-op:hover {
+    transition: .3s;
+    background-color: white;
 }
 
 [baidu] #container.sam_newgrid #content_left table.result-op {
