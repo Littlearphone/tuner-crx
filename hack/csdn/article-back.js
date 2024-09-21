@@ -35,11 +35,11 @@
     }
     const text = document.querySelector('.follow-text')
     if (text && text.parentElement && text.parentElement.parentElement) {
-      text.parentElement.parentElement.removeChild(follow_text.parentElement)
+      text.parentElement.parentElement.removeChild(text.parentElement)
     }
     const box = document.querySelector('.hide-article-box')
     if (box && box.parentElement) {
-      box.parentElement.removeChild(hide_article_box)
+      box.parentElement.removeChild(box)
     }
   }
 
