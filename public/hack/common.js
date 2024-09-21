@@ -69,8 +69,18 @@
     }
   }
   if ($ && !$.Pagination) {
-    const Pagination = function () {
+    function Pagination() {
       this.initial()
+    }
+    // Listen for the scroll event
+    function scrollListener(event) {
+      if (window.innerHeight >= document.body.scrollHeight) {
+        return window.pagination && window.pagination.nextPage()
+      }
+      if (window.innerHeight + window.scrollY < document.body.scrollHeight - window.PRELOAD_MARGIN) {
+        return
+      }
+      window.pagination && window.pagination.nextPage()
     }
     Pagination.prototype.initial = function (selector) {
       this.iframe = $('iframe#tuner-crx')
@@ -92,17 +102,8 @@
     Pagination.prototype.nextPage = function () {
       logger.debug('自动加载下一页')
     }
+    Pagination.prototype.scrollListener = scrollListener
     window.PRELOAD_MARGIN = 200
-    // Listen for the scroll event
-    const scrollListener = event => {
-      if (window.innerHeight >= document.body.scrollHeight) {
-        return
-      }
-      if (window.innerHeight + window.scrollY < document.body.scrollHeight - window.PRELOAD_MARGIN) {
-        return
-      }
-      window.pagination && window.pagination.nextPage()
-    }
     document.removeEventListener('scroll', scrollListener)
     document.addEventListener('scroll', scrollListener)
     $.Pagination = Pagination

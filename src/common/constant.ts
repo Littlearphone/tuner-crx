@@ -1,5 +1,15 @@
 export const DefaultConfig = {
-  fields: [],
+  fields: [
+    // {
+    //   key: 'backgroundImage',
+    //   label: '背景图片',
+    //   type: 'TextField',
+    // }, {
+    //   key: 'backgrounasddImage',
+    //   label: '背景图片',
+    //   type: 'SliderField',
+    // }
+  ],
   enable: true,
   injectCSS: true,
   injectScript: true,
@@ -40,6 +50,11 @@ export const HackMappings = [
           key: 'backgroundImage',
           label: '背景图片',
           type: 'UploadField',
+        },
+        {
+          key: 'blockedDomains',
+          label: '域名屏蔽列表',
+          type: 'TextField',
         },
         {
           key: 'backgroundBlur',

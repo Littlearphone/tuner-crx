@@ -6,6 +6,7 @@ html {
 [baidu] #s_wrap.s-isindex-wrap,
 [baidu] [mu*="://b2b.baidu.com"],
 [baidu] #container #content_right,
+[baidu] .result:has(.baozhang-new),
 [baidu] #s-top-left.s-isindex-wrap,
 [baidu] .s-isindex-wrap .s-top-nav,
 [baidu] #bottom_space.s-bottom-space,
