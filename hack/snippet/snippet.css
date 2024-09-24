@@ -245,7 +245,7 @@ body[www-jianshu-com] section:has(article) ~ section {
     display: none !important;
 }
 
-body[www-jianshu-com] body {
+body[www-jianshu-com] {
     overflow: auto !important;
 }
 
