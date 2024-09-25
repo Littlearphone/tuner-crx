@@ -24,7 +24,7 @@ function asBoolean(config: any, key: string): boolean {
   return !config.hasOwnProperty(key) || config[key]
 }
 
-function insertScript(site: any, tabId: number, tab: any, config: any) {
+async function insertScript(site: any, tabId: number, tab: any, config: any) {
   if (!asBoolean(config, 'enable') || !asBoolean(config, 'injectScript')) {
     return console.log('该页面脚本注入未启用')
   }
@@ -38,21 +38,16 @@ function insertScript(site: any, tabId: number, tab: any, config: any) {
   if (tab.frameId) {
     target.frameIds = [tab.frameId]
   }
-  chrome.scripting.executeScript({
-    files,
-    target,
-    injectImmediately: true
-  }).then(() => {
-    console.log('页面脚本注入完成: ', tab.url)
-    console.table(files)
-    // 提供回调的话，接收方需要三个参数：transferData, sender, callback，
-    // 为了让扩展不提示The message port closed before a response was received，
-    // 还需要在接收方调用callback方法传递响应数据
-    messageTab(tabId, Object.assign({site}, {config}), (response: any) => console.log('传递页面配置完成', response))
-  })
+  await chrome.scripting.executeScript({files, target, injectImmediately: true})
+  console.log('页面脚本注入完成: ', tab.url)
+  console.table(files)
+  // 提供回调的话，接收方需要三个参数：transferData, sender, callback，
+  // 为了让扩展不提示The message port closed before a response was received，
+  // 还需要在接收方调用callback方法传递响应数据
+  messageTab(tabId, Object.assign({site}, {config}), (response: any) => console.log('传递页面配置完成', response))
 }
 
-function insertCss(site: any, tabId: number, tab: any, config: any) {
+async function insertCss(site: any, tabId: number, tab: any, config: any) {
   if (!asBoolean(config, 'enable') || !asBoolean(config, 'injectCSS')) {
     return console.log('该页面样式注入未启用')
   }
@@ -66,13 +61,9 @@ function insertCss(site: any, tabId: number, tab: any, config: any) {
   if (tab.frameId) {
     target.frameIds = [tab.frameId]
   }
-  chrome.scripting.insertCSS({
-    files,
-    target
-  }).then(() => {
-    console.log('页面样式注入完成: ', tab.url)
-    console.table(files)
-  })
+  await chrome.scripting.insertCSS({files, target})
+  console.log('页面样式注入完成: ', tab.url)
+  console.table(files)
 }
 
 function handleError(tabId: any, callback: Function) {
@@ -85,6 +76,8 @@ function handleError(tabId: any, callback: Function) {
   })
 }
 
+const loadingPage: any = {}
+
 // iframe => https://codingdict.com/questions/13895
 export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
   if (!tab || !tab.url || !tab.url.startsWith('http://') && !tab.url.startsWith('https://')) {
@@ -95,17 +88,25 @@ export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
     description: {enable: false},
     id: new Date().toISOString()
   }
-  handleError(tabId, () => {
+  handleError(tabId, async () => {
     site.id && chrome.action.enable(tabId)
     const status = changeInfo && changeInfo.status
-    if (site.hacker && (status === site.hacker.state || status === true)) {
-      getStorage(site.id).then((response: any) => {
-        const config = Object.assign({configId: site.id}, site.description, response[site.id])
-        console.log('页面配置获取成功: ', tab.url)
-        console.table(config)
-        insertCss(site, tabId, tab, config)
-        insertScript(site, tabId, tab, config)
-      })
+    if (!site.hacker || (status !== site.hacker.state && status !== true)) {
+      return
+    }
+    if (loadingPage[tab.url]) {
+      return
+    }
+    loadingPage[tab.url] = true
+    try {
+      const response: any = await getStorage(site.id)
+      const config = Object.assign({configId: site.id}, site.description, response[site.id])
+      console.log('页面配置获取成功: ', tab.url)
+      console.table(config)
+      await insertCss(site, tabId, tab, config)
+      await insertScript(site, tabId, tab, config)
+    } finally {
+      delete loadingPage[tab.url]
     }
   })
 }
