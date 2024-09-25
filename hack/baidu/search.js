@@ -115,46 +115,47 @@
         return
       }
       if (!window.pagination && !$('body[inline]').length) {
-        window.pagination = new $.Pagination()
-        $.Pagination.prototype.nextPage = function () {
-          if (window !== top) {
-            return
+        window.pagination = {
+          nextPage() {
+            if (window !== top) {
+              return
+            }
+            const next = $('#page a:contains("下一页")')
+            if (!next.length || this.iframe === next.attr('href')) {
+              return
+            }
+            this.iframe = next.attr('href')
+            if ($('#page .tuner-loading-block').length) {
+              return
+            }
+            const nextPageNo = parseInt($('#page strong').text().trim()) + 1
+            logger.debug('自动加载下一页', nextPageNo)
+            const loading = $.loading.mask('#page').start()
+            const nextPage = $(`<iframe src="${this.iframe}" class="tuner-page-frame" scrolling="no"/>`)
+            nextPage.height(0)
+            $('#content_left ~ script[data-for="result"]').before(nextPage.on('load', function () {
+              loading.end().remove()
+              const page = nextPage.contents()
+              nextPage.height(page.find('#content_left').height()).show()
+              $('.result-molecule:has(#page)').html(page.find('.result-molecule:has(#page)').html())
+              // requestAnimationFrame(detectLink)
+              // const children = page.find('#content_left').children()
+              // logger.debug('下一页加载完成', nextPageNo, 'size', children.length)
+              // if (children.length) {
+              //   $('#content_left').append(children)
+              //   // } else if (page.find('.content_none').length) {
+              //   //   window.pagination.iframe = ''
+              //   //   next.attr('href', $('#page strong').next().attr('href'))
+              //   //   return setTimeout(() => window.pagination.nextPage(), 1000)
+              // }
+              // $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
+              // injectBlockStyle(config.blockedDomains)
+              window.pagingScrollListener()
+            }))
+            $('#page').css({ 'position': 'relative' })
           }
-          const next = $('#page a:contains("下一页")')
-          if (!next.length || this.iframe === next.attr('href')) {
-            return
-          }
-          this.iframe = next.attr('href')
-          if ($('#page .tuner-loading-block').length) {
-            return
-          }
-          const nextPageNo = parseInt($('#page strong').text().trim()) + 1
-          logger.debug('自动加载下一页', nextPageNo)
-          const loading = $.loading.mask('#page').start()
-          const nextPage = $(`<iframe src="${this.iframe}" class="tuner-page-frame" scrolling="no"/>`)
-          nextPage.height(0)
-          $('#content_left ~ script[data-for="result"]').before(nextPage.on('load', function () {
-            loading.end().remove()
-            const page = nextPage.contents()
-            nextPage.height(page.find('#content_left').height()).show()
-            $('.result-molecule:has(#page)').html(page.find('.result-molecule:has(#page)').html())
-            // requestAnimationFrame(detectLink)
-            // const children = page.find('#content_left').children()
-            // logger.debug('下一页加载完成', nextPageNo, 'size', children.length)
-            // if (children.length) {
-            //   $('#content_left').append(children)
-            //   // } else if (page.find('.content_none').length) {
-            //   //   window.pagination.iframe = ''
-            //   //   next.attr('href', $('#page strong').next().attr('href'))
-            //   //   return setTimeout(() => window.pagination.nextPage(), 1000)
-            // }
-            // $('#page [class^="page-inner"]').html(page.find('#page [class^="page-inner"]').html())
-            // injectBlockStyle(config.blockedDomains)
-            window.pagination.scrollListener()
-          }))
-          $('#page').css({ 'position': 'relative' })
         }
-        $(() => window.pagination.scrollListener())
+        $(() => window.pagingScrollListener())
       }
     })
   })
