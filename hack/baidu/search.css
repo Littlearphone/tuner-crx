@@ -45,6 +45,10 @@ html {
     width: 100%;
 }
 
+[baidu].cos-pc .wd-ai-index-pc {
+    width: 100%;
+}
+
 :root {
     --baidu-background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Vg8AAnEBdzTCX3oAAAAASUVORK5CYII=);
     --baidu-background-color: #f6f6f6;
@@ -388,6 +392,7 @@ div.op-short-video-pc-img-new {
 [baidu] #page {
     z-index: 1;
     display: flex;
+    position: relative;
     justify-content: center;
 }
 
