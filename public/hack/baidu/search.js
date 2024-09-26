@@ -81,9 +81,14 @@
     // observer.disconnect()
   }
 
+  let injectBlockStyleTimer
+
   function injectBlockStyle(list) {
     if (!list) {
-      return
+      return logger.debug('Baidu 域名屏蔽列表为空')
+    }
+    if (injectBlockStyleTimer) {
+      cancelAnimationFrame(injectBlockStyleTimer)
     }
     let styleElement = document.querySelector('#baidu-blocked-domain-style')
     if (!styleElement) {
@@ -94,6 +99,7 @@
       .map(domain => `.result[mu*="${domain}"] {display: none !important;}`)
       .join('\n')
     document.head.appendChild(styleElement)
+    injectBlockStyleTimer = requestAnimationFrame(() => injectBlockStyle(list))
   }
 
   chrome.runtime.onMessage.addListener(function (data, sender, callback) {
