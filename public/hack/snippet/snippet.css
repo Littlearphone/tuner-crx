@@ -312,6 +312,17 @@ body[stackoverflow-com].question-page div.mainbar {
 }
 
 /**********************************************************/
+body[dba-stackexchange-com] #footer,
+body[dba-stackexchange-com] #sidebar,
+body[dba-stackexchange-com] #left-sidebar {
+    display: none !important;
+}
+
+body[dba-stackexchange-com] #mainbar {
+    width: 100%;
+}
+
+/**********************************************************/
 body[www-jb51-net] .gs,
 body[www-jb51-net] #nav,
 body[www-jb51-net] #xgw1,
