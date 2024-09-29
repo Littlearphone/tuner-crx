@@ -46,7 +46,7 @@
             // const scrollY = window.scrollY
             const contents = nextPage.contents()
             const center = contents.find('[google=iframe] #center_col')
-            const width = center.width() + 10
+            const width = center.width() + 70
             const height = center.height() + 10
             nextPage.width(width).height(height)
             $(paginationSelector).parent().html(contents.find(paginationSelector).parent().html())
