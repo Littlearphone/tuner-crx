@@ -6,14 +6,6 @@
     display: none !important;
 }
 
-[google] div.CvDJxb,
-[google] div.sBbkle,
-[google] div.qCqYBc {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 [google] div.CvDJxb #tsf {
     padding-right: 2em;
 }
@@ -30,8 +22,7 @@
     border: 0;
     width: 1px;
     height: 1px;
-    margin: 0 -1em;
-    padding: 0 1em;
+    margin: 0 -30px;
     box-shadow: 4px 4px 18px 0 rgba(0, 0, 0, 0.4);
 }
 
