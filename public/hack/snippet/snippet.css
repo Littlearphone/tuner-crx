@@ -1,16 +1,16 @@
-body[manhua-dmzj-com] > div#note,
-body[manhua-dmzj-com] > div.footer,
-body[manhua-dmzj-com] > div.hotrmbox,
+body[manhua-dmzj-com]>div#note,
+body[manhua-dmzj-com]>div.footer,
+body[manhua-dmzj-com]>div.hotrmbox,
 body[manhua-dmzj-com] div.icorss_acg,
-body[manhua-dmzj-com] > div.recom_one,
-body[www-dmzj-com] > div#note,
-body[www-dmzj-com] > div.foot,
-body[www-dmzj-com] > div#floatCode,
+body[manhua-dmzj-com]>div.recom_one,
+body[www-dmzj-com]>div#note,
+body[www-dmzj-com]>div.foot,
+body[www-dmzj-com]>div#floatCode,
 body[www-dmzj-com] div.intro_l_ad,
 body[www-dmzj-com] div.ad_th.app_down,
-body[www-dmzj-com] > div.ad_bottom_code,
-body[www-dmzj-com] > div:not([id]):not([class]),
-body[manhua-dmzj-com] > div:not([id]):not([class]) {
+body[www-dmzj-com]>div.ad_bottom_code,
+body[www-dmzj-com]>div:not([id]):not([class]),
+body[manhua-dmzj-com]>div:not([id]):not([class]) {
     display: none !important;
 }
 
@@ -34,13 +34,13 @@ body[www-7down-com] .soft-left,
 body[www-7down-com] #downloads,
 body[www-7down-com] .down_right,
 body[www-7down-com] #specialbox,
-body[www-7down-com] #downlist > *,
+body[www-7down-com] #downlist>*,
 body[www-7down-com] .header div p,
 body[www-7down-com] .soft-body .head {
     display: none !important;
 }
 
-body[www-7down-com] #downlist > .off ~ dd {
+body[www-7down-com] #downlist>.off~dd {
     display: block !important;
 }
 
@@ -80,7 +80,7 @@ body[www-7down-com] #downloadbox {
 /**********************************************************/
 body[www-360doc-com] header,
 body[www-360doc-com] .a_right,
-body[www-360doc-com] section ~ *,
+body[www-360doc-com] section~*,
 body[www-360doc-com] #arttopbdad,
 body[www-360doc-com] #copytoolbar,
 body[www-360doc-com] .floatqrcode,
@@ -89,16 +89,16 @@ body[www-360doc-com] .article_data,
 body[www-360doc-com] .article_showall,
 body[www-360doc-com] .contextmenu,
 body[www-360doc-com] .atfixednav,
-body[www-360doc-com] #bevip__ ~ *,
-body[www-360doc-com] #bgchange ~ *,
-body[www-360doc-com] #upartcolor ~ *,
-body[www-360doc-com] #printArticle ~ *,
-body[www-360doc-com] #currbackgroudcolor ~ *,
-body[www-360doc-com] #goTop2 > div:first-child ~ * {
+body[www-360doc-com] #bevip__~*,
+body[www-360doc-com] #bgchange~*,
+body[www-360doc-com] #upartcolor~*,
+body[www-360doc-com] #printArticle~*,
+body[www-360doc-com] #currbackgroudcolor~*,
+body[www-360doc-com] #goTop2>div:first-child~* {
     display: none !important;
 }
 
-body[www-360doc-com] #goTop2 > div:first-child {
+body[www-360doc-com] #goTop2>div:first-child {
     right: 20px;
     bottom: 20px;
     position: fixed;
@@ -127,15 +127,15 @@ body[www-360doc-com] #articlecontent table pre {
 /**********************************************************/
 body[blog-51cto-com] #mask,
 body[blog-51cto-com] .ac-box,
-body[blog-51cto-com] #mask ~ *,
+body[blog-51cto-com] #mask~*,
 body[blog-51cto-com] div.Footer,
 body[blog-51cto-com] ul.Navigates,
-body[blog-51cto-com] #comment ~ *,
+body[blog-51cto-com] #comment~*,
 body[blog-51cto-com] header.home-top,
 body[blog-51cto-com] div[id^=topbanner],
 body[blog-51cto-com] aside.action-aside,
 body[blog-51cto-com] .minmenu li:not(.scrollToTop),
-body[blog-51cto-com] .Content-box .Content.Index > .Page ~ * {
+body[blog-51cto-com] .Content-box .Content.Index>.Page~* {
     display: none !important;
 }
 
@@ -146,9 +146,9 @@ body[blog-51cto-com] div.Header {
 /**********************************************************/
 body[www-51cto-com] #footerSet,
 body[www-51cto-com] .header-box,
-body[www-51cto-com] .article-left ~ *,
+body[www-51cto-com] .article-left~*,
 body[www-51cto-com] .secondNavCover a.apply,
-body[www-51cto-com] .article-left article ~ *,
+body[www-51cto-com] .article-left article~*,
 body[www-51cto-com] .secondNavCover .parent-ul,
 body[www-51cto-com] section.suspension-pendant_r,
 body[www-51cto-com] .components-common-suspension span.line,
@@ -174,11 +174,11 @@ body[www-bejson-com] h1,
 body[www-bejson-com] footer,
 body[www-bejson-com] #resize,
 body[www-bejson-com] .top1-link,
-body[www-bejson-com] footer ~ *,
+body[www-bejson-com] footer~*,
 body[www-bejson-com] .footer-nav,
 body[www-bejson-com] .save-data-con,
 body[www-bejson-com] .recent-use-box,
-body[www-bejson-com] .container form ~ *,
+body[www-bejson-com] .container form~*,
 body[www-bejson-com] .resizable-textarea {
     display: none !important;
 }
@@ -193,7 +193,7 @@ body[www-bejson-com] #editor {
     right: 10px;
 }
 
-body[www-bejson-com] #editor ~ div,
+body[www-bejson-com] #editor~div,
 body[www-bejson-com] .t-huge-margin,
 body[www-bejson-com] .t-huge2-margin {
     display: block !important;
@@ -228,20 +228,20 @@ body[www-mvcat-com] #tooltip {
 /**********************************************************/
 body[www-jianshu-com] aside,
 body[www-jianshu-com] iframe,
-body[www-jianshu-com] footer ~ *,
+body[www-jianshu-com] footer~*,
 body[www-jianshu-com] nav a[href="/"],
 body[www-jianshu-com] [class$="-mask"],
 body[www-jianshu-com] nav a[href*="/app"],
 body[www-jianshu-com] [aria-label="简书钻"],
 body[www-jianshu-com] [aria-label="添加评论"],
 body[www-jianshu-com] [aria-label="baidu-ad"],
-body[www-jianshu-com] [class$="-mask"] ~ div,
-body[www-jianshu-com] [aria-label="简书"] ~ *,
+body[www-jianshu-com] [class$="-mask"]~div,
+body[www-jianshu-com] [aria-label="简书"]~*,
 body[www-jianshu-com] [aria-label="ic-nav-mode"],
-body[www-jianshu-com] #__next section article ~ *,
-body[www-jianshu-com] #note-page-comment ~ section,
-body[www-jianshu-com] [aria-label="添加评论"] ~ div,
-body[www-jianshu-com] section:has(article) ~ section {
+body[www-jianshu-com] #__next section article~*,
+body[www-jianshu-com] #note-page-comment~section,
+body[www-jianshu-com] [aria-label="添加评论"]~div,
+body[www-jianshu-com] section:has(article)~section {
     display: none !important;
 }
 
@@ -249,7 +249,7 @@ body[www-jianshu-com] {
     overflow: auto !important;
 }
 
-body[www-jianshu-com] header + div > div > div:nth-child(1) {
+body[www-jianshu-com] header+div>div>div:nth-child(1) {
     width: 100% !important;
 }
 
@@ -264,7 +264,7 @@ body[www-jianshu-com] #__next section article {
 /**********************************************************/
 body[www-linuxidc-com] .topBar,
 body[www-linuxidc-com] #footer,
-body[www-linuxidc-com] #middle > tbody > tr > td:nth-child(2) {
+body[www-linuxidc-com] #middle>tbody>tr>td:nth-child(2) {
     display: none !important;
 }
 
@@ -276,7 +276,8 @@ body[www-linuxidc-com] #content {
 body[stackoverflow-com].question-page #footer,
 body[stackoverflow-com].question-page #sidebar,
 body[stackoverflow-com].question-page #left-sidebar,
-body[stackoverflow-com].question-page .js-consent-banner {
+body[stackoverflow-com].question-page .js-consent-banner,
+body[stackoverflow-com].question-page #onetrust-consent-sdk {
     display: none !important;
 }
 
@@ -288,7 +289,7 @@ body[stackoverflow-com].question-page div#content {
 
 body[stackoverflow-com].question-page div#mainbar .question,
 body[stackoverflow-com].question-page div#mainbar #answers .answer,
-body[stackoverflow-com].question-page .inner-content > div:not(#mainbar),
+body[stackoverflow-com].question-page .inner-content>div:not(#mainbar),
 body[stackoverflow-com].question-page div#mainbar #answers #answers-header {
     padding: 0 16px;
 }
@@ -334,19 +335,19 @@ body[www-jb51-net] #header,
 body[www-jb51-net] .art_xg,
 body[www-jb51-net] #footer,
 body[www-jb51-net] #con_all,
-body[www-jb51-net] .art_xg ~ *,
+body[www-jb51-net] .art_xg~*,
 body[www-jb51-net] .main-right,
 body[www-jb51-net] #right-share,
 body[www-jb51-net] .lbd.clearfix,
 body[www-jb51-net] #mtab .tabNav,
-body[www-jb51-net] .normal_li ~ *,
+body[www-jb51-net] .normal_li~*,
 body[www-jb51-net] .xgcomm.clearfix,
-body[www-jb51-net] #container .tip ~ *,
+body[www-jb51-net] #container .tip~*,
 body[www-jb51-net] #container .tonglan,
 body[www-jb51-net] #container .softsfwtl,
 body[www-jb51-net] #container .pt10.clearfix,
-body[www-jb51-net] #download .address-wrap ~ *,
-body[www-jb51-net] #container #param-content ~ * {
+body[www-jb51-net] #download .address-wrap~*,
+body[www-jb51-net] #container #param-content~* {
     display: none !important;
 }
 
@@ -394,9 +395,9 @@ body[www-jb51-net] #recomc {
 
 /**********************************************************/
 body[blog-chinaunix-com] div[class*='Blog_header'],
-body[blog-chinaunix-com] .Blog_left1_1 ~ *,
-body[blog-chinaunix-com] .Blog_left1 ~ *,
-body[blog-chinaunix-com] .Blog_left ~ *,
+body[blog-chinaunix-com] .Blog_left1_1~*,
+body[blog-chinaunix-com] .Blog_left1~*,
+body[blog-chinaunix-com] .Blog_left~*,
 body[blog-chinaunix-com] .Blog_footer,
 body[blog-chinaunix-com] iframe {
     display: none !important;
@@ -409,7 +410,7 @@ body[blog-chinaunix-com] #full {
     top: auto !important;
 }
 
-body[blog-chinaunix-com] .box > div:nth-child(1) {
+body[blog-chinaunix-com] .box>div:nth-child(1) {
     margin: 10px !important;
 }
 
@@ -501,8 +502,8 @@ body[www-pc6-com] #param-content {
 /**********************************************************/
 body[cloud-tencent-com] .J-footer,
 body[cloud-tencent-com] .J-sharingBar,
-body[cloud-tencent-com] .J-authorPanel ~ *,
-body[cloud-tencent-com] .J-articlePanel ~ *,
+body[cloud-tencent-com] .J-authorPanel~*,
+body[cloud-tencent-com] .J-articlePanel~*,
 body[cloud-tencent-com] .J-authorPanel header,
 body[cloud-tencent-com] .J-authorPanel .com-author-intro-desc,
 body[cloud-tencent-com] .J-authorPanel .com-author-intro-btns,
@@ -576,21 +577,21 @@ body[www-infoq-cn] div.main-content .page-topic-list {
 
 /**********************************************************/
 body[www-bbsmax-com] #footer,
-body[www-bbsmax-com] h2 + ol,
-body[www-bbsmax-com] ol + h2,
+body[www-bbsmax-com] h2+ol,
+body[www-bbsmax-com] ol+h2,
 body[www-shuzhiduo-com] #footer,
-body[www-shuzhiduo-com] h2 + ol,
-body[www-shuzhiduo-com] ol + h2,
+body[www-shuzhiduo-com] h2+ol,
+body[www-shuzhiduo-com] ol+h2,
 body[www-bbsmax-com] div.widget:has(h3),
 body[www-shuzhiduo-com] div.widget:has(h3),
 body[www-bbsmax-com] div:not([class]):not([id]),
 body[www-shuzhiduo-com] div:not([class]):not([id]),
-body[www-bbsmax-com] div.blog-post > .ajax-load-con,
-body[www-shuzhiduo-com] div.blog-post > .ajax-load-con,
+body[www-bbsmax-com] div.blog-post>.ajax-load-con,
+body[www-shuzhiduo-com] div.blog-post>.ajax-load-con,
 body[www-bbsmax-com] span:not([class]):not([id]):has(img),
 body[www-shuzhiduo-com] span:not([class]):not([id]):has(img),
-body[www-bbsmax-com] div.blog-posts > .ajax-load-con:first-child,
-body[www-shuzhiduo-com] div.blog-posts > .ajax-load-con:first-child {
+body[www-bbsmax-com] div.blog-posts>.ajax-load-con:first-child,
+body[www-shuzhiduo-com] div.blog-posts>.ajax-load-con:first-child {
     display: none !important;
 }
 
@@ -639,7 +640,7 @@ body[juejin-cn] div.article-area div.article-end {
     display: none !important;
 }
 
-body[juejin-cn] .timeline-entry-list .entry-list > li:has(.advertisement) {
+body[juejin-cn] .timeline-entry-list .entry-list>li:has(.advertisement) {
     height: 0;
 }
 
@@ -696,12 +697,12 @@ body[www-zhihu-com] div.QuestionButtonGroup,
 body[www-zhihu-com] .Question-mainColumnLogin,
 body[www-zhihu-com] [aria-controls="Search-live"],
 body[www-zhihu-com] [aria-controls="Search-album"],
-body[www-zhihu-com] .QuestionHeaderActions > button,
-body[www-zhihu-com] div.QuestionHeader-Comment ~ div,
+body[www-zhihu-com] .QuestionHeaderActions>button,
+body[www-zhihu-com] div.QuestionHeader-Comment~div,
 body[www-zhihu-com] [aria-controls="Search-clubentity"],
 body[www-zhihu-com] [aria-controls="Search-publication"],
 body[www-zhihu-com] div:not([class]):not([id]):has(svg[class*='ZDI--X']),
-body[www-zhihu-com] #QuestionAnswers-answers div.List-item ~ :not(.List-item) {
+body[www-zhihu-com] #QuestionAnswers-answers div.List-item~ :not(.List-item) {
     display: none !important;
 }
 
@@ -804,6 +805,18 @@ body[news-sina-com-cn] [id*="sinaadToolkitBox"] {
 
 body[news-sina-com-cn] div.article-content-left {
     margin: 0;
+    width: 100%;
+}
+
+/**********************************************************/
+:where(body[news-sohu-com], body[www-sohu-com]) :where(#groomRead,
+    #articleAllsee, #right-side-bar,
+    #article-container .column.left) {
+    display: none !important;
+}
+
+body[www-sohu-com] #article-container .main.left,
+body[news-sohu-com] #article-container .main.left {
     width: 100%;
 }
 

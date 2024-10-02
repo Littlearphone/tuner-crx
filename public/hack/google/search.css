@@ -31,8 +31,7 @@
 }
 
 [google=iframe] #cnt,
-[google=iframe] #rcnt,
-[google=iframe] #center_col {
+[google=iframe] #rcnt {
     margin: 0;
     padding: 0;
 }

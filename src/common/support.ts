@@ -1,4 +1,4 @@
-import {HackMappings} from './constant'
+import { HackMappings } from './constant'
 
 export function ajaxProxy(request: any, sender: any, sendResponse: Function) {
   const data = request.data
@@ -38,13 +38,13 @@ async function insertScript(site: any, tabId: number, tab: any, config: any) {
   if (tab.frameId) {
     target.frameIds = [tab.frameId]
   }
-  await chrome.scripting.executeScript({files, target, injectImmediately: true})
+  await chrome.scripting.executeScript({ files, target, injectImmediately: true })
   console.log('页面脚本注入完成: ', tab.url)
   console.table(files)
   // 提供回调的话，接收方需要三个参数：transferData, sender, callback，
   // 为了让扩展不提示The message port closed before a response was received，
   // 还需要在接收方调用callback方法传递响应数据
-  messageTab(tabId, Object.assign({site}, {config}), (response: any) => console.log('传递页面配置完成', response))
+  messageTab(tabId, Object.assign({ site }, { config }), (response: any) => console.log('传递页面配置完成', response))
 }
 
 async function insertCss(site: any, tabId: number, tab: any, config: any) {
@@ -61,34 +61,41 @@ async function insertCss(site: any, tabId: number, tab: any, config: any) {
   if (tab.frameId) {
     target.frameIds = [tab.frameId]
   }
-  await chrome.scripting.insertCSS({files, target})
+  await chrome.scripting.insertCSS({ files, target })
   console.log('页面样式注入完成: ', tab.url)
   console.table(files)
 }
 
-function handleError(tabId: any, callback: Function) {
-  chrome.tabs.get(tabId, () => {
-    if (chrome.runtime.lastError) {
-      console.log(chrome.runtime.lastError.message)
-    } else {
-      callback && callback()
-    }
-  })
+function handleRuntimeError() {
+  const error: any = chrome.runtime.lastError;
+  if (error) {
+    throw new Error(error);
+  }
+}
+
+async function handleError(tabId: any) {
+  const tab = await chrome.tabs.get(tabId)
+  try {
+    handleRuntimeError();
+    return tab;
+  } catch (e: any) {
+    console.log('safeGetTab', e.message);
+  }
 }
 
 const loadingPage: any = {}
 
 // iframe => https://codingdict.com/questions/13895
-export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
+export function pageHacker(tabId: number, changeInfo: any, tab: any) {
   if (!tab || !tab.url || !tab.url.startsWith('http://') && !tab.url.startsWith('https://')) {
     return
   }
   const site = HackMappings.find(mapping => mapping.expectUrl(tab)) || {
-    hacker: {state: undefined},
-    description: {enable: false},
+    hacker: { state: undefined },
+    description: { enable: false },
     id: new Date().toISOString()
   }
-  handleError(tabId, async () => {
+  handleError(tabId).then(async () => {
     site.id && chrome.action.enable(tabId)
     const status = changeInfo && changeInfo.status
     if (!site.hacker || (status !== site.hacker.state && status !== true)) {
@@ -100,7 +107,7 @@ export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
     loadingPage[tab.url] = true
     try {
       const response: any = await getStorage(site.id)
-      const config = Object.assign({configId: site.id}, site.description, response[site.id])
+      const config = Object.assign({ configId: site.id }, site.description, response[site.id])
       console.log('页面配置获取成功: ', tab.url)
       console.table(config)
       await insertCss(site, tabId, tab, config)
@@ -112,7 +119,7 @@ export const pageHacker = (tabId: number, changeInfo: any, tab: any) => {
 }
 
 export function messageTab(tabId: number, message: any, callback: (response: any) => void) {
-  handleError(tabId, () => chrome.tabs.sendMessage(tabId, message, callback))
+  handleError(tabId).then(() => chrome.tabs.sendMessage(tabId, message, callback))
 }
 
 export function setStorage(keys: any) {
