@@ -17,6 +17,7 @@
     "default_title": "页面配置",
     "default_popup": "popup.html"
   },
+  "options_page": "options.html",
   "web_accessible_resources": [
     {
       "resources": [
@@ -41,18 +42,6 @@
     "declarativeNetRequest",
     "declarativeNetRequestFeedback"
   ],
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "cdn-rule",
-        "enabled": true,
-        "path": "./cdn-rule.json"
-      }
-    ]
-  },
-  "chrome_url_overrides": {
-    "newtab": "navigator.html"
-  },
   "host_permissions": [
     "*://*/*"
   ]

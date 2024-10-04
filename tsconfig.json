@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "esnext",
+    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
