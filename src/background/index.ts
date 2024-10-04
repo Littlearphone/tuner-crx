@@ -1,4 +1,5 @@
 import {ajaxProxy, pageHacker} from '~/common/support'
+import {useOptionConfigStore} from '~/stores/option-config'
 
 // chrome.tabs.onCreated.addListener(tab => {
 //   if (typeof tab.id !== "number") {
@@ -8,14 +9,9 @@ import {ajaxProxy, pageHacker} from '~/common/support'
 //   pageHacker(tab.id, {status: tab.status}, tab);
 // })
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  console.log('update tab', tab)
+  console.log('update tab', tabId, tab)
   pageHacker(tabId, changeInfo, tab)
 })
-// chrome.webRequest.onBeforeRequest.addListener(details => {
-//   return {
-//     redirectUrl: details.url.replace('ajax.googleapis.com', 'cdn.bootcdn.net')
-//   }
-// }, { urls: ["*://*/portal/login/ajax/submit.do"] }, ["blocking"])
 chrome.webNavigation.onCommitted.addListener(function (e) {
   if (e.url === 'about:blank') {
     return
@@ -44,6 +40,7 @@ function autoReload() {
 }
 
 chrome.management.getSelf(result => {
+  useOptionConfigStore()
   if (result.installType === 'development') {
     autoReload()
   }

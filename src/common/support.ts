@@ -87,7 +87,7 @@ const loadingPage: any = {}
 
 // iframe => https://codingdict.com/questions/13895
 export function pageHacker(tabId: number, changeInfo: any, tab: any) {
-  if (!tab || !tab.url || !tab.url.startsWith('http://') && !tab.url.startsWith('https://')) {
+  if (!tab || !tab.url || (!tab.url.startsWith('http://') && !tab.url.startsWith('https://'))) {
     return
   }
   const site = HackMappings.find(mapping => mapping.expectUrl(tab)) || {
