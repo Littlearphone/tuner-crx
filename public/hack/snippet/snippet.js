@@ -28,6 +28,12 @@
       const scrollSwitch = dmzj.querySelector('#qiehuan_txt')
       scrollSwitch.innerText.indexOf('上下滚动') >= 0 && scrollSwitch.click()
     }
+
+    logger.info('去除页面默认的复制监听', () => {
+      const script = document.createElement('script')
+      script.src = chrome.runtime.getURL('hack/snippet/inline.js')
+      document.head.appendChild(script)
+    })
   }
 
   requestAnimationFrame(initialPage)
